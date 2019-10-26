@@ -19,7 +19,7 @@ fb.auth.onAuthStateChanged(user => {
           membersArray.push(member)
       })
 
-      store.commit('setMembers', membersArray)
+      store.commit('team/setMembers', membersArray)
     })
   }
 })
@@ -39,7 +39,7 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     userProfile: {},
-    members: [],
+    // members: [],
     fileData: {},
   },
   mutations: {
@@ -49,9 +49,9 @@ export default new Vuex.Store({
     setUserProfile(state, val) {
         state.userProfile = val
     },
-    setMembers(state, val){
-      state.members = val
-    },
+    // setMembers(state, val){
+    //   state.members = val
+    // },
     setFileData(state, val){
       state.fileData = val
     }
@@ -75,20 +75,30 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    teammembers: {
+    team: {
       namespaced: true,
       state: { 
-        mouse: 'genius'
+        mouse: 'genius',
+        members: [],
+        member: {}
       },
       mutations: { 
-
+        setMembers(state, val){
+          state.members = val
+        },
+        setMember(state, val){
+          state.member = val
+        }
       },
       actions: { 
 
       },
       getters: {
-        getMouseBrand: (state, getters) => {
-          return state.mouse
+        members: (state, getters) => { 
+          return state.members
+        },
+        member: (state, getter) => { console.log('hello', state.member);
+          return state.member
         }
       }
     }

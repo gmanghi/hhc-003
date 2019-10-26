@@ -54,6 +54,7 @@ export default {
             drawer: null,
             items: [
                 { title: 'Home', icon: 'mdi-home', route:'/' },
+                { title: 'Clients', icon: 'mdi-mother-nurse', route:'/clients' },
                 { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/nurses' },
                 { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/caregivers' },
                 { title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },

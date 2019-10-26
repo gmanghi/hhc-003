@@ -17,15 +17,15 @@
                             <div class="grey--text">{{ person.role }}</div>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn text color="grey">
+                            <v-btn text color="grey" @click="viewMember(person.id)">
                                 <v-icon small left>mdi-eye</v-icon>
                                 <span>View</span>
                             </v-btn>
-                            <v-btn text color="grey">
+                            <v-btn text color="grey" @click="editMember(person.id)">
                                 <v-icon small left>mdi-pencil</v-icon>
                                 <span>Edit</span>
                             </v-btn>
-                            <v-btn text color="grey">
+                            <v-btn text color="grey" @click="deleteMember(person.id)">
                                 <v-icon small left>mdi-delete</v-icon>
                                 <span>Delete</span>
                             </v-btn>
@@ -58,10 +58,10 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="6" md="4">
-                                            <v-text-field label="Legal first name*" v-model="members.first_name" required></v-text-field>
+                                            <v-text-field label="Legal first name*" v-model="member.first_name" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="4">
-                                            <v-text-field label="Legal middle name" v-model="members.middle_name" hint="example of helper text only on focus"></v-text-field>
+                                            <v-text-field label="Legal middle name" v-model="member.middle_name" hint="example of helper text only on focus"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
@@ -69,14 +69,14 @@
                                             hint="example of persistent helper text"
                                             persistent-hint
                                             required
-                                            v-model="members.last_name"
+                                            v-model="member.last_name"
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <v-text-field label="Email*" v-model="members.email" required></v-text-field>
+                                            <v-text-field label="Email*" v-model="member.email" required></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <v-text-field label="Role*" v-model="members.role" required></v-text-field>
+                                            <v-text-field label="Role*" v-model="member.role" required></v-text-field>
                                         </v-col>
                                         <!--
                                         <v-col cols="12">
@@ -99,7 +99,7 @@
                                         </v-col>
                                         <v-col cols="12" sm="6">
                                             <v-menu
-                                            v-model="menu2"
+                                            v-model="date_popup"
                                             :close-on-content-click="false"
                                             max-width="290"
                                             >
@@ -114,7 +114,7 @@
                                             </template>
                                             <v-date-picker
                                                 v-model="date"
-                                                @change="menu2 = false"
+                                                @change="date_popup = false"
                                             ></v-date-picker>
                                             </v-menu>
                                         </v-col>
@@ -142,10 +142,10 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
 import moment from 'moment'
-import { mapState } from 'vuex';
-import { mapGetters } from 'vuex';
 import FileUpload from '../components/FileUpload'
+
 const fb = require('../firebaseConfig.js')
 export default {
     components: { FileUpload },
@@ -153,32 +153,80 @@ export default {
         return {
             dialog: '',
             date: new Date().toISOString().substr(0, 10),
-            menu2: false,
-            teams: [
-                { name: 'The Net Ninja', role: 'Web Developer', avatar: 'https://randomuser.me/api/portraits/men/78.jpg' },
-                { name: 'Ryu', role: 'Graphic Designer', avatar: 'https://randomuser.me/api/portraits/men/78.jpg' },
-                { name: 'Chun Li', role: 'Web Developer', avatar: 'https://randomuser.me/api/portraits/men/78.jpg' },
-                { name: 'Gouken', role: 'Social Media Maverick', avatar: 'https://randomuser.me/api/portraits/men/78.jpg' },
-                { name: 'Yoshi', role: 'Sales Guru', avatar: 'https://randomuser.me/api/portraits/men/78.jpg' }
-            ],
-            // members: {
-            //     first_name: '',
-            //     middle_name: '',
-            //     last_name: '',
-            //     email: '',
-            //     role: '',
-            //     avatar: '',
-            // },
+            date_popup: false,
+            // member: {},
+            members: [],
+            member: {
+                first_name: '',
+                middle_name: '',
+                last_name: '',
+                email: '',
+                role: '',
+                avatar: '',
+            },
         }
+    },
+    created() {
+        fb.teamsCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+            let membersArray = []
+
+            querySnapshot.forEach(doc => {
+                let member = doc.data()
+                member.id = doc.id
+                membersArray.push(member)
+            })
+            this.members = membersArray;
+        })
     },
     computed: {
         computedDateFormattedMomentjs () {
             return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
         },
-        ...mapState(['members']),
-        
+        // ...mapGetters("team", ['member'])
     },
+    // watch: {
+    //     member: function(val){
+    //         console.log('watch', val)
+    //         this.member.first_name = 'hello'
+    //         parent.dialog = true;
+    //     }
+    // },
     methods: {
+        editMember(id){
+            parent = this;
+            fb.teamsCollection.doc(id).get().then(function(doc) {
+                if (doc.exists) {
+                    // parent.$store.commit('team/setMember', doc.data())
+                    parent.member = doc.data()
+                    parent.dialog = true;
+                    console.log("Document data:", doc.data());
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        },
+        viewMember(id){
+            fb.teamsCollection.doc(id).get().then(function(doc) {
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        },
+        deleteMember(id){
+            fb.teamsCollection.doc(id).delete().then(function() {
+                console.log("Document successfully deleted!");
+            }).catch(function(error) {
+                console.error("Error removing document: ", error);
+            });
+        },
         createMember(){
             const fileData = this.$store.getters.getFileData;
             const fileName =  Math.random().toString(36).substring(2)
@@ -201,28 +249,28 @@ export default {
             },
             () => {
                 storageRef.snapshot.ref.getDownloadURL().then( (url) => {
-                    // this.picture = url;
                     console.log(url);
                     fullImageUrl = url
                     this.members.avatar = url
                     fb.teamsCollection.add({
                         createdOn: new Date(),
-                        first_name: this.members.first_name,
-                        middle_name: this.members.middle_name,
-                        last_name: this.members.last_name,
-                        email: this.members.email,
-                        role: this.members.role,
+                        first_name: this.member.first_name,
+                        middle_name: this.member.middle_name,
+                        last_name: this.member.last_name,
+                        email: this.member.email,
+                        role: this.member.role,
                         avatar: fullImageUrl
                     }).then(ref => {
-                        this.members.first_name = '',
-                        this.members.middle_name = '',
-                        this.members.last_name = '',
-                        this.members.email = '',
-                        this.members.role = '',
-                        this.members.avatar = '';
+                        this.member.first_name = '',
+                        this.member.middle_name = '',
+                        this.member.last_name = '',
+                        this.member.email = '',
+                        this.member.role = '',
+                        this.member.avatar = '';
                     }).catch(err => {
                         console.log(err)
                     })
+                    this.dialog = false;
                 });
             });
         }
