@@ -70,44 +70,107 @@
                     <v-form>
                         <v-card>
                             <v-card-title>
-                                <span class="headline">User Profile</span>
+                                <span class="headline">Client</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field label="Legal first name*" v-model="member.first_name" required></v-text-field>
+                                        <v-col cols="12" md="2" sm="3" xs="2">
+                                            <v-autocomplete
+                                            :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
+                                            label="Title"
+                                            ></v-autocomplete>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="4">
-                                            <v-text-field label="Legal middle name" v-model="member.middle_name" hint="example of helper text only on focus"></v-text-field>
+                                        <v-col cols="12" md="4" sm="3" >
+                                            <v-text-field label="Client / Account Name*" v-model="member.account_name" required></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="4">
+                                        <v-col cols="12"  md="3" sm="3">
+                                            <v-text-field label="Position / Relationship" v-model="member.position" hint="example of helper text only on focus"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3" sm="3" xs="2">
+                                            <v-text-field label="Primary Care YES, If NO*" v-model="member.primary_care" required></v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="4" sm="4">
                                             <v-text-field
-                                            label="Legal last name*"
+                                            label="Landline / Mobile Phone / Fax*"
                                             hint="example of persistent helper text"
                                             persistent-hint
                                             required
-                                            v-model="member.last_name"
+                                            v-model="member.landline_mobile_fax"
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field label="Email*" v-model="member.email" required></v-text-field>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Email Address*" v-model="member.email" required></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field label="Role*" v-model="member.role" required></v-text-field>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Attending Physician*" v-model="member.attending_physician" required></v-text-field>
                                         </v-col>
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-text-field label="Complete Address*" v-model="member.address" required></v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="2"  sm="3" xs="2">
+                                            <v-autocomplete
+                                            :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
+                                            label="Title"
+                                            ></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="12" md="5" sm="3">
+                                            <v-text-field label="Patient Name*" v-model="member.patient_name" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="2" sm="3">
+                                            <v-text-field label="Age" v-model="member.age" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                         <v-col cols="12" md="3" sm="3">
+                                            <v-menu
+                                            v-model="date_popup"
+                                            :close-on-content-click="false"
+                                            max-width="290"
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                :value="computedDateFormattedMomentjs"
+                                                clearable
+                                                label="Birthday"
+                                                readonly
+                                                v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="member.birthday"
+                                                @change="date_popup = false"
+                                            ></v-date-picker>
+                                            </v-menu>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Religion" v-model="member.religion" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                         <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Nationality*" v-model="member.nationality" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Landline" v-model="member.landline" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+
+                                         <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Mobile Phone*" v-model="member.mobile" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Email Address*" v-model="member.email_address" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                         <v-col cols="12" md="4" sm="4">
+                                            <v-text-field label="Fax" v-model="member.fax" hint="example of helper text only on focus" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-text-field label="Complete Address*" v-model="member.complete_address" required></v-text-field>
+                                        </v-col>
+
                                         <!--
                                         <v-col cols="12">
                                             <v-text-field label="Password*" type="password" required></v-text-field>
                                         </v-col>
-                                        -->
-                                        <v-col cols="12" sm="6">
-                                            <v-select
-                                            :items="['0-17', '18-29', '30-54', '54+']"
-                                            label="Age*"
-                                            required
-                                            ></v-select>
-                                        </v-col>
+                                        
                                         <v-col cols="12" sm="6">
                                             <v-autocomplete
                                             :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
@@ -137,9 +200,30 @@
                                             </v-menu>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <!-- <input type="file" @change="onFileChange" /> -->
+                                            <input type="file" @change="onFileChange" />
                                             <FileUpload />
-                                            
+                                        </v-col>
+                                        -->
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-autocomplete
+                                            :items="['Home Health Visit by HCP', 'Registered Nurse /  Caregiver Deployment', 'Laboratory / Radiology', 'Purchase / Rental of Medicine Equipment']"
+                                            label="Case Management"
+                                            multiple
+                                            ></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-autocomplete
+                                            :items="['Ambulatory Wellness Clinic', 'Caregiver Training Module', 'Senior Residential Facility']"
+                                            label=""
+                                            multiple
+                                            ></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-autocomplete
+                                            :items="['Walk-in', 'Home Service', 'Corporate', 'Delivery']"
+                                            label="Home Vaccination Program"
+                                            multiple
+                                            ></v-autocomplete>
                                         </v-col>
                                     </v-row>
                                 </v-container>
