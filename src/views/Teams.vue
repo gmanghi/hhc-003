@@ -58,7 +58,12 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="6" md="4">
-                                            <v-text-field label="Legal first name*" v-model="member.first_name" required></v-text-field>
+                                            <v-text-field 
+                                                label="Legal first name*"
+                                                :rules="[v => !!v || 'Name is required', v => v.length <= 10 || 'Name must be less than 10 characters']"
+                                                required
+                                                v-model="member.first_name">
+                                            </v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field label="Legal middle name" v-model="member.middle_name" hint="example of helper text only on focus"></v-text-field>
@@ -130,7 +135,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="createMember">Save</v-btn>
+                                <v-btn color="blue darken-1" text @click="createMember" :loading="loading">Save</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-form>
@@ -145,8 +150,14 @@
 // import { mapGetters } from 'vuex'
 import moment from 'moment'
 import FileUpload from '../components/FileUpload'
+// import { validationMixin } from 'vuelidate'
+// import { required, maxLength, email } from 'vuelidate/lib/validators'
+
 
 const fb = require('../firebaseConfig.js')
+
+
+
 export default {
     components: { FileUpload },
     data() {
@@ -154,6 +165,7 @@ export default {
             dialog: '',
             date: new Date().toISOString().substr(0, 10),
             date_popup: false,
+            loading: false,
             // member: {},
             members: [],
             member: {
@@ -228,51 +240,57 @@ export default {
             });
         },
         createMember(){
-            const fileData = this.$store.getters.getFileData;
-            const fileName =  Math.random().toString(36).substring(2)
-            let fileExtension = null;
-            let fullImageUrl = null;
+            if(this.$refs.form.validate()){
+                this.loading = true;
+                const fileData = this.$store.getters.getFileData;
+                const fileName =  Math.random().toString(36).substring(2)
+                let fileExtension = null;
+                let fullImageUrl = null;
 
-            switch(fileData.type){
-                case 'image/jpeg': fileExtension = '.jpg';
-                case 'image/png': fileExtension = '.png';
-                case 'image/bmp': fileExtension = '.bmp';
-            }
+                switch(fileData.type){
+                    case 'image/jpeg': fileExtension = '.jpg';
+                    case 'image/png': fileExtension = '.png';
+                    case 'image/bmp': fileExtension = '.bmp';
+                }
 
-            const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
+                const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
 
-            storageRef.on(`state_changed`, snapshot => {
-                // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
-            }, 
-            error => {
-                console.log(error.message)
-            },
-            () => {
-                storageRef.snapshot.ref.getDownloadURL().then( (url) => {
-                    console.log(url);
-                    fullImageUrl = url
-                    this.members.avatar = url
-                    fb.teamsCollection.add({
-                        createdOn: new Date(),
-                        first_name: this.member.first_name,
-                        middle_name: this.member.middle_name,
-                        last_name: this.member.last_name,
-                        email: this.member.email,
-                        role: this.member.role,
-                        avatar: fullImageUrl
-                    }).then(ref => {
-                        this.member.first_name = '',
-                        this.member.middle_name = '',
-                        this.member.last_name = '',
-                        this.member.email = '',
-                        this.member.role = '',
-                        this.member.avatar = '';
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                    this.dialog = false;
+                storageRef.on(`state_changed`, snapshot => {
+                    // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                }, 
+                error => {
+                    console.log(error.message)
+                },
+                () => {
+                    storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                        console.log(url);
+                        fullImageUrl = url
+                        this.members.avatar = url
+                        fb.teamsCollection.add({
+                            createdOn: new Date(),
+                            first_name: this.member.first_name,
+                            middle_name: this.member.middle_name,
+                            last_name: this.member.last_name,
+                            email: this.member.email,
+                            role: this.member.role,
+                            avatar: fullImageUrl
+                        }).then(ref => {
+                            this.member.first_name = '',
+                            this.member.middle_name = '',
+                            this.member.last_name = '',
+                            this.member.email = '',
+                            this.member.role = '',
+                            this.member.avatar = '';
+                            this.dialog = false;
+                            this.loading = false;
+                        }).catch(err => {
+                            this.loading = false;
+                            console.log(err)
+                        })
+                        
+                    });
                 });
-            });
+            }
         }
     }
 }

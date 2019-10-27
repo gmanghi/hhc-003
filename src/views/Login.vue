@@ -15,13 +15,12 @@
             md="4"
           >
             <v-card class="elevation-12">
-              <v-app-bar
-                color="primary"
-                dark
-                flat
-              >
-                <v-toolbar-title>Login form</v-toolbar-title>
-              </v-app-bar>
+              <!-- <v-toolbar dark prominent src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"> -->
+              <v-toolbar dark prominent src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg">
+                <v-spacer></v-spacer>
+                  <img class="mt-2" :src="require('@/assets/hhc-site-officialogo-180x090y.png')">
+                  <v-spacer></v-spacer>
+                </v-toolbar>
               <form @submit.prevent>
                 <v-card-text>
                   <v-form>
@@ -31,6 +30,7 @@
                       type="text"
                       v-model.trim="loginForm.email"
                       placeholder="you@email.com"
+                      v-on:keyup.enter="login"
                     ></v-text-field>
 
                     <v-text-field
@@ -40,6 +40,7 @@
                       type="password"
                       v-model.trim="loginForm.password"
                       placeholder="******"
+                      v-on:keyup.enter="login"
                     ></v-text-field>
                   </v-form>
                 </v-card-text>
