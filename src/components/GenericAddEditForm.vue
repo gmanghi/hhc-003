@@ -1,7 +1,7 @@
 <template>
     <!-- Popup Start -->
         <v-row justify="center">
-            <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-dialog v-model="isDialogAddEditOpen" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
                     <v-btn
                         fixed
@@ -124,7 +124,8 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeAddEditForm">Close</v-btn>
-                            <v-btn color="blue darken-1" text @click="createMember" :loading="loading">Save</v-btn>
+                            <v-btn color="blue darken-1" text v-if="isCreate" @click="createMember" :loading="loading">Save</v-btn>
+                            <v-btn color="blue darken-1" text v-if="isEdit" @click="updateMember(member.id)" :loading="loading">Update</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-form>
@@ -143,36 +144,55 @@ export default {
         return {
             valid: true,
             requiredStringRules: [v => !!v || 'Name is required', v => v.length <= 100 || 'Name must be less than 10 characters'],
-            dialog: '',
+            // dialog: '',
             // date: new Date().toISOString().substr(0, 10),
             date: '1950-01-01',
             date_popup: false,
             loading: false,
-            member: {
-                first_name: '',
-                middle_name: '',
-                last_name: '',
-                email: '',
-                mobile_number: '',
-                birthdate: '',
-                avatar: '',
-            },
+            isDialogAddEditOpen: this.dialogAddEdit,
+            // isDialogOpen: this.dialog,
+            // dialog: false,
+            // member: {
+            //     first_name: '',
+            //     middle_name: '',
+            //     last_name: '',
+            //     email: '',
+            //     mobile_number: '',
+            //     birthdate: '',
+            //     avatar: '',
+            // },
             collection: this.$parent.collection,
+            isCreate: false,
+            isEdit: true,
         }
+    },
+    props: {
+        dialogAddEdit: Boolean,
+        member: Object,
     },
     computed: {
         computedDateFormattedMomentjs () {
             return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
         },
     },
+    watch:{
+        dialogAddEdit: function(val){ console.log(this.isDialogAddEditOpen);
+            this.isDialogAddEditOpen = !this.isDialogAddEditOpen
+        },
+        isCreate: function(val){
+            this.isEdit = !this.isCreate
+        }
+    },
     methods: {
         closeAddEditForm(){
             this.$refs.form.resetValidation();
             this.$store.commit('setFileData', '')
-            this.dialog = false;
+            this.isDialogAddEditOpen = false;
             this.loading = false;
+            this.isCreate = false;
         },
         popAddEditForm(){
+            // this.$refs.form.resetValidation();
             this.member.first_name = '';
             this.member.middle_name = '';
             this.member.last_name = '';
@@ -180,66 +200,234 @@ export default {
             this.member.mobile_number = '';
             this.member.birthdate = '';
             this.member.avatar = '';
-            this.dialog = true;
+            this.isCreate = true;
+            this.isDialogAddEditOpen = true;
 
         },
         createMember(){
             if(this.$refs.form.validate()){
                 this.loading = true;
-                const fileData = this.$store.getters.getFileData;
-                const fileName =  Math.random().toString(36).substring(2)
-                let fileExtension = null;
-                let fullImageUrl = null;
 
-                switch(fileData.type){
-                    case 'image/jpeg': fileExtension = '.jpg';
-                    case 'image/png': fileExtension = '.png';
-                    case 'image/bmp': fileExtension = '.bmp';
+                const fileData = this.$store.getters.getFileData;
+
+                if(fileData.size > 0){
+                    const fileName =  Math.random().toString(36).substring(2)
+                    let fileExtension = null;
+
+                    switch(fileData.type){
+                        case 'image/jpeg': fileExtension = '.jpg';
+                        case 'image/png': fileExtension = '.png';
+                        case 'image/bmp': fileExtension = '.bmp';
+                    }
+
+                    if(fileExtension){
+                        const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
+
+                        storageRef.on(`state_changed`, snapshot => {
+                            // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                        },error => {
+                            console.log(error.message)
+                        },() => {
+                            storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                                this.member.avatar = url
+                                this.collection.add({
+                                    createdOn: new Date(),
+                                    first_name: this.member.first_name,
+                                    middle_name: this.member.middle_name,
+                                    last_name: this.member.last_name,
+                                    email: this.member.email,
+                                    mobile_number: this.member.mobile_number,
+                                    birthdate: this.member.birthdate,
+                                    avatar: this.member.avatar
+                                }).then(ref => {
+                                    this.member.first_name = ''
+                                    this.member.middle_name = ''
+                                    this.member.last_name = ''
+                                    this.member.email = ''
+                                    this.member.mobile_number = ''
+                                    this.member.birthdate = ''
+                                    this.member.avatar = ''
+                                    this.$store.commit('setFileData', '')
+                                    this.dialog = false
+                                    this.loading = false
+                                    this.$refs.form.resetValidation();
+                                    this.isDialogAddEditOpen = false;
+                                    this.isCreate = true;
+                                }).catch(err => {
+                                    this.loading = false;
+                                    console.log(err)
+                                })
+                                
+                            });
+                        });
+                    }
+                }
+                else{
+                    this.collection.add({
+                        createdOn: new Date(),
+                        first_name: this.member.first_name,
+                        middle_name: this.member.middle_name,
+                        last_name: this.member.last_name,
+                        email: this.member.email,
+                        mobile_number: this.member.mobile_number,
+                        birthdate: this.member.birthdate,
+                        avatar: this.member.avatar
+                    }).then(ref => {
+                        this.member.first_name = ''
+                        this.member.middle_name = ''
+                        this.member.last_name = ''
+                        this.member.email = ''
+                        this.member.mobile_number = ''
+                        this.member.birthdate = ''
+                        this.member.avatar = ''
+                        this.$store.commit('setFileData', '')
+                        this.dialog = false
+                        this.loading = false
+                        this.$refs.form.resetValidation();
+                        this.isDialogAddEditOpen = false;
+                        this.isCreate = true;
+                    }).catch(err => {
+                        this.loading = false;
+                        console.log(err)
+                    })
+                }
+                
+                
+            }
+        },
+        updateMember(id) {
+            if(this.$refs.form.validate()){
+                this.loading = true;
+                parent = this
+
+                const fileData = this.$store.getters.getFileData;
+
+                if(fileData.size > 0){
+                    this.isDialogAddEditOpen = true
+                    this.isCreate = true
+                    this.loading = true
+                    const fileName =  Math.random().toString(36).substring(2)
+                    let fileExtension = null;
+                    let fullImageUrl = null;
+
+                    switch(fileData.type){
+                        case 'image/jpeg': fileExtension = '.jpg';
+                        case 'image/png': fileExtension = '.png';
+                        case 'image/bmp': fileExtension = '.bmp';
+                    }
+
+                    if(fileExtension){
+                        const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
+
+                        storageRef.on(`state_changed`, snapshot => {
+                            // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                        },error => {
+                            console.log(error.message)
+                        },() => {
+                            storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                                console.log('data',url);
+                                this.member.avatar = url
+                                this.collection.doc(id).update({
+                                    first_name: this.member.first_name,
+                                    middle_name: this.member.middle_name,
+                                    last_name: this.member.last_name,
+                                    email: this.member.email,
+                                    mobile_number: this.member.mobile_number,
+                                    birthdate: this.member.birthdate,
+                                    avatar: this.member.avatar
+                                }).then(function(doc) {
+                                    parent.isDialogAddEditOpen = false
+                                    parent.isCreate = false
+                                    parent.loading = false
+                                    console.log("Updated document with ID: ", id);
+                                }).catch(function(error) {
+                                    console.error("Error updating document: ", error);
+                                });
+                            });
+                        });
+                    }
+                }
+                else{ console.log('trace')
+                    this.collection.doc(id).update({
+                        first_name: this.member.first_name,
+                        middle_name: this.member.middle_name,
+                        last_name: this.member.last_name,
+                        email: this.member.email,
+                        mobile_number: this.member.mobile_number,
+                        birthdate: this.member.birthdate,
+                    }).then(function(doc) {
+                        parent.isDialogAddEditOpen = false
+                        parent.isCreate = false
+                        parent.loading = false
+                        console.log("Updated document with ID: ", id);
+                    }).catch(function(error) {
+                        console.error("Error updating document: ", error);
+                    });
                 }
 
-                const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
+                // this.collection.doc(id).update({
+                //     first_name: this.member.first_name,
+                //     middle_name: this.member.middle_name,
+                //     last_name: this.member.last_name,
+                //     email: this.member.email,
+                //     mobile_number: this.member.mobile_number,
+                //     birthdate: this.member.birthdate,
+                // }).then(function(doc) {
+                //     parent.isDialogAddEditOpen = false
+                //     parent.isCreate = false
+                //     parent.loading = false
+                //     console.log("Updated document with ID: ", id);
+                // }).catch(function(error) {
+                //     console.error("Error updating document: ", error);
+                // });
 
-                storageRef.on(`state_changed`, snapshot => {
-                    // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
-                }, 
-                error => {
-                    console.log(error.message)
-                },
-                () => {
-                    storageRef.snapshot.ref.getDownloadURL().then( (url) => {
-                        console.log(url);
-                        fullImageUrl = url
-                        this.member.avatar = url
-                        this.collection.add({
-                            createdOn: new Date(),
-                            first_name: this.member.first_name,
-                            middle_name: this.member.middle_name,
-                            last_name: this.member.last_name,
-                            email: this.member.email,
-                            mobile_number: this.member.mobile_number,
-                            birthdate: this.member.birthdate,
-                            avatar: fullImageUrl
-                        }).then(ref => {
-                            this.member.first_name = ''
-                            this.member.middle_name = ''
-                            this.member.last_name = ''
-                            this.member.email = ''
-                            this.member.mobile_number = ''
-                            this.member.birthdate = ''
-                            this.member.avatar = ''
-                            this.$store.commit('setFileData', '')
-                            this.dialog = false
-                            this.loading = false
-                            this.$refs.form.resetValidation();
-                        }).catch(err => {
-                            this.loading = false;
-                            console.log(err)
-                        })
-                        
-                    });
-                });
+                // // if there's new image
+                // const fileData = this.$store.getters.getFileData;
+                // if(fileData){
+                //     this.isDialogAddEditOpen = true
+                //     this.isCreate = true
+                //     this.loading = true
+                //     const fileName =  Math.random().toString(36).substring(2)
+                //     let fileExtension = null;
+                //     let fullImageUrl = null;
+
+                //     switch(fileData.type){
+                //         case 'image/jpeg': fileExtension = '.jpg';
+                //         case 'image/png': fileExtension = '.png';
+                //         case 'image/bmp': fileExtension = '.bmp';
+                //     }
+
+                //     if(fileExtension){
+                //         const storageRef = fb.storage.ref(fileName+fileExtension).put(this.$store.getters.getFileData);
+
+                //         storageRef.on(`state_changed`, snapshot => {
+                //             // this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                //         },error => {
+                //             console.log(error.message)
+                //         },() => {
+                //             storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                //                 console.log('data',url);
+                //                 this.member.avatar = url
+                //                 this.collection.doc(id).update({
+                //                     avatar: this.member.avatar
+                //                 }).then(function(doc) {
+                //                     parent.isDialogAddEditOpen = false
+                //                     parent.isCreate = false
+                //                     parent.loading = false
+                //                     console.log("Updated document with ID: ", id);
+                //                 }).catch(function(error) {
+                //                     console.error("Error updating document: ", error);
+                //                 });
+                //             });
+                //         });
+                //     }
+                // }
+                
+                
+                
             }
-        }
+            
+        },
     }
 }
 </script>

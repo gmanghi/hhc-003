@@ -18,11 +18,11 @@
                             <div class="grey--text">{{ person.mobile_number }}</div>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn text color="grey">
+                            <v-btn text color="grey" @click="viewMember(person.id)">
                                 <v-icon small left>mdi-eye</v-icon>
                                 <span>View</span>
                             </v-btn>
-                            <v-btn text color="grey">
+                            <v-btn text color="grey" @click="editMember(person.id)">
                                 <v-icon small left>mdi-pencil</v-icon>
                                 <span>Edit</span>
                             </v-btn>
@@ -34,8 +34,7 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-
-            <GenericAddEditForm></GenericAddEditForm>
+            <GenericAddEditForm v-bind:dialogAddEdit.sync="dialogAddEdit" v-bind:member="member"></GenericAddEditForm>
         </v-container>
     </div>    
 </template>
@@ -50,6 +49,7 @@ export default {
     components: { GenericAddEditForm },
     data() {
         return {
+            data: false,
             members: [],
             member: {
                 first_name: '',
@@ -60,10 +60,22 @@ export default {
                 avatar: '',
             },
             collection: fb.caregiversCollection,
+            dialogAddEdit: false,
+            dialogView: false,
         }
     },
+    // props: {
+    //     member: {
+    //         first_name: '',
+    //         middle_name: '',
+    //         last_name: '',
+    //         email: '',
+    //         mobile_number: '',
+    //         birthdate: '',
+    //         avatar: '',
+    //     }
+    // },
     created() {
-        
         this.collection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
             let membersArray = []
 
@@ -81,9 +93,12 @@ export default {
             this.collection.doc(id).get().then(function(doc) {
                 if (doc.exists) {
                     // parent.$store.commit('team/setMember', doc.data())
+                    // parent.member = doc.data()
+                    // parent.dialog = true;
                     parent.member = doc.data()
-                    parent.dialog = true;
-                    console.log("Document data:", doc.data());
+                    parent.member.id = doc.id
+                    parent.dialogAddEdit = !parent.dialogAddEdit
+                    console.log("Documents data:", doc.data());
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -93,11 +108,14 @@ export default {
             });
         },
         viewMember(id){
+            parent = this;
             this.collection.doc(id).get().then(function(doc) {
                 if (doc.exists) {
-                    console.log("Document data:", doc.data());
+                    parent.member = doc.data()
+                    parent.member.id = doc.id
+                    parent.dialogAddEdit = !parent.dialogAddEdit
+                    console.log("Documents data:", doc.data());
                 } else {
-                    // doc.data() will be undefined in this case
                     console.log("No such document!");
                 }
             }).catch(function(error) {
