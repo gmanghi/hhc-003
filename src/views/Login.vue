@@ -25,6 +25,7 @@
                 <v-card-text>
                   <v-form>
                     <v-text-field
+                      id="username"
                       label="Email"
                       prepend-icon="mdi-account"
                       type="text"
@@ -46,7 +47,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" @click="login">Login</v-btn>
+                  <v-btn id="login" color="primary" @click="login">Login</v-btn>
                 </v-card-actions>
               </form>
               

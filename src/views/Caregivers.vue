@@ -64,17 +64,6 @@ export default {
             dialogView: false,
         }
     },
-    // props: {
-    //     member: {
-    //         first_name: '',
-    //         middle_name: '',
-    //         last_name: '',
-    //         email: '',
-    //         mobile_number: '',
-    //         birthdate: '',
-    //         avatar: '',
-    //     }
-    // },
     created() {
         this.collection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
             let membersArray = []
@@ -92,9 +81,6 @@ export default {
             parent = this;
             this.collection.doc(id).get().then(function(doc) {
                 if (doc.exists) {
-                    // parent.$store.commit('team/setMember', doc.data())
-                    // parent.member = doc.data()
-                    // parent.dialog = true;
                     parent.member = doc.data()
                     parent.member.id = doc.id
                     parent.dialogAddEdit = !parent.dialogAddEdit

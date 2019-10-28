@@ -42,7 +42,7 @@
                                     <v-col cols="12" sm="6" md="4">
                                         <v-text-field
                                             label="Last Name*"
-                                            persistent-hint
+                                            :rules="requiredStringRules"
                                             required
                                             v-model="member.last_name">
                                         </v-text-field>
@@ -50,6 +50,7 @@
                                     <v-col cols="12" sm="6">
                                         <v-text-field 
                                             label="Mobile Number*" 
+                                            :rules="requiredStringRules"
                                             v-model="member.mobile_number" 
                                             required>
                                         </v-text-field>
@@ -57,6 +58,7 @@
                                     <v-col cols="12" sm="6">
                                         <v-text-field 
                                             label="Email*" 
+                                            :rules="requiredEmailRules"
                                             v-model="member.email" 
                                             required>
                                         </v-text-field>
@@ -113,8 +115,12 @@
                                         ></v-date-picker>
                                         </v-menu>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="6" class="text-center">
                                         <!-- <input type="file" @change="onFileChange" /> -->
+                                        
+                                        <v-avatar size="100" class="grey lighten" >
+                                            <img :src="member.avatar" :alt="member.avatar" />
+                                        </v-avatar>
                                         <FileUpload />
                                     </v-col>
                                 </v-row>
@@ -144,6 +150,7 @@ export default {
         return {
             valid: true,
             requiredStringRules: [v => !!v || 'Name is required', v => v.length <= 100 || 'Name must be less than 10 characters'],
+            requiredEmailRules: [v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
             // dialog: '',
             // date: new Date().toISOString().substr(0, 10),
             date: '1950-01-01',
