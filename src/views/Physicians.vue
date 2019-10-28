@@ -1,6 +1,6 @@
 <template>
-    <div id="nurses">
-        <h1 class="subheading grey--text">Nurses</h1>
+    <div id="physicians">
+        <h1 class="subheading grey--text">Physicians</h1>
         
         <v-container>
             <v-layout row wrap>
@@ -59,7 +59,7 @@ export default {
                 role: '',
                 avatar: '',
             },
-            collection: fb.nursesCollection,
+            collection: fb.physiciansCollection,
         }
     },
     created() {

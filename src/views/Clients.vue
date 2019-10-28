@@ -2,304 +2,149 @@
     <div id="clients">
         <h1 class="subheading grey--text">Clients</h1>
 
-        <v-container>
-            <v-layout child-flex>
-                <v-simple-table fixed-header>
-                    <template v-slot:default>
-                    <thead>
-                        <tr>
-                        <th class="text-left">Account Name</th>
-                        <th class="text-left">Position/Relationship</th>
-                        <th class="text-left">Primary Care</th>
-                        <th class="text-left">Contact Number</th>
-                        <th class="text-left">Email</th>
-                        <th class="text-left">Physician</th>
-                        <th class="text-left">Address</th>
-                        <th class="text-left">Patient Name</th>
-                        <th class="text-left">Age</th>
-                        <th class="text-left">Birthday</th>
-                        <th class="text-left">Religion</th>
-                        <th class="text-left">Nationality</th>
-                        <th class="text-left">Landline</th>
-                        <th class="text-left">Mobile Phone</th>
-                        <th class="text-left">Email</th>
-                        <th class="text-left">Fax</th>
-                        <th class="text-left">Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in desserts" :key="item.name">
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.name }}</td>
-                        </tr>
-                    </tbody>
-                    </template>
-                </v-simple-table>
-            </v-layout>
+        <v-container class="my-5">
+            <v-card flat v-for="project in projects" :key="project.id">
+                <v-layout row wrap :class="`pa-3 project ${project.primary_care}`">
+                    <v-flex xs12 sm2 md1 lg1>
+                        <div class="caption grey--text">Title</div>
+                        <div>{{ project.title }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md5 lg3>
+                        <div class="caption grey--text">Client/Account Name</div>
+                        <div>{{ project.account_name }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm3 md3 lg2>
+                        <div class="caption grey--text">Position/Relationship</div>
+                        <div>{{ project.relationship }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm3 md3 lg1>
+                        <div class="caption grey--text">Primary Care</div>
+                        <div>{{ project.primary_care }}</div>
+                    </v-flex>
+                
+                    <v-flex xs12 sm2 md4 lg1>
+                        <div class="caption grey--text">Landline</div>
+                        <div>{{ project.landline }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md4 lg2>
+                        <div class="caption grey--text">Email Adrress</div>
+                        <div>{{ project.email_address }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4 lg2>
+                        <div class="caption grey--text">Attending Physician</div>
+                        <div>{{ project.attending_physician }}</div>
+                    </v-flex>
 
-            <!-- Popup Start -->
-            <v-row justify="center">
-                <v-dialog v-model="dialog" persistent max-width="1200px">
-                    <template v-slot:activator="{ on }">
-                        <v-btn
-                            fixed
-                            dark
-                            fab
-                            bottom
-                            right
-                            color="pink"
-                            v-on="on">
-                            <v-icon small>mdi-plus</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-form>
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Client</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" md="2" sm="3" xs="2">
-                                            <v-autocomplete
-                                            :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
-                                            label="Title"
-                                            ></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="3" >
-                                            <v-text-field label="Client / Account Name*" v-model="member.account_name" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12"  md="3" sm="3">
-                                            <v-text-field label="Position / Relationship" v-model="member.position" hint="example of helper text only on focus"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="3" sm="3" xs="2">
-                                            <v-text-field label="Primary Care YES, If NO*" v-model="member.primary_care" required></v-text-field>
-                                        </v-col>
+                    <v-flex xs12 sm12 md12>
+                        <div class="caption grey--text">Complete Address</div>
+                        <div>{{ project.complete_address }}</div>
+                    </v-flex>
 
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field
-                                            label="Landline / Mobile Phone / Fax*"
-                                            hint="example of persistent helper text"
-                                            persistent-hint
-                                            required
-                                            v-model="member.landline_mobile_fax"
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Email Address*" v-model="member.email" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Attending Physician*" v-model="member.attending_physician" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-text-field label="Complete Address*" v-model="member.address" required></v-text-field>
-                                        </v-col>
+                    <v-flex xs12 sm2 md1 lg1>
+                        <div class="caption grey--text">Title</div>
+                        <div>{{ project.patient_title }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm5 md5 lg3>
+                        <div class="caption grey--text">Patient Name</div>
+                        <div>{{ project.patient_name }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm2 md1 lg2>
+                        <div class="caption grey--text">Age</div>
+                        <div>{{ project.age }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm3 md5 lg2>
+                        <div class="caption grey--text">Birthday</div>
+                        <div>{{ project.birthday }}</div>
+                    </v-flex>
+                
+                    <v-flex xs12 sm4 md4 lg2 class="d-lg-none">
+                            <div class="caption grey--text">Email Address</div>
+                            <div>{{ project.patient_email }}</div>
+                    </v-flex>
 
-                                        <v-col cols="12" md="2"  sm="3" xs="2">
-                                            <v-autocomplete
-                                            :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
-                                            label="Title"
-                                            ></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" md="5" sm="3">
-                                            <v-text-field label="Patient Name*" v-model="member.patient_name" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="2" sm="3">
-                                            <v-text-field label="Age" v-model="member.age" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                         <v-col cols="12" md="3" sm="3">
-                                            <v-menu
-                                            v-model="date_popup"
-                                            :close-on-content-click="false"
-                                            max-width="290"
-                                            >
-                                            <template v-slot:activator="{ on }">
-                                                <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="Birthday"
-                                                readonly
-                                                v-on="on"
-                                                ></v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="member.birthday"
-                                                @change="date_popup = false"
-                                            ></v-date-picker>
-                                            </v-menu>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Religion" v-model="member.religion" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                         <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Nationality*" v-model="member.nationality" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Landline" v-model="member.landline" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
+                    <v-flex xs12 sm4 md4 lg2>
+                        <div class="caption grey--text">Religion</div>
+                        <div>{{ project.religion }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md4 lg2>
+                        <div class="caption grey--text">Nationality</div>
+                        <div>{{ project.nationality }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md4 lg4 class="d-none d-lg-block">
+                            <div class="caption grey--text">Email Address</div>
+                            <div>{{ project.patient_email }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md2 lg2>
+                        <div class="caption grey--text">Landline</div>
+                        <div>{{ project.patient_landline }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md2 lg4>
+                        <div class="caption grey--text">Mobile Phone</div>
+                        <div>{{ project.mobile }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm4 md2 lg2>
+                        <div class="caption grey--text">Fax</div>
+                        <div>{{ project.fax }}</div>
+                    </v-flex>
 
-                                         <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Mobile Phone*" v-model="member.mobile" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Email Address*" v-model="member.email_address" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                         <v-col cols="12" md="4" sm="4">
-                                            <v-text-field label="Fax" v-model="member.fax" hint="example of helper text only on focus" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-text-field label="Complete Address*" v-model="member.complete_address" required></v-text-field>
-                                        </v-col>
+                    <v-flex xs12 sm12 md12>
+                        <div class="caption grey--text">Complete Address</div>
+                        <div>{{ project.patient_address }}</div>
+                    </v-flex>
+                    <v-flex xs12 sm12 md12>
+                        <div class="text-right">
+                            <v-btn class="ma-2" outlined color="primary" to="/client/1/requests"><v-icon>mdi-format-list-bulleted-square</v-icon>Create a request</v-btn>
+                            <v-btn class="ma-2" outlined color="success" to="/clients"><v-icon>mdi-eye</v-icon>View details</v-btn>
+                        </div>
+                    </v-flex>
+                </v-layout>
+                <v-divider></v-divider>
+            </v-card>
 
-                                        <!--
-                                        <v-col cols="12">
-                                            <v-text-field label="Password*" type="password" required></v-text-field>
-                                        </v-col>
-                                        
-                                        <v-col cols="12" sm="6">
-                                            <v-autocomplete
-                                            :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                            label="Interests"
-                                            multiple
-                                            ></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-menu
-                                            v-model="date_popup"
-                                            :close-on-content-click="false"
-                                            max-width="290"
-                                            >
-                                            <template v-slot:activator="{ on }">
-                                                <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="Formatted with Moment.js"
-                                                readonly
-                                                v-on="on"
-                                                ></v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="date"
-                                                @change="date_popup = false"
-                                            ></v-date-picker>
-                                            </v-menu>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <input type="file" @change="onFileChange" />
-                                            <FileUpload />
-                                        </v-col>
-                                        -->
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Home Health Visit by HCP', 'Registered Nurse /  Caregiver Deployment', 'Laboratory / Radiology', 'Purchase / Rental of Medicine Equipment']"
-                                            label="Case Management"
-                                            multiple
-                                            ></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Ambulatory Wellness Clinic', 'Caregiver Training Module', 'Senior Residential Facility']"
-                                            label=""
-                                            multiple
-                                            ></v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Walk-in', 'Home Service', 'Corporate', 'Delivery']"
-                                            label="Home Vaccination Program"
-                                            multiple
-                                            ></v-autocomplete>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                                <small>*indicates required field</small>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-form>
-                </v-dialog>
-            </v-row>
-            <!-- Popup End -->
         </v-container>
-    </div>    
+    </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        dialog: false,  
-        date_popup: false,
-        member: {
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            email: '',
-            role: '',
-            avatar: '',
-        },
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-          },
-        ],
-      }
-    },
-  }
+export default {
+    data() {
+        return {
+            projects: [
+                { id:1, title: 'Ms.', account_name: 'Lucille Teves', relationship: 'Mother', primary_care: 'Yes', landline: '123-09-98', email_address: 'lucilleteves@email.com', attending_physician: 'Vicky Belo',
+                    complete_address: "Unit 26 #67 Col. Bravo Street Central Signal Village Taguig City, Philippines",
+                    patient_title: "Mrs.", patient_name: "Luzviminda Quero Quero", age: "40", birthday: "January 12, 1987", religion: "Roman Catholic", nationality: "Filipino",
+                    patient_landline: "675-98-67", mobile: "09876654321", patient_email: "luzyvi@mail.com.ph", fax: "467",
+                    patient_address: "Unit 456 #67253 Maginhawa Street Bangkal Makati City, Philippines"
+                },
+                { id:2, title: 'Ms.', account_name: 'Lucille Teves', relationship: 'Mother', primary_care: 'No', landline: '123-09-98', email_address: 'lucilleteves@email.com', attending_physician: 'Vicky Belo',
+                    complete_address: "Unit 456 #67253 Maginhawa Street Bangkal Makati City, Philippines",
+                    patient_title: "Mrs.", patient_name: "Luzviminda Quero Quero", age: "40", birthday: "January 12, 1987", religion: "Roman Catholic", nationality: "Filipino",
+                    patient_landline: "675-98-67", mobile: "09876654321", patient_email: "luzyvi@mail.com.ph", fax: "467",
+                    patient_address: "Unit 26 #67 Col. Bravo Street Central Signal Village Taguig City, Philippines"
+                },
+                { id:3, title: 'Ms.', account_name: 'Lucille Teves', relationship: 'Mother', primary_care: 'Maybe', landline: '123-09-98', email_address: 'lucilleteves@email.com', attending_physician: 'Vicky Belo',
+                    complete_address: "Unit 456 #67253 Maginhawa Street Bangkal Makati City, Philippines",
+                    patient_title: "Mrs.", patient_name: "Luzviminda Quero Quero", age: "40", birthday: "January 12, 1987", religion: "Roman Catholic", nationality: "Filipino",
+                    patient_landline: "675-98-67", mobile: "09876654321", patient_email: "luzyvi@mail.com.ph", fax: "467",
+                    patient_address: "Unit 26 #67 Col. Bravo Street Central Signal Village Taguig City, Philippines"
+                }
+
+            ]
+        }
+    }
+}
 </script>
+
+<style>
+
+.project.Yes{
+    border-left: 4px solid #3cd1c2;
+}
+.project.No{
+    border-left: 4px solid orange;
+}
+.project.Maybe{
+    border-left: 4px solid blue;
+}
+
+</style>

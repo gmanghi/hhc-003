@@ -26,8 +26,11 @@ const currentUser = auth.currentUser
 
 // firebase collections
 const usersCollection = db.collection('users')
-const nursesCollection = db.collection('nurses')
 const caregiversCollection = db.collection('caregivers')
+const applicantsCollection = db.collection('applicants')
+const physiciansCollection = db.collection('physicians')
+const physicaltherapistsCollection = db.collection('physicaltherapists')
+const nursesCollection = db.collection('nurses')
 const teamsCollection = db.collection('teams')
 
 export {
@@ -36,7 +39,10 @@ export {
     storage,
     currentUser,
     usersCollection,
-    nursesCollection,
     caregiversCollection,
+    applicantsCollection,
+    physiciansCollection,
+    physicaltherapistsCollection,
+    nursesCollection,
     teamsCollection
 }

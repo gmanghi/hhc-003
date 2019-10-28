@@ -45,14 +45,17 @@
                             bottom
                             right
                             color="pink"
-                            v-on="on">
+                            @click="popAddEditForm">
                             <v-icon small>mdi-plus</v-icon>
                         </v-btn>
                     </template>
-                    <v-form>
+                    <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation>
                         <v-card>
                             <v-card-title>
-                                <span class="headline">User Profile</span>
+                                <span class="headline">Profile</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-container>
@@ -60,7 +63,7 @@
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field 
                                                 label="Legal first name*"
-                                                :rules="[v => !!v || 'Name is required', v => v.length <= 10 || 'Name must be less than 10 characters']"
+                                                :rules="requiredStringRules"
                                                 required
                                                 v-model="member.first_name">
                                             </v-text-field>
@@ -134,7 +137,7 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                                <v-btn color="blue darken-1" text @click="closeAddEditForm">Close</v-btn>
                                 <v-btn color="blue darken-1" text @click="createMember" :loading="loading">Save</v-btn>
                             </v-card-actions>
                         </v-card>
@@ -162,6 +165,8 @@ export default {
     components: { FileUpload },
     data() {
         return {
+            valid: true,
+            requiredStringRules: [v => !!v || 'Name is required', v => v.length <= 100 || 'Name must be less than 10 characters'],
             dialog: '',
             date: new Date().toISOString().substr(0, 10),
             date_popup: false,
@@ -204,6 +209,22 @@ export default {
     //     }
     // },
     methods: {
+        closeAddEditForm(){
+            this.$refs.form.resetValidation();
+            this.dialog = false;
+        },
+        popAddEditForm(){
+            this.member.first_name = '';
+            this.member.middle_name = '';
+            this.member.last_name = '';
+            this.member.email = '';
+            this.member.role = '';
+            this.member.avatar = '';
+            // this.$refs.form.resetValidation();
+            this.dialog = true;
+            // this.loading = false;
+            // this.$refs.form.reset()
+        },
         editMember(id){
             parent = this;
             fb.teamsCollection.doc(id).get().then(function(doc) {

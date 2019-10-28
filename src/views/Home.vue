@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <h1>Homepage</h1>
-    <v-btn text color="pink">click me <v-icon>mdi-exit-to-app</v-icon></v-btn>
+    <h1>Dashboard</h1>
   </div>
 </template>
 

@@ -42,9 +42,9 @@ const router = new Router({
 			}
 		},
 		{
-			path: '/nurses',
-			name: 'nurses',
-			component: () => import('../views/Nurses.vue'),
+			path: '/client/:id/requests',
+			name: 'clients requests',
+			component: () => import('../views/ClientsRequests.vue'),
 			meta: {
 				requiresAuth: true
 			}
@@ -57,6 +57,39 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
+		{
+			path: '/applicants',
+			name: 'applicants',
+			component: () => import('../views/Applicants.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/physicians',
+			name: 'physicians',
+			component: () => import('../views/Physicians.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/physical-therapists',
+			name: 'physical-therapists',
+			component: () => import('../views/PhysicalTherapists.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/nurses',
+			name: 'nurses',
+			component: () => import('../views/Nurses.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		
 		{
 			path: '/projects',
 			name: 'projects',
