@@ -54,11 +54,12 @@ export default {
             items: [
                 { title: 'Home', icon: 'mdi-home', route:'/' },
                 { title: 'Clients', icon: 'mdi-mother-nurse', route:'/clients' },
-                { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/caregivers' },
-                { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/applicants' },
-                { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/physicians' },
-                { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/physical-therapists' },
-                { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/nurses' },
+                { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/professionals/caregiver' },
+                { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/professionals/applicants' },
+                { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/professionals/physician' },
+                { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist' },
+                { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse' },
+                { title: 'Nutritionist', icon: 'mdi-mother-nurse', route:'/professionals/nutritionist' },
                 { title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
                 { title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
             ],
@@ -73,7 +74,7 @@ export default {
     methods: {
         logout() {
             fb.auth.signOut().then(() => {
-                this.$store.dispatch('clearData')
+                this.$store.dispatch('Auth/clearData')
                 this.$router.push('/login')
             }).catch(err => {
                 console.log(err)

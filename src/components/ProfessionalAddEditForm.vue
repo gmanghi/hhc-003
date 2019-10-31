@@ -67,6 +67,14 @@
                                         >
                                     </v-select>
                                 </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-select
+                                        :items="professional_status"
+                                        label="Status"
+                                        v-model="professional.status"
+                                        >
+                                    </v-select>
+                                </v-col>
                                 <!-- <v-col cols="12" sm="6">
                                     <v-text-field label="Role*" v-model="professional.role" required></v-text-field>
                                 </v-col> -->
@@ -114,7 +122,7 @@
                                         </v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="birthdate"
+                                        v-model="professional.birthdate"
                                         @change="date_popup = false"
                                     ></v-date-picker>
                                     </v-menu>
@@ -149,21 +157,18 @@
 
 <script>
 import moment from 'moment'
-import UploadButton from 'vuetify-upload-button'
 
 export default {
-    components: {
-        'upload-btn': UploadButton
-    },
     props: [ 'professional', 'popup', 'method' ],
     data(){
         return { 
             valid: true,
-            default_birthdate: '1950-01-01',
-            birthdate: '1950-01-01',
+            // default_birthdate: '1950-01-01',
+            // birthdate: '1950-01-01',
             date_popup: false,
             avatar: null,
-            professions_list: ['Nurse', 'Physician','Caregiver'],
+            professions_list: ['Nurse', 'Physician', 'Caregiver', 'Physical Therapist', 'Nutritionist'],
+            professional_status: ['New', 'Pending','Verified'],
             requiredStringRules: [v => !!v || 'Name is required', v => v.length <= 100 || 'Name must be less than 10 characters'],
             requiredEmailRules: [v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
             avatarRules: [v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB!'],
@@ -172,7 +177,8 @@ export default {
     },
     computed: {
         computedDateFormattedMomentjs(){
-            return this.professional.birthdate ? moment(this.professional.birthdate).format('YYYY-MM-DD') : this.birthdate
+            // return this.professional.birthdate ? moment(this.professional.birthdate).format('YYYY-MM-DD') : this.birthdate
+            return this.professional.birthdate ? moment(this.professional.birthdate).format('YYYY-MM-DD') : ''
         },
         dialog(){
             this.avatar = null
@@ -181,12 +187,15 @@ export default {
         },
         action(){
             return this.method
-        }
+        },
+        // status(){
+        //     return this.professional.status ? this.professional.status : this.default_status
+        // }
         
     },
     methods: {
         popup_create_professional(){ 
-            this.birthdate = this.default_birthdate
+            // this.birthdate = this.default_birthdate
             this.$parent.popupCreateProfessional()
         },
         popup_close(){  
@@ -202,7 +211,9 @@ export default {
                 birthdate: this.computedDateFormattedMomentjs,
                 avatar: this.avatar,
                 profession: this.professional.profession,
+                status: this.professional.status,
             }
+            // console.log('aaaa',data)
             this.$parent.saveProfessional(data)
         },
         process_update(){
@@ -216,6 +227,7 @@ export default {
                 birthdate: this.computedDateFormattedMomentjs,
                 avatar: this.avatar,
                 profession: this.professional.profession,
+                status: this.professional.status,
             }
             this.$parent.updateProfessional(data)
         }

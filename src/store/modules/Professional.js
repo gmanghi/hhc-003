@@ -13,8 +13,9 @@ const Professional = {
             last_name: null,
             email: null,
             mobile_number: null,
-            birthdate: null,
+            birthdate: '1950-01-01',
             avatar: null,
+            status: 'New'
         },
         
     },
@@ -52,6 +53,9 @@ const Professional = {
         setAvatar(state, val){
             state.professional.avatar = val
         },
+        setStatus(state, val){
+            state.professional.status = val
+        },
     },
     actions: { 
         clearProfessional({commit}){
@@ -63,8 +67,9 @@ const Professional = {
             commit('setLastName', null)
             commit('setEmail', null)
             commit('setMobileNumber', null)
-            commit('setBirthdate', null)
+            commit('setBirthdate', '1950-01-03')
             commit('setAvatar', null)
+            commit('setStatus', 'New')
         },
         uploadAvatar({commit, state}){
             return new Promise((resolve, reject) => {
@@ -92,7 +97,7 @@ const Professional = {
             })
             
         },
-        createProfessional({commit, state}){
+        createProfessional({commit, state}){ console.log(state.professional)
             return new Promise((resolve, reject) => {
                 if(state.professional.avatar !== null){
                     const parent = this
@@ -107,7 +112,8 @@ const Professional = {
                             email: state.professional.email,
                             mobile_number: state.professional.mobile_number,
                             avatar: state.professional.avatar,
-                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate))
+                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
+                            status: state.professional.status,
                         }).then(doc => {
                             parent.dispatch("Professional/clearProfessional")
                             resolve(doc)
@@ -130,7 +136,8 @@ const Professional = {
                         email: state.professional.email,
                         mobile_number: state.professional.mobile_number,
                         avatar: state.professional.avatar,
-                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate))
+                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
+                        status: state.professional.status,
                     }).then(doc => {
                         this.dispatch("Professional/clearProfessional")
                         resolve(doc)
@@ -156,7 +163,8 @@ const Professional = {
                             email: state.professional.email,
                             mobile_number: state.professional.mobile_number,
                             avatar: state.professional.avatar,
-                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate))
+                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
+                            status: state.professional.status,
                         }).then(doc => {
                             parent.dispatch("Professional/clearProfessional")
                             resolve(doc)
@@ -178,7 +186,8 @@ const Professional = {
                         last_name: state.professional.last_name,
                         email: state.professional.email,
                         mobile_number: state.professional.mobile_number,
-                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate))
+                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
+                        status: state.professional.status,
                     }).then(doc => {
                         this.dispatch("Professional/clearProfessional")
                         resolve(doc)
@@ -199,8 +208,47 @@ const Professional = {
                 console.error("Error removing document: ", error);
             });
         },
-        getProfessionals({commit, state}) {
+        getProfessionalsByProfession({commit, state}) {
             fb.professionalCollection.where('profession','==',state.professional.profession).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                let professionalArray = []
+                querySnapshot.forEach(doc => {
+                    let professional = doc.data()
+                    professional.id = doc.id
+                    professionalArray.push(professional)
+                })
+
+                commit('setProfessionals', professionalArray)
+            })
+        },
+        getProfessionalsByStatus({commit, state}) {
+            fb.professionalCollection.where('status','==',state.professional.status).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                let professionalArray = []
+                querySnapshot.forEach(doc => {
+                    let professional = doc.data()
+                    professional.id = doc.id
+                    professionalArray.push(professional)
+                })
+
+                commit('setProfessionals', professionalArray)
+            })
+        },
+        getProfessionalsByProfessionAndStatus({commit, state}) {
+            fb.professionalCollection
+            .where('profession','==',state.professional.profession)
+            .where('status','==',state.professional.status)
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                let professionalArray = []
+                querySnapshot.forEach(doc => {
+                    let professional = doc.data()
+                    professional.id = doc.id
+                    professionalArray.push(professional)
+                })
+
+                commit('setProfessionals', professionalArray)
+            })
+        },
+        getProfessionals({commit, state}) {
+            fb.professionalCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
                 let professionalArray = []
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
@@ -223,6 +271,7 @@ const Professional = {
                     commit('setMobileNumber', data.mobile_number)
                     commit('setBirthdate', data.birthdate ? moment(data.birthdate.toDate()).format('YYYY-MM-DD') : null) 
                     commit('setAvatar', data.avatar)
+                    commit('setStatus', data.status)
                     // console.log("Documents data:", doc.data());
                 } else {
                     console.log("No such document!");

@@ -34,6 +34,23 @@ const router = new Router({
 			component: Login
 		},
 		{
+			path: '/professionals/applicants',
+			name: 'applicants',
+			component: () => import('../views/Applicants.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/professionals/:profession',
+			name: 'professionals',
+			component: () => import('../views/Professionals.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		
+		{
 			path: '/clients',
 			name: 'clients',
 			component: () => import('../views/Clients.vue'),
@@ -57,14 +74,14 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
-		{
-			path: '/applicants',
-			name: 'applicants',
-			component: () => import('../views/Applicants.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
+		// {
+		// 	path: '/applicants',
+		// 	name: 'applicants',
+		// 	component: () => import('../views/Applicants.vue'),
+		// 	meta: {
+		// 		requiresAuth: true
+		// 	}
+		// },
 		{
 			path: '/physicians',
 			name: 'physicians',

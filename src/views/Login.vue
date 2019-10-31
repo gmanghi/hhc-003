@@ -74,26 +74,26 @@
     }),
     methods: {
       login() {
-        fb.auth.setPersistence('session').then(function() {
-          // Existing and future Auth states are now persisted in the current
-          // session only. Closing the window would clear any existing state even
-          // if a user forgets to sign out.
-          // ...
-          // New sign-in will be persisted with session persistence.
-          return firebase.auth().signInWithEmailAndPassword('admin001@hhc.com', 'password');
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
-        // fb.auth.signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).then(user => {
-        //     this.$store.commit('Auth/setCurrentUser', user.user)
-        //     this.$store.dispatch('Auth/fetchUserProfile')
-        //     this.$router.push('/')
-        // }).catch(err => {
-        //     alert(err.message);
-        //     console.log(err)
-        // })
+        // fb.auth.setPersistence('session').then(function() {
+        //   // Existing and future Auth states are now persisted in the current
+        //   // session only. Closing the window would clear any existing state even
+        //   // if a user forgets to sign out.
+        //   // ...
+        //   // New sign-in will be persisted with session persistence.
+        //   return firebase.auth().signInWithEmailAndPassword('admin001@hhc.com', 'password');
+        // }).catch(function(error) {
+        //   // Handle Errors here.
+        //   var errorCode = error.code;
+        //   var errorMessage = error.message;
+        // });
+        fb.auth.signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).then(user => {
+            this.$store.commit('Auth/setCurrentUser', user.user)
+            this.$store.dispatch('Auth/fetchUserProfile')
+            this.$router.push('/')
+        }).catch(err => {
+            alert(err.message);
+            console.log(err)
+        })
       }
     }
   }

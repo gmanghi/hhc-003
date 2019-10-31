@@ -1,6 +1,6 @@
 <template>
-    <div id="applicants">
-        <h1 class="subheading grey--text">Applicants</h1>
+    <div id="Professionals">
+        <h1 class="subheading grey--text">{{profession}}</h1>
         
         <v-container>
             <v-layout row wrap>
@@ -51,13 +51,31 @@ export default {
             professional: {},
             popup: false,
             method: 'create',
-            status: 'New'
+            status: 'Verified'
         }
     },
-    mounted() {
-        // this.$store.commit('Professional/setProfession', this.profession)
+    beforeRouteUpdate (to, from, next) {
+        if(to.params.profession == 'physical-therapist'){
+            this.profession = 'Physical Therapist'
+        }
+        else{
+            this.profession = to.params.profession.charAt(0).toUpperCase() + to.params.profession.slice(1)
+        }
         this.$store.commit('Professional/setStatus', this.status)
-        this.$store.dispatch("Professional/getProfessionalsByStatus");
+        this.$store.commit('Professional/setProfession', this.profession)
+        this.$store.dispatch("Professional/getProfessionalsByProfessionAndStatus")
+        next();
+    },
+    mounted() {
+        if(this.$route.params.profession == 'physical-therapist'){
+            this.profession = 'Physical Therapist'
+        }
+        else{
+            this.profession = this.$route.params.profession.charAt(0).toUpperCase() + this.$route.params.profession.slice(1)
+        }
+        this.$store.commit('Professional/setStatus', this.status)
+        this.$store.commit('Professional/setProfession', this.profession)
+        this.$store.dispatch("Professional/getProfessionalsByProfessionAndStatus")
     },
     computed: {
         ...mapGetters({
@@ -66,11 +84,13 @@ export default {
     },
     methods: {
         viewProfessional(document_id){
+            this.$store.dispatch("Professional/clearProfessional")
             this.$store.commit('Professional/setDocumentId', document_id)
             this.$store.dispatch("Professional/getProfessional")
             this.professional = this.$store.getters['Professional/professional']
         },
         editProfessional(document_id){
+            this.$store.dispatch("Professional/clearProfessional")
             this.$store.commit('Professional/setDocumentId', document_id)
             this.$store.dispatch("Professional/getProfessional")
             this.professional = this.$store.getters['Professional/professional']
@@ -91,7 +111,6 @@ export default {
             }).catch(function(error){
                 console.log(error)
             })
-            
         },
         updateProfessional(data){
             const parent = this
@@ -105,18 +124,19 @@ export default {
             })
         },
         popupClose(){
+            this.$store.dispatch("Professional/clearProfessional")
+            this.professional = this.$store.getters['Professional/professional']
+            console.log(this.professional)
             this.method = 'create'
             this.popup = false
         },
         popupCreateProfessional(){
             this.$store.dispatch("Professional/clearProfessional")
             this.professional = this.$store.getters['Professional/professional']
+            console.log(this.professional)
             this.method = 'create'
             this.popup = true
         },
-        // file_change(e){
-        //     console.log('file change', e)
-        // }
     }
 }
 </script>
