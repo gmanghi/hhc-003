@@ -32,17 +32,21 @@ const physiciansCollection = db.collection('physicians')
 const physicaltherapistsCollection = db.collection('physicaltherapists')
 const nursesCollection = db.collection('nurses')
 const teamsCollection = db.collection('teams')
+const professionalCollection = db.collection('professional')
+
 
 export {
     db,
     auth,
     storage,
     currentUser,
+    firebase,
     usersCollection,
     caregiversCollection,
     applicantsCollection,
     physiciansCollection,
     physicaltherapistsCollection,
     nursesCollection,
-    teamsCollection
+    teamsCollection,
+    professionalCollection
 }

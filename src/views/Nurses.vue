@@ -4,29 +4,29 @@
         
         <v-container>
             <v-layout row wrap>
-                <v-flex xs12 sm6 md4 lg3 v-for="person in members" :key="person.id">
+                <v-flex xs12 sm6 md4 lg3 v-for="professional in professionals" :key="professional.id">
                     <v-card flat class="text-center ma-3">
                         <v-responsive class="pt-4">
                             <v-avatar size="100" class="grey lighten-2">
-                                <img :src="person.avatar" :alt="person.avatar" />
+                                <img :src="professional.avatar" :alt="professional.avatar" />
                                 <!-- <img src="https://randomuser.me/api/portraits/men/78.jpg" /> -->
                             </v-avatar>
                         </v-responsive>
                         <v-card-text>
-                            <div class="subheading">{{ person.first_name }} {{ person.last_name }}</div>
-                            <div class="grey--text">{{ person.email }}</div>
-                            <div class="grey--text">{{ person.mobile_number }}</div>
+                            <div class="subheading">{{ professional.first_name }} {{ professional.last_name }}</div>
+                            <div class="grey--text">{{ professional.email }}</div>
+                            <div class="grey--text">{{ professional.mobile_number }}</div>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn text color="grey" @click="viewMember(person.id)">
+                            <v-btn text color="grey" @click="viewProfessional(professional.id)">
                                 <v-icon small left>mdi-eye</v-icon>
                                 <span>View</span>
                             </v-btn>
-                            <v-btn text color="grey" @click="editMember(person.id)">
+                            <v-btn text color="grey" @click="editProfessional(professional.id)">
                                 <v-icon small left>mdi-pencil</v-icon>
                                 <span>Edit</span>
                             </v-btn>
-                            <v-btn text color="grey" @click="deleteMember(person.id)">
+                            <v-btn text color="grey" @click="deleteProfessional(professional.id)">
                                 <v-icon small left>mdi-delete</v-icon>
                                 <span>Delete</span>
                             </v-btn>
@@ -34,87 +34,87 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-            <GenericAddEditForm v-bind:dialogAddEdit.sync="dialogAddEdit" v-bind:member="member"></GenericAddEditForm>
+            <ProfessionalAddEditForm v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method"></ProfessionalAddEditForm>
         </v-container>
     </div>    
 </template>
 
 <script>
-import moment from 'moment'
-import GenericAddEditForm from '../components/GenericAddEditForm'
-
-const fb = require('../firebaseConfig.js')
+import { mapGetters } from 'vuex'
+import ProfessionalAddEditForm from '../components/ProfessionalAddEditForm'
 
 export default {
-    components: { GenericAddEditForm },
+    components: { ProfessionalAddEditForm },
     data() {
         return {
-            data: false,
-            members: [],
-            member: {
-                first_name: '',
-                middle_name: '',
-                last_name: '',
-                email: '',
-                role: '',
-                avatar: '',
-            },
-            collection: fb.nursesCollection,
-            dialogAddEdit: false,
-            dialogView: false,
+            profession: 'Nurse',
+            professional: {},
+            popup: false,
+            method: 'create',
         }
     },
-    created() {
-        this.collection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
-            let membersArray = []
-
-            querySnapshot.forEach(doc => {
-                let member = doc.data()
-                member.id = doc.id
-                membersArray.push(member)
-            })
-            this.members = membersArray;
+    mounted() {
+        this.$store.commit('Professional/setProfession', this.profession)
+        this.$store.dispatch("Professional/getProfessionals");
+    },
+    computed: {
+        ...mapGetters({
+            professionals: 'Professional/professionals'
         })
     },
     methods: {
-        editMember(id){
-            parent = this;
-            this.collection.doc(id).get().then(function(doc) {
-                if (doc.exists) {
-                    parent.member = doc.data()
-                    parent.member.id = doc.id
-                    parent.dialogAddEdit = !parent.dialogAddEdit
-                    console.log("Documents data:", doc.data());
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
+        viewProfessional(document_id){
+            this.$store.commit('Professional/setDocumentId', document_id)
+            this.$store.dispatch("Professional/getProfessional")
+            this.professional = this.$store.getters['Professional/professional']
         },
-        viewMember(id){
-            parent = this;
-            this.collection.doc(id).get().then(function(doc) {
-                if (doc.exists) {
-                    parent.member = doc.data()
-                    parent.member.id = doc.id
-                    parent.dialogAddEdit = !parent.dialogAddEdit
-                    console.log("Documents data:", doc.data());
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
+        editProfessional(document_id){
+            this.$store.commit('Professional/setDocumentId', document_id)
+            this.$store.dispatch("Professional/getProfessional")
+            this.professional = this.$store.getters['Professional/professional']
+            this.popup = true
+            this.method = 'update'
+            console.log(this.professional)
         },
-        deleteMember(id){
-            this.collection.doc(id).delete().then(function() {
-                console.log("Document successfully deleted!");
-            }).catch(function(error) {
-                console.error("Error removing document: ", error);
-            });
+        deleteProfessional(document_id){
+            this.$store.commit('Professional/setDocumentId', document_id)
+            this.$store.dispatch("Professional/deleteProfessional")
         },
+        saveProfessional(data){
+            const parent = this
+            this.$store.commit('Professional/setProfessional', data)
+            this.$store.dispatch("Professional/createProfessional").then(function(doc){
+                console.log('saveProfessional',doc)
+                parent.popup = false
+            }).catch(function(error){
+                console.log(error)
+            })
+            
+        },
+        updateProfessional(data){
+            const parent = this
+            this.$store.commit('Professional/setProfessional', data)
+            this.$store.dispatch("Professional/updateProfessional").then(function(doc){
+                console.log('updateProfessional',doc)
+                parent.popup = false
+                parent.method = 'create'
+            }).catch(function(error){
+                console.log(error)
+            })
+        },
+        popupClose(){
+            this.method = 'create'
+            this.popup = false
+        },
+        popupCreateProfessional(){
+            this.$store.dispatch("Professional/clearProfessional")
+            this.professional = this.$store.getters['Professional/professional']
+            this.method = 'create'
+            this.popup = true
+        },
+        file_change(e){
+            console.log('file change', e)
+        }
     }
 }
 </script>

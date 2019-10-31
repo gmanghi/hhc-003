@@ -17,7 +17,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                    <v-list-item-title>Glenn Manghi</v-list-item-title>
+                    <v-list-item-title>{{ currentUserEmail }}</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
 
@@ -44,14 +44,13 @@
     </nav>
 </template>
 <script>
-
+import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 
 export default {
-    
     data() {
         return {
-            drawer: null,
+            drawer: false,
             items: [
                 { title: 'Home', icon: 'mdi-home', route:'/' },
                 { title: 'Clients', icon: 'mdi-mother-nurse', route:'/clients' },
@@ -65,6 +64,12 @@ export default {
             ],
         }
     },
+    props: [
+        'currentUserEmail'
+    ],
+    // computed: {
+    //     ...mapState([ 'Auth/currentUser' ])
+    // },
     methods: {
         logout() {
             fb.auth.signOut().then(() => {

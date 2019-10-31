@@ -1,3 +1,4 @@
+const fb = require('../../firebaseConfig.js')
 const Members = {
     namespaced: true,
     state: { 
@@ -23,7 +24,7 @@ const Members = {
                     membersArray.push(member)
                 })
         
-                store.commit('setMembers', membersArray)
+                commit('setMembers', membersArray)
             })
         }
     }
