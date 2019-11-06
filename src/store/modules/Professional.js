@@ -140,6 +140,7 @@ const Professional = {
                         status: state.professional.status,
                     }).then(doc => {
                         this.dispatch("Professional/clearProfessional")
+                        console.log(state.professional.status)
                         resolve(doc)
                     }).catch(error => {
                         this.dispatch("Professional/clearProfessional")
@@ -190,6 +191,7 @@ const Professional = {
                         status: state.professional.status,
                     }).then(doc => {
                         this.dispatch("Professional/clearProfessional")
+                        console.log(state.professional.status)
                         resolve(doc)
                     }).catch(error => {
                         this.dispatch("Professional/clearProfessional")
@@ -208,8 +210,24 @@ const Professional = {
                 console.error("Error removing document: ", error);
             });
         },
-        getProfessionalsByProfession({commit, state}) {
-            fb.professionalCollection.where('profession','==',state.professional.profession).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+        getProfessionalsByProfession({commit, state}) {  console.log('by profession')
+            fb.professionalCollection
+            .where('profession','==',state.professional.profession)
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                let professionalArray = []
+                querySnapshot.forEach(doc => {
+                    let professional = doc.data()
+                    professional.id = doc.id
+                    professionalArray.push(professional)
+                })
+
+                commit('setProfessionals', professionalArray)
+            })
+        },
+        getProfessionalsByStatusNew({commit, state}) {
+            fb.professionalCollection
+            .where('status','==','New')
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => { console.log('by status',state.professional.status)
                 let professionalArray = []
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
@@ -221,7 +239,9 @@ const Professional = {
             })
         },
         getProfessionalsByStatus({commit, state}) {
-            fb.professionalCollection.where('status','==',state.professional.status).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+            fb.professionalCollection
+            .where('status','==',state.professional.status)
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => { console.log('by status',state.professional.status)
                 let professionalArray = []
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
@@ -232,7 +252,7 @@ const Professional = {
                 commit('setProfessionals', professionalArray)
             })
         },
-        getProfessionalsByProfessionAndStatus({commit, state}) {
+        getProfessionalsByProfessionAndStatus({commit, state}) {  console.log('by profession and status')
             fb.professionalCollection
             .where('profession','==',state.professional.profession)
             .where('status','==',state.professional.status)

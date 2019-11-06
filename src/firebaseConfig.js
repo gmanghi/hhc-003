@@ -26,13 +26,14 @@ const currentUser = auth.currentUser
 
 // firebase collections
 const usersCollection = db.collection('users')
-const caregiversCollection = db.collection('caregivers')
-const applicantsCollection = db.collection('applicants')
-const physiciansCollection = db.collection('physicians')
-const physicaltherapistsCollection = db.collection('physicaltherapists')
-const nursesCollection = db.collection('nurses')
+// const caregiversCollection = db.collection('caregivers')
+// const applicantsCollection = db.collection('applicants')
+// const physiciansCollection = db.collection('physicians')
+// const physicaltherapistsCollection = db.collection('physicaltherapists')
+// const nursesCollection = db.collection('nurses')
 const teamsCollection = db.collection('teams')
 const professionalCollection = db.collection('professional')
+const clientCollection = db.collection('client')
 
 
 export {
@@ -42,11 +43,12 @@ export {
     currentUser,
     firebase,
     usersCollection,
-    caregiversCollection,
-    applicantsCollection,
-    physiciansCollection,
-    physicaltherapistsCollection,
-    nursesCollection,
+    // caregiversCollection,
+    // applicantsCollection,
+    // physiciansCollection,
+    // physicaltherapistsCollection,
+    // nursesCollection,
     teamsCollection,
-    professionalCollection
+    professionalCollection,
+    clientCollection,
 }

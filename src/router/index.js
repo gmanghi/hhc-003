@@ -49,11 +49,42 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
-		
 		{
 			path: '/clients',
 			name: 'clients',
 			component: () => import('../views/Clients.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/details',
+			name: 'client_details',
+			component: () => import('../views/ClientFacesheet.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/visits',
+			name: 'client_visits',
+			component: () => import('../views/ClientVisits.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/hids',
+			name: 'client_hids',
+			component: () => import('../views/ClientHids.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/contract',
+			name: 'client_contract',
+			component: () => import('../views/ClientContract.vue'),
 			meta: {
 				requiresAuth: true
 			}

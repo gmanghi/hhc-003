@@ -60,8 +60,8 @@ export default {
                 { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist' },
                 { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse' },
                 { title: 'Nutritionist', icon: 'mdi-mother-nurse', route:'/professionals/nutritionist' },
-                { title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
-                { title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
+                //{ title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
+                //{ title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
             ],
         }
     },

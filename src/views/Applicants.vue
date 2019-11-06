@@ -54,10 +54,12 @@ export default {
             status: 'New'
         }
     },
+    beforeRouteUpdate (to, from, next) {
+        this.$store.dispatch("Professional/getProfessionalsByStatusNew")
+        next();
+    },
     mounted() {
-        // this.$store.commit('Professional/setProfession', this.profession)
-        this.$store.commit('Professional/setStatus', this.status)
-        this.$store.dispatch("Professional/getProfessionalsByStatus");
+        this.$store.dispatch("Professional/getProfessionalsByStatusNew");
     },
     computed: {
         ...mapGetters({
@@ -114,9 +116,6 @@ export default {
             this.method = 'create'
             this.popup = true
         },
-        // file_change(e){
-        //     console.log('file change', e)
-        // }
     }
 }
 </script>

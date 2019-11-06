@@ -45,7 +45,7 @@
                 :multi-line="multiLine">
                 {{ text }}
                 <v-btn
-                    color="red"
+                    color="blue"
                     text
                     @click="snackbar = false">
                     Close
@@ -86,6 +86,7 @@ export default {
             dialog: false,
             snackbar: false,
             search: '',
+            multiLine: true,
             headers: [
                 {
                     text: 'Request ID',
