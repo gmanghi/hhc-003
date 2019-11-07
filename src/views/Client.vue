@@ -1,6 +1,6 @@
 <template>
     <div id="clients">
-        <h1 class="subheading grey--text">Clients</h1>
+        <h1 class="subheading grey--text">Clients Old</h1>
 
         <v-container class="my-5">
             <v-card flat v-for="project in projects" :key="project.id">

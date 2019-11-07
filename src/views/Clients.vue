@@ -1,6 +1,6 @@
 <template>
     <div id="clients">
-        <h1 class="subheading grey--text">Clients</h1>
+        <h1 class="subheading grey--text">Clients New</h1>
 
         <v-container class="my-5">
             <v-card>
@@ -19,9 +19,6 @@
                     :items="clients"
                     :search="search"
                 >
-                    <template v-slot:item.status="{ item }">
-                        <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
-                    </template>
                     <template v-slot:item.actions="{ item }">
                         <v-btn
                             color="blue-grey"
@@ -288,17 +285,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-.project.Yes{
-    border-left: 4px solid #3cd1c2;
-}
-.project.No{
-    border-left: 4px solid orange;
-}
-.project.Maybe{
-    border-left: 4px solid blue;
-}
-
-</style>

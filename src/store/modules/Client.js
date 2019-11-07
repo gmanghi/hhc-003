@@ -28,7 +28,8 @@ const Client = {
             patient_complete_address: null,
             patient_case_management: null,
             patient_home_vaccination_program: null,
-            client_status: 'New'
+            client_status: 'New',
+            contracts: [],
         },
     },
     mutations: {
@@ -107,6 +108,9 @@ const Client = {
         setClientStatus(state, val){
             state.client.client_status = val
         },
+        setClientContracts(state, val){
+            state.client.contracts = val
+        }
     },
     actions: {
         clearCient({commit}){
@@ -186,6 +190,7 @@ const Client = {
             fb.clientCollection.doc(state.client.document_id).get().then(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
+                    console.log(data)
                     commit('setClientTitle', data.client_title)
                     commit('setClienAccountName', data.client_account_name)
                     commit('setClientPositionRelationship', data.client_position_relationship)
@@ -212,6 +217,18 @@ const Client = {
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
+        },
+        getClientContracts({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('contract').onSnapshot(querySnapshot => {
+                let clientContractArray = []
+                querySnapshot.forEach(doc => {
+                    let contract = doc.data()
+                    contract.document_id = doc.id
+                    clientContractArray.push(contract)
+                })
+
+                commit('setClientContracts', clientContractArray)
+            })
         }
     },
     getters: {
@@ -221,6 +238,15 @@ const Client = {
         client: (state, getters) => {
             return state.client
         }, 
+        client_name: (state, getters) => {
+            return state.client_account_name
+        }, 
+        patient_name: (state, getters) => {
+            return state.patient_name
+        }, 
+        contracts: (state, getters) => {
+            return state.client.contracts
+        }
     }
 }
 

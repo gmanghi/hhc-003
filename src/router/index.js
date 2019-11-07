@@ -4,8 +4,6 @@ import firebase from 'firebase'
 
 import Login from '@/views/Login'
 import Home from '@/views/Home'
-import Nurses from '@/views/Nurses'
-import Caregivers from '@/views/Caregivers'
 
 Vue.use(Router)
 
@@ -97,63 +95,6 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
-		{
-			path: '/caregivers',
-			name: 'caregivers',
-			component: () => import('../views/Caregivers.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		// {
-		// 	path: '/applicants',
-		// 	name: 'applicants',
-		// 	component: () => import('../views/Applicants.vue'),
-		// 	meta: {
-		// 		requiresAuth: true
-		// 	}
-		// },
-		{
-			path: '/physicians',
-			name: 'physicians',
-			component: () => import('../views/Physicians.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/physical-therapists',
-			name: 'physical-therapists',
-			component: () => import('../views/PhysicalTherapists.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/nurses',
-			name: 'nurses',
-			component: () => import('../views/Nurses.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		
-		{
-			path: '/projects',
-			name: 'projects',
-			component: () => import('../views/Projects.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/teams',
-			name: 'teams',
-			component: () => import('../views/Teams.vue'),
-			meta: {
-				requiresAuth: true
-			}
-		}
 	]
 })
 
