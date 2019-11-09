@@ -30,6 +30,15 @@ const Client = {
             patient_home_vaccination_program: null,
             client_status: 'New',
             contracts: [],
+            contract: {
+                // url: '',
+            },
+            hids: {
+                // document_id: null,
+                // demographic: {},
+                // hopl: {},
+            },
+            hidss: [],
         },
     },
     mutations: {
@@ -110,7 +119,26 @@ const Client = {
         },
         setClientContracts(state, val){
             state.client.contracts = val
-        }
+        },
+        setClientContract(state, val){
+            state.client.contract = val
+        },
+        setClientContractUrl(state, val){
+            state.client.contract.url = val
+        },
+        setClientHidss(state, val){
+            state.client.hidss = val
+        },
+        setClientHids(state, val){
+            state.client.hids = val
+        },
+        setClientHidsDocumentId(state, val){
+            state.client.hids.document_id = val
+        },
+        // setClientHidsDemographic(state, val){
+        //     state.client.hids.demographic = val
+        // },
+        
     },
     actions: {
         clearCient({commit}){
@@ -137,6 +165,8 @@ const Client = {
             // commit('setPatientCaseManagement', null)
             // commit('setPatientHomeVaccinationProgram', null)
             commit('setClientStatus', 'New')
+            // commit('setClientContracts', [])
+            // commit('setClientContracts', {})
         },
         createClient({commit, state}){
             return new Promise((resolve, reject) => {
@@ -169,6 +199,48 @@ const Client = {
                     resolve(doc)
                 }).catch(error => {
                     this.dispatch("Client/clearClient")
+                    reject(error)
+                })
+            })
+        },
+        createClientContract({commit, state}){
+            return new Promise((resolve, reject) => {
+                const fileData = state.client.contract.url;
+                const fileName =  Math.random().toString(36).substring(2)
+                let fileExtension = null;
+
+                switch(fileData.type){
+                    case 'application/pdf': fileExtension = '.pdf';
+                }
+
+                const storageRef = fb.storage.ref(fileName+fileExtension).put(fileData);
+
+                storageRef.on(`state_changed`, snapshot => {
+                    console.log((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                },error => {
+                    reject(error)
+                },() => {
+                    storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                        commit('setClientContractUrl', url)
+                        fb.clientCollection.doc(state.client.document_id).collection('contract').add({
+                            createdOn: new Date(),
+                            url: state.client.contract.url,
+                        }).then(doc => {
+                            resolve(doc)
+                        }).catch(error => {
+                            reject(error)
+                        })
+                    })
+                })
+
+                
+            })
+        },
+        createClientHids({commit, state}){
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).collection('hids').add(state.client.hids).then(doc => {
+                    resolve(doc)
+                }).catch(error => {
                     reject(error)
                 })
             })
@@ -224,11 +296,42 @@ const Client = {
                 querySnapshot.forEach(doc => {
                     let contract = doc.data()
                     contract.document_id = doc.id
+                    contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD')
                     clientContractArray.push(contract)
                 })
 
                 commit('setClientContracts', clientContractArray)
             })
+        },
+        getClientHidss({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('hids').onSnapshot(querySnapshot => {
+                let clientHidsArray = []
+                querySnapshot.forEach(doc => {
+                    let hids = doc.data()
+                    hids.document_id = doc.id
+                    hids.createdOn = moment(hids.createdOn.toDate()).format('YYYY-MM-DD H:m:s')
+                    clientHidsArray.push(hids)
+                })
+
+                commit('setClientHidss', clientHidsArray)
+            })
+        },
+        getClientHids({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        commit('setClientHidsDocumentId',doc.id)
+                        commit('setClientHids', data)
+                        resolve(data)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
+            
         }
     },
     getters: {
@@ -246,7 +349,10 @@ const Client = {
         }, 
         contracts: (state, getters) => {
             return state.client.contracts
-        }
+        },
+        hidss: (state, getters) => {
+            return state.client.hidss
+        },
     }
 }
 

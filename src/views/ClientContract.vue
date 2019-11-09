@@ -1,5 +1,5 @@
 <template>
-        <div id="client-hids">
+    <div id="client-hids">
         <h1 class="subheading grey--text">Client Contract</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
@@ -19,6 +19,11 @@
                     :items="contracts"
                     :search="search"
                 >
+                    <template v-slot:item.url="{ item }">
+                        <v-btn color="red" text x-large dark :href="item.url" target="_blank">
+                            <v-icon>mdi-file-pdf-outline</v-icon>
+                        </v-btn>
+                    </template>
                 </v-data-table>
             </v-card>
             <!-- Popup Start -->
@@ -36,7 +41,11 @@
                             <v-icon small>mdi-plus</v-icon>
                         </v-btn>
                     </template>
-                    <v-form>
+                    <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                        >
                         <v-card>
                             <v-card-title>
                                 <span class="headline">Upload Contract</span>
@@ -44,7 +53,14 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" md="2" sm="3" xs="2">
+                                        <v-col cols="12">
+                                            <v-file-input 
+                                                accept="application/pdf"
+                                                show-size label="Contract"
+                                                :rules="requiredFileRules"
+                                                v-model="contract"
+                                            >
+                                            </v-file-input>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -52,14 +68,18 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text>Save</v-btn>
+                                <v-btn color="blue darken-1" text @click="process_save">Save</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-form>
+                    <v-overlay :value="overlay">
+                        <v-progress-circular indeterminate size="64"></v-progress-circular>
+                    </v-overlay>
                 </v-dialog>
             </v-row>
             <!-- Popup End -->
         </v-container>
+        
     </div>
 </template>
 
@@ -69,12 +89,16 @@ import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
         return {
+            overlay: false,
+            valid: true,
             popup: false,
             search: '',
+            contract: null,
             headers: [
-                { text: 'Date', align: 'center', sortable: true, value: 'contract_date' },
-                { text: 'Contract URL', align: 'center', sortable: true, value: 'contract_url' },
+                { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
+                { text: 'Contract URL', align: 'center', sortable: true, value: 'url' },
             ],
+            requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
     },
     components: {
@@ -94,5 +118,25 @@ export default {
             contracts: 'Client/contracts'
         }),
     },
+    methods: {
+        process_save(){ 
+            if (this.$refs.form.validate()) {
+                this.overlay = true
+                const data = {
+                    url: this.contract,
+                }
+                const parent = this
+                this.$store.commit('Client/setClientContract', data)
+                this.$store.dispatch("Client/createClientContract").then(function(doc){
+                    console.log('saveClientContract',doc)
+                    parent.popup = false
+                    parent.contract = null
+                    parent.overlay = false
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }
+        },
+    }
 }
 </script>

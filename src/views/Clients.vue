@@ -25,7 +25,6 @@
                             class="ma-2 white--text"
                             :to="{ name: 'client_details', params: { id: item.document_id } }">
                             Details
-                            
                             <v-icon right dark>mdi-eye</v-icon>
                         </v-btn>    
                     </template>
@@ -183,8 +182,8 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup = false">Close</v-btn>
-                                <v-btn color="blue darken-1" v-if="action === 'create'" text @click="saveClient">Save</v-btn>
-                                <v-btn color="blue darken-1" v-if="action === 'update'" text @click="updateClient">Update</v-btn>
+                                <v-btn color="blue darken-1" v-if="method === 'create'" text @click="saveClient">Save</v-btn>
+                                <v-btn color="blue darken-1" v-if="method === 'update'" text @click="updateClient">Update</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-form>
@@ -205,7 +204,7 @@ export default {
             date_popup: false,
             popup: false,
             client: {},
-            action: 'create',
+            method: 'create',
             search: '',
             headers: [
                 { text: 'Client/Account Name', align: 'center', sortable: true, value: 'client_account_name' },

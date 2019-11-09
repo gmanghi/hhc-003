@@ -34,7 +34,7 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-            <ProfessionalAddEditForm v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method"></ProfessionalAddEditForm>
+            <ProfessionalAddEditForm v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method" v-bind:overlay="overlay"></ProfessionalAddEditForm>
         </v-container>
     </div>    
 </template>
@@ -50,6 +50,7 @@ export default {
             profession: '',
             professional: {},
             popup: false,
+            overlay: false,
             method: 'create',
             status: 'Verified'
         }
@@ -103,22 +104,26 @@ export default {
             this.$store.dispatch("Professional/deleteProfessional")
         },
         saveProfessional(data){
+            this.overlay = true
             const parent = this
             this.$store.commit('Professional/setProfessional', data)
             this.$store.dispatch("Professional/createProfessional").then(function(doc){
                 console.log('saveProfessional',doc)
                 parent.popup = false
+                parent.overlay = false
             }).catch(function(error){
                 console.log(error)
             })
         },
         updateProfessional(data){
+            this.overlay = true
             const parent = this
             this.$store.commit('Professional/setProfessional', data)
             this.$store.dispatch("Professional/updateProfessional").then(function(doc){
                 console.log('updateProfessional',doc)
                 parent.popup = false
                 parent.method = 'create'
+                parent.overlay = false
             }).catch(function(error){
                 console.log(error)
             })
@@ -136,6 +141,7 @@ export default {
             console.log(this.professional)
             this.method = 'create'
             this.popup = true
+            this.overlay = false
         },
     }
 }
