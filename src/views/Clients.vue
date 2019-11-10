@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="1200px">
+                <v-dialog v-model="popup" persistent max-width="90%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -145,30 +145,146 @@
                                         <v-col cols="12" md="12" sm="12">
                                             <v-text-field label="Complete Address*" v-model="client.patient_complete_address" required></v-text-field>
                                         </v-col>
+                                    
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-subheader class="font-weight-bold"> REQUIREMENTS (Kindly check which service request / requirement is)</v-subheader>
+                                            <v-divider></v-divider>
+                                        </v-col>
 
-                                        <!-- <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Home Health Visit by HCP', 'Registered Nurse /  Caregiver Deployment', 'Laboratory / Radiology', 'Purchase / Rental of Medicine Equipment']"
-                                            label="Case Management"
-                                            multiple
-                                            v-model="client.patient_case_management"
-                                            ></v-autocomplete>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Home Health Visit by HCP" value="home_health_visit_hcp"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Registered Nurse / Caregiver Deployment" value="registered_nurse"></v-checkbox>
+                                         </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Laboratory / Radiology" value="lab"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Purchase / Rental of Medicine Equipment" value="purchase"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Medical Escorting" value="medical_escorting"></v-checkbox>
+                                         </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Senior Residential Facility" value="senior_residential_facility"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="Home Vaccination Program" value="home_vaccination"></v-checkbox>
+                                         </v-col>
+                                       <v-col cols="12" md="6" sm="12">
+                                            <v-checkbox class="ma-0 pa-0" label="MDeploy" value="mdeploy"></v-checkbox>
+                                        </v-col>
+
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-subheader class="font-weight-bold">Mode of Payment (Kindly check the appropriate box)</v-subheader>
+                                            <v-divider></v-divider>
+                                        </v-col>
+
+                                        <v-row class="mb-12" no-gutters>                                              
+                                            <v-col cols="12" md="6" sm="12">
+                                                <v-checkbox class="ma-0 pa-0" label="Cash" value=""></v-checkbox>
+                                                    <v-col md="11" offset-md="1">
+                                                        <v-checkbox class="ma-0 pa-0" label="Will bring in the office" value=""></v-checkbox>
+                                                        <v-checkbox class="ma-0 pa-0" label="For Pick up (Minimum of P10,000.00)" value=""></v-checkbox>
+                                                    </v-col>
+                                            </v-col>
+                                            <v-col cols="12" md="6" sm="12">
+                                                <v-checkbox  class="ma-0 pa-0" label="Credit Card (In HHC Office Only)" value=""></v-checkbox>
+                                                    <v-col md="11" offset-md="1">
+                                                            <v-text-field class="ma-0 pa-0" label="Bank Card" hint="Bank Card" required></v-text-field>
+                                                            <v-text-field class="ma-0 pa-0" label="Card No."  hint="Card No." required></v-text-field>
+                                                    </v-col>
+                                            </v-col>
+                                            
+                                        </v-row>
+                                        <v-row class="mb-12" no-gutters >
+                                            <v-col cols="12" md="6" sm="12">
+                                                <v-checkbox class="ma-0 pa-0" v-model="selected" label="Check" value=""></v-checkbox>
+                                                    <v-col md="11" offset-md="1">
+                                                            <v-checkbox class="ma-0 pa-0" label="Will bring in the office" value=""></v-checkbox>
+                                                            <v-checkbox class="ma-0 pa-0" label="For Pick up (Minimum of P10,000.00)" value=""></v-checkbox>
+                                                            <v-checkbox class="ma-0 pa-0"
+                                                                label="Will Deposit (Please E-mail deposit slip to casemanagement@homehealthcare.com.ph or Fax to Tel.No.02-791-86-80 w/ Patient's Name)" 
+                                                                value="">
+                                                            </v-checkbox>
+                                                    </v-col>
+                                            </v-col>
+                                            
+                                            <v-col cols="12" md="6" sm="12">
+                                                <v-checkbox class="ma-0 pa-0" label="Paypal (accounts@homehealthcare.com.ph)" value=""></v-checkbox>
+                                                <v-checkbox class="ma-0 pa-0" label="GCash" value=""></v-checkbox>
+                                                <v-checkbox class="ma-0 pa-0" label="Bank Transfer / Credit Memo / Remittance (Please ask for HHCI / HHCPI Bank Acct.No.)" value=""></v-checkbox>
+                                            </v-col>
+                                        </v-row>
+
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-divider></v-divider>
+                                        </v-col>
+
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-text-field  class="ma-0 pa-0" label="Bank Name:" hint="Bank Name" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-text-field class="ma-0 pa-0" label="Branch:" hint="Branch" required></v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-subheader class="font-weight-bold">DATA GATHERED BY:</v-subheader>
+                                            <v-text-field label="Name and Signature:" hint="" required></v-text-field>
+                                            <v-text-field label="Date / Time Recieved:" hint="" required></v-text-field>
+                                        </v-col>
+
+
+                                        <v-col cols="12" md="6" sm="12">
+                                            <v-subheader class="font-weight-bold">ENDORSED FOR ACTION TO:</v-subheader>
+                                            <v-text-field label="Name and Signature:"  hint="" required></v-text-field>
+                                            <v-text-field label="Date / Time Recieved:"  hint="" required></v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-textarea label="ACTION TAKEN:" auto-grow outlined rows="3" row-height="30" value=""></v-textarea>
+                                        </v-col>
+
+                                        <v-col cols="12" md="12" sm="12">
+                                            <v-subheader class="font-weight-bold">SURVEY: How did you get to know Home Health Care?</v-subheader>
+                                            <v-divider></v-divider>
+                                        </v-col>
+
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-checkbox label="Friends" value="friends"></v-checkbox>
                                         </v-col>
                                         <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Ambulatory Wellness Clinic', 'Caregiver Training Module', 'Senior Residential Facility']"
-                                            label=""
-                                            multiple
-                                            ></v-autocomplete>
+                                            <v-row align="">
+                                                <v-checkbox class=""></v-checkbox>
+                                                <v-text-field label="Referal By:"></v-text-field>
+                                            </v-row>
+                                        </v-col>    
+
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-checkbox label="Print Ad Rx Pinoy, Yellow Page, Etc." value="print_ad"></v-checkbox>
+                                        </v-col>
+
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-checkbox label="Flyers / Banners" value="flyers"></v-checkbox>
                                         </v-col>
                                         <v-col cols="12" md="4" sm="4">
-                                            <v-autocomplete
-                                            :items="['Walk-in', 'Home Service', 'Corporate', 'Delivery']"
-                                            label="Home Vaccination Program"
-                                            multiple
-                                            v-model="client.patient_home_vaccination_program"
-                                            ></v-autocomplete>
-                                        </v-col> -->
+                                            <v-checkbox label="Newspaper" value="newspaper"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-row align="">
+                                                <v-checkbox class=""></v-checkbox>
+                                                <v-text-field label="Others, pls. specify"></v-text-field>
+                                            </v-row>
+                                        </v-col> 
+
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-checkbox label="TV / Radio Advertisement" value="advertisement"></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12" md="4" sm="4">
+                                            <v-checkbox label="Website:" value="website"></v-checkbox>
+                                        </v-col>
+
                                         <v-col cols="12" md="2" sm="3" xs="2">
                                             <v-autocomplete
                                             :items="['New', 'Pending', 'Verified']"
@@ -176,6 +292,8 @@
                                             v-model="client.client_status"
                                             ></v-autocomplete>
                                         </v-col>
+
+
                                     </v-row>
                                 </v-container>
                                 <small>*indicates required field</small>
