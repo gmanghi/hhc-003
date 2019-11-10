@@ -58,6 +58,7 @@
                                     <v-tab>History of Present Illness</v-tab>
                                     <v-tab>Living Arrangements</v-tab>
                                     <v-tab>Sensory Status</v-tab>
+                                    <v-tab>Integumentary Status</v-tab>
                                 </v-tabs>
                             </v-card-title>
                             <v-card-text>
@@ -81,6 +82,11 @@
                                         <HidsSensoryStatus 
                                             v-bind:ss="ss" 
                                         ></HidsSensoryStatus>
+                                    </v-tab-item>
+                                    <v-tab-item>
+                                        <HidsIntegumentaryStatus 
+                                            v-bind:integumentary="integumentary" 
+                                        ></HidsIntegumentaryStatus>
                                     </v-tab-item>
                                 </v-tabs-items>
                             </v-card-text>
@@ -112,7 +118,11 @@ import HidsDemographicData from '@/components/ClientHids/DemographicData'
 import HidsHistoryOfPresentIllness from '@/components/ClientHids/HistoryOfPresentIllness'
 import HidsLivingArrangements from '@/components/ClientHids/LivingArrangements'
 import HidsSensoryStatus from '@/components/ClientHids/SensoryStatus'
+import HidsIntegumentaryStatus from '@/components/ClientHids/IntegumentaryStatus'
 export default {
+    components: {
+        ClientNavbar, HidsDemographicData, HidsHistoryOfPresentIllness, HidsLivingArrangements, HidsSensoryStatus, HidsIntegumentaryStatus,
+    },
     data(){
         return {
             tab: null,
@@ -133,10 +143,8 @@ export default {
             hopi: {},
             la: {},
             ss: {},
+            integumentary: {},
         }
-    },
-    components: {
-        ClientNavbar, HidsDemographicData, HidsHistoryOfPresentIllness, HidsLivingArrangements, HidsSensoryStatus
     },
     beforeRouteUpdate (to, from, next) {
         this.$store.commit('Client/setDocumentId', to.params.id)
@@ -170,6 +178,7 @@ export default {
                 parent.hopi = doc.hopi
                 parent.la = doc.la
                 parent.ss = doc.ss
+                // parent.is = doc.is
                 parent.popup = true
                 parent.method = 'update'
                 parent.overlay = false
@@ -188,6 +197,7 @@ export default {
                     hopi: this.hopi,
                     la: this.la,
                     ss: this.ss,
+                    // is: this.is,
                 }
                 this.$store.commit('Client/setClientHids', data)
                 this.$store.dispatch("Client/createClientHids").then(function(doc){
@@ -209,6 +219,7 @@ export default {
                     hopi: this.hopi,
                     la: this.la,
                     ss: this.ss,
+                    // is: this.is,
                 }
                 this.$store.commit('Client/setClientHids', data)
                 this.$store.commit('Client/setClientHidsDocumentId', this.hids.document_id)
