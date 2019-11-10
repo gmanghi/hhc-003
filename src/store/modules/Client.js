@@ -135,9 +135,12 @@ const Client = {
         setClientHidsDocumentId(state, val){
             state.client.hids.document_id = val
         },
-        // setClientHidsDemographic(state, val){
-        //     state.client.hids.demographic = val
-        // },
+        setClientHidsDemographic(state, val){
+            state.client.hids.demographic = val
+        },
+        setClientHidsHistoryPresentIllness(state, val){
+            state.client.hids.hopl = val
+        },
         
     },
     actions: {
@@ -245,6 +248,15 @@ const Client = {
                 })
             })
         },
+        updateClientHids({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).update(state.client.hids).then(function() {
+                    resolve(state.client.hids)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
         getClients({commit, state}) {
             fb.clientCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
                 let clientArray = []
@@ -321,9 +333,9 @@ const Client = {
                 fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).get().then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-                        commit('setClientHidsDocumentId',doc.id)
                         commit('setClientHids', data)
-                        resolve(data)
+                        commit('setClientHidsDocumentId',doc.id)
+                        resolve(state.client.hids)
                     } else {
                         reject("No such document!");
                     }
