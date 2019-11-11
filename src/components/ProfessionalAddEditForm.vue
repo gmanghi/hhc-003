@@ -17,7 +17,8 @@
             <v-form
                 ref="form"
                 v-model="valid"
-                lazy-validation>
+                lazy-validation
+            >
                 <v-card>
                     <v-card-title>
                         <span class="headline">Profile</span>
@@ -29,6 +30,7 @@
                                     <v-text-field 
                                         label="First Name*"
                                         required
+                                        :rules="requiredStringRules"
                                         v-model="professional.first_name">
                                     </v-text-field>
                                 </v-col>
@@ -42,12 +44,14 @@
                                     <v-text-field
                                         label="Last Name*"
                                         required
+                                        :rules="requiredStringRules"
                                         v-model="professional.last_name">
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                     <v-text-field 
                                         label="Mobile Number*" 
+                                        :rules="requiredStringRules"
                                         v-model="professional.mobile_number" 
                                         required>
                                     </v-text-field>
@@ -55,6 +59,7 @@
                                 <v-col cols="12" sm="6">
                                     <v-text-field 
                                         label="Email*" 
+                                        :rules="requiredStringRules"
                                         v-model="professional.email" 
                                         required>
                                     </v-text-field>
@@ -63,7 +68,9 @@
                                     <v-select
                                         :items="professions_list"
                                         label="Profession"
+                                        :rules="requiredStringRules"
                                         v-model="professional.profession"
+                                        required
                                         >
                                     </v-select>
                                 </v-col>
@@ -72,6 +79,8 @@
                                         :items="professional_status"
                                         label="Status"
                                         v-model="professional.status"
+                                        :rules="requiredStringRules"
+                                        required    
                                         >
                                     </v-select>
                                 </v-col>
@@ -129,11 +138,11 @@
                                 </v-col>
                                 <v-col cols="12" sm="6" class="text-center">
                                     <v-file-input
-                                        :rules="avatarRules"
+                                        :rules="requiredAvatarRules"
                                         accept="image/png, image/jpeg, image/bmp"
                                         placeholder="Pick an avatar"
                                         prepend-icon="mdi-camera"
-                                        label="Avatar"
+                                        label="Avatar*"
                                         v-model="avatar">
                                     </v-file-input>
                                     
@@ -150,6 +159,9 @@
                     </v-card-actions>
                 </v-card>
             </v-form>
+            <v-overlay :value="overlay">
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
+            </v-overlay>
         </v-dialog>
     </v-row>
     <!-- Popup End -->
@@ -159,7 +171,7 @@
 import moment from 'moment'
 
 export default {
-    props: [ 'professional', 'popup', 'method' ],
+    props: [ 'professional', 'popup', 'method', 'overlay' ],
     data(){
         return { 
             valid: true,
@@ -169,9 +181,9 @@ export default {
             avatar: null,
             professions_list: ['Nurse', 'Physician', 'Caregiver', 'Physical Therapist', 'Nutritionist'],
             professional_status: ['New', 'Pending','Verified'],
-            requiredStringRules: [v => !!v || 'Name is required', v => v.length <= 100 || 'Name must be less than 10 characters'],
+            requiredStringRules: [v => !!v || 'Name is required'],
             requiredEmailRules: [v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
-            avatarRules: [v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB!'],
+            requiredAvatarRules: [v => !!v || 'Avatar is required', v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB!'],
             popup_dialog: false,
         }
     },
@@ -202,19 +214,20 @@ export default {
             this.$parent.popupClose()
         },
         process_save(){ 
-            const data = {
-                first_name: this.professional.first_name,
-                middle_name: this.professional.middle_name,
-                last_name: this.professional.last_name,
-                email: this.professional.email,
-                mobile_number: this.professional.mobile_number,
-                birthdate: this.computedDateFormattedMomentjs,
-                avatar: this.avatar,
-                profession: this.professional.profession,
-                status: this.professional.status,
+            if (this.$refs.form.validate()) {
+                const data = {
+                    first_name: this.professional.first_name,
+                    middle_name: this.professional.middle_name,
+                    last_name: this.professional.last_name,
+                    email: this.professional.email,
+                    mobile_number: this.professional.mobile_number,
+                    birthdate: this.computedDateFormattedMomentjs,
+                    avatar: this.avatar,
+                    profession: this.professional.profession,
+                    status: this.professional.status,
+                }
+                this.$parent.saveProfessional(data)
             }
-            // console.log('aaaa',data)
-            this.$parent.saveProfessional(data)
         },
         process_update(){
             const data = {
