@@ -1,6 +1,6 @@
 <template>
-        <div id="client-details">
-        <h1 class="subheading grey--text">Client Details</h1>
+    <div id="client-details">
+        <h1 class="subheading grey--text">Facesheet</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
                         <v-card>

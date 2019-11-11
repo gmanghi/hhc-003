@@ -95,6 +95,38 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
+		{
+			path: '/client/:id/home-visit-report-and-progress-notes',
+			name: 'client_hvrpn',
+			component: () => import('../views/ClientHVRPN.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/prescription',
+			name: 'client_prescription',
+			component: () => import('../views/ClientPrescription.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/patient-medication-profile',
+			name: 'client_pmp',
+			component: () => import('../views/ClientPatientMedicationProfile.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/client/:id/customer-satisfaction-survey',
+			name: 'client_css',
+			component: () => import('../views/ClientCustomerSatisfactionSurvey.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
 	]
 })
 

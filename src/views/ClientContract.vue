@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Client Contract</h1>
+        <h1 class="subheading grey--text">Contracts</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>

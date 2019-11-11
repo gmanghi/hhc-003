@@ -30,15 +30,17 @@ const Client = {
             patient_home_vaccination_program: null,
             client_status: 'New',
             contracts: [],
-            contract: {
-                // url: '',
-            },
-            hids: {
-                // document_id: null,
-                // demographic: {},
-                // hopl: {},
-            },
+            contract: {},
             hidss: [],
+            hids: {},
+            hvrpns: [],
+            hvrpn: {},
+            prescriptions: [],
+            prescription: {},
+            patient_medication_profiles: [],
+            patient_medication_profile: {},
+            customer_satisfaction_surveys: [],
+            customer_satisfaction_survey: {},
         },
     },
     mutations: {
@@ -132,6 +134,42 @@ const Client = {
         setClientHids(state, val){
             state.client.hids = val
         },
+        setClientHVRPNs(state, val){
+            state.client.hvrpns = val
+        },
+        setClientHVRPN(state, val){
+            state.client.hvrpn = val
+        },
+        setClientHVRPNDocumentId(state, val){
+            state.client.hvrpn.document_id = val
+        },
+        setClientPrescriptions(state, val){
+            state.client.prescriptions = val
+        },
+        setClientPrescription(state, val){
+            state.client.prescription = val
+        },
+        setClientPrescriptionDocumentId(state, val){
+            state.client.prescription.document_id = val
+        },
+        setClientPatientMedicationProfiles(state, val){
+            state.client.patient_medication_profiles = val
+        },
+        setClientPatientMedicationProfile(state, val){
+            state.client.patient_medication_profile = val
+        },
+        setClientPatientMedicationProfileDocumentId(state, val){
+            state.client.patient_medication_profile.document_id = val
+        },
+        setClientCustomerSatisfactionSurveys(state, val){
+            state.client.customer_satisfaction_surveys = val
+        },
+        setClientCustomerSatisfactionSurvey(state, val){
+            state.client.customer_satisfaction_survey = val
+        },
+        setClientCustomerSatisfactionSurveyDocumentId(state, val){
+            state.client.customer_satisfaction_survey.document_id = val
+        },
         setClientHidsDocumentId(state, val){
             state.client.hids.document_id = val
         },
@@ -141,7 +179,6 @@ const Client = {
         setClientHidsHistoryPresentIllness(state, val){
             state.client.hids.hopl = val
         },
-        
     },
     actions: {
         clearCient({commit}){
@@ -303,12 +340,12 @@ const Client = {
             });
         },
         getClientContracts({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('contract').onSnapshot(querySnapshot => {
+            fb.clientCollection.doc(state.client.document_id).collection('contract').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
                 let clientContractArray = []
                 querySnapshot.forEach(doc => {
                     let contract = doc.data()
                     contract.document_id = doc.id
-                    contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD')
+                    contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
                     clientContractArray.push(contract)
                 })
 
@@ -316,12 +353,12 @@ const Client = {
             })
         },
         getClientHidss({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('hids').onSnapshot(querySnapshot => {
+            fb.clientCollection.doc(state.client.document_id).collection('hids').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
                 let clientHidsArray = []
                 querySnapshot.forEach(doc => {
                     let hids = doc.data()
                     hids.document_id = doc.id
-                    hids.createdOn = moment(hids.createdOn.toDate()).format('YYYY-MM-DD H:m:s')
+                    hids.createdOn = moment(hids.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
                     clientHidsArray.push(hids)
                 })
 
@@ -344,7 +381,203 @@ const Client = {
                 });
             })
             
-        }
+        },
+        getClientHVRPNs({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('hvrpn').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                let clientHVRPNArray = []
+                querySnapshot.forEach(doc => {
+                    let hvrpn = doc.data()
+                    hvrpn.document_id = doc.id
+                    hvrpn.createdOn = moment(hvrpn.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                    clientHVRPNArray.push(hvrpn)
+                })
+
+                commit('setClientHVRPNs', clientHVRPNArray)
+            })
+        },
+        getClientHVRPN({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data()
+                        data.document_id = doc.id
+                        commit('setClientHVRPN', data)
+                        // commit('setClientHidsDocumentId',doc.id)
+                        resolve(state.client.hvrpn)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
+            
+        },
+        createClientHVRPN({commit, state}){
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').add(state.client.hvrpn).then(doc => {
+                    resolve(doc)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        updateClientHVRPN({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).update(state.client.hvrpn).then(function() {
+                    resolve(state.client.hvrpn)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        getClientPrescriptions({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('prescription').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                let clientPrescriptionNArray = []
+                querySnapshot.forEach(doc => {
+                    let prescription = doc.data()
+                    prescription.document_id = doc.id
+                    prescription.createdOn = moment(prescription.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                    clientPrescriptionNArray.push(prescription)
+                })
+
+                commit('setClientPrescriptions', clientPrescriptionNArray)
+            })
+        },
+        getClientPrescription({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data()
+                        data.document_id = doc.id
+                        commit('setClientPrescription', data)
+                        // commit('setClientHidsDocumentId',doc.id)
+                        resolve(state.client.prescription)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
+            
+        },
+        createClientPrescription({commit, state}){
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').add(state.client.prescription).then(doc => {
+                    resolve(doc)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        updateClientPrescription({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).update(state.client.prescription).then(function() {
+                    resolve(state.client.prescription)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        getClientPatientMedicationProfiles({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                let clientPatientMedicationProfilesArray = []
+                querySnapshot.forEach(doc => {
+                    let pmp = doc.data()
+                    pmp.document_id = doc.id
+                    pmp.createdOn = moment(pmp.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                    clientPatientMedicationProfilesArray.push(pmp)
+                })
+
+                commit('setClientPatientMedicationProfiles', clientPatientMedicationProfilesArray)
+            })
+        },
+        getClientPatientMedicationProfile({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data()
+                        data.document_id = doc.id
+                        commit('setClientPatientMedicationProfile', data)
+                        // commit('setClientHidsDocumentId',doc.id)
+                        resolve(state.client.patient_medication_profile)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
+            
+        },
+        createClientPatientMedicationProfile({commit, state}){
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').add(state.client.patient_medication_profile).then(doc => {
+                    resolve(doc)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        updateClientPatientMedicationProfile({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).update(state.client.patient_medication_profile).then(function() {
+                    resolve(state.client.patient_medication_profile)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        getClientCustomerSatisfactionSurveys({commit, state}) {
+            fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                let clientCustomerSatisfactionSurveysNArray = []
+                querySnapshot.forEach(doc => {
+                    let css = doc.data()
+                    css.document_id = doc.id
+                    css.createdOn = moment(css.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                    clientCustomerSatisfactionSurveysNArray.push(css)
+                })
+
+                commit('setClientCustomerSatisfactionSurveys', clientCustomerSatisfactionSurveysNArray)
+            })
+        },
+        getClientCustomerSatisfactionSurvey({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data()
+                        data.document_id = doc.id
+                        commit('setClientCustomerSatisfactionSurvey', data)
+                        // commit('setClientHidsDocumentId',doc.id)
+                        resolve(state.client.customer_satisfaction_survey)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
+            
+        },
+        createClientCustomerSatisfactionSurvey({commit, state}){
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').add(state.client.customer_satisfaction_survey).then(doc => {
+                    resolve(doc)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
+        updateClientCustomerSatisfactionSurvey({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).update(state.client.customer_satisfaction_survey).then(function() {
+                    resolve(state.client.customer_satisfaction_survey)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
     },
     getters: {
         clients: (state, getters) => {
@@ -364,6 +597,18 @@ const Client = {
         },
         hidss: (state, getters) => {
             return state.client.hidss
+        },
+        hvrpns: (state, getters) => {
+            return state.client.hvrpns
+        },
+        prescriptions: (state, getters) => {
+            return state.client.prescriptions
+        },
+        patient_medication_profiles: (state, getters) => {
+            return state.client.patient_medication_profiles
+        },
+        customer_satisfaction_surveys: (state, getters) => {
+            return state.client.customer_satisfaction_surveys
         },
     }
 }

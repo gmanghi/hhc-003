@@ -53,7 +53,7 @@ export default {
             drawer: false,
             items: [
                 { title: 'Home', icon: 'mdi-home', route:'/' },
-                { title: 'Clients', icon: 'mdi-mother-nurse', route:'/clients' },
+                { title: 'Clients/Patients', icon: 'mdi-mother-nurse', route:'/clients' },
                 { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/professionals/caregiver' },
                 { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/professionals/applicants' },
                 { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/professionals/physician' },

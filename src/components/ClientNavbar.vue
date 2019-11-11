@@ -16,6 +16,22 @@
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">HIDs</span>
         </v-btn>
+        <v-btn text color="grey" :to="{ name: 'client_hvrpn', params: { id: this.client_id } }">
+            <v-icon left>mdi-note-text-outline</v-icon>
+            <span class="caption text-uppercase">Home Visit Report/Progress Notes</span>
+        </v-btn>
+        <v-btn text color="grey" :to="{ name: 'client_prescription', params: { id: this.client_id } }">
+            <v-icon left>mdi-note-text-outline</v-icon>
+            <span class="caption text-uppercase">Prescription</span>
+        </v-btn>
+        <v-btn text color="grey" :to="{ name: 'client_pmp', params: { id: this.client_id } }">
+            <v-icon left>mdi-note-text-outline</v-icon>
+            <span class="caption text-uppercase">Patient Medication Profile</span>
+        </v-btn>
+        <v-btn text color="grey" :to="{ name: 'client_css', params: { id: this.client_id } }">
+            <v-icon left>mdi-note-text-outline</v-icon>
+            <span class="caption text-uppercase">Customer Satisfaction Survey</span>
+        </v-btn>
     </v-row>
 </template>
 <script>

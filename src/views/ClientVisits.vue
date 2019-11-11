@@ -1,6 +1,6 @@
 <template>
     <div id="client-visits">
-        <h1 class="subheading grey--text">Client Visits</h1>
+        <h1 class="subheading grey--text">Scheduled Visits</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-row class="fill-height">

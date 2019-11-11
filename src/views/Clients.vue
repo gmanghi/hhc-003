@@ -1,6 +1,6 @@
 <template>
     <div id="clients">
-        <h1 class="subheading grey--text">Clients New</h1>
+        <h1 class="subheading grey--text">Clients/Patients</h1>
 
         <v-container class="my-5">
             <v-card>
