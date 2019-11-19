@@ -1,7 +1,7 @@
 <template>
     <!-- Popup Start -->
     <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="dialog" persistent max-width="1000px">
             <template v-slot:activator="{ on }">
                 <v-btn
                     fixed
@@ -18,7 +18,7 @@
                 ref="form"
                 v-model="valid"
                 lazy-validation
-            >
+                >
                 <v-card>
                     <v-card-title>
                         <span class="headline">Profile</span>
@@ -48,6 +48,14 @@
                                         v-model="professional.last_name">
                                     </v-text-field>
                                 </v-col>
+                                <v-col cols="12" sm="12">
+                                    <v-text-field 
+                                        label="Address*" 
+                                        :rules="requiredStringRules"
+                                        v-model="professional.address" 
+                                        required>
+                                    </v-text-field>
+                                </v-col>
                                 <v-col cols="12" sm="6">
                                     <v-text-field 
                                         label="Mobile Number*" 
@@ -61,6 +69,51 @@
                                         label="Email*" 
                                         :rules="requiredStringRules"
                                         v-model="professional.email" 
+                                        required>
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field 
+                                        label="PRC ID/NC2 Number*" 
+                                        :rules="requiredStringRules"
+                                        v-model="professional.license" 
+                                        required>
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-menu
+                                    v-model="license_expiry_date_popup"
+                                    :close-on-content-click="false"
+                                    max-width="290"
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                :value="computedExpiryDateFormattedMomentjs"
+                                                clearable
+                                                label="License Date of Expiry*"
+                                                readonly
+                                                v-on="on">
+                                            </v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="professional.license_expiry_date"
+                                            @change="license_expiry_date_popup = false"
+                                        ></v-date-picker>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field 
+                                        label="Specialty*" 
+                                        :rules="requiredStringRules"
+                                        v-model="professional.specialty" 
+                                        required>
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field 
+                                        label="Area of Coverage*" 
+                                        :rules="requiredStringRules"
+                                        v-model="professional.coverage" 
                                         required>
                                     </v-text-field>
                                 </v-col>
@@ -84,46 +137,15 @@
                                         >
                                     </v-select>
                                 </v-col>
-                                <!-- <v-col cols="12" sm="6">
-                                    <v-text-field label="Role*" v-model="professional.role" required></v-text-field>
-                                </v-col> -->
-                                <!--
-                                <v-col cols="12">
-                                    <v-text-field label="Password*" type="password" required></v-text-field>
-                                </v-col>
-                                -->
-                                <!-- <v-col cols="12" sm="6">
-                                    <v-select
-                                    :items="['0-17', '18-29', '30-54', '54+']"
-                                    label="Age*"
-                                    required
-                                    ></v-select>
-                                </v-col> -->
-                                <!-- <v-col cols="12" sm="6">
-                                    <v-autocomplete
-                                    :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                    label="Interests"
-                                    multiple
-                                    ></v-autocomplete>
-                                </v-col> -->
                                 <v-col cols="12" sm="6">
                                     <v-menu
-                                    v-model="date_popup"
+                                    v-model="birthdate_popup"
                                     :close-on-content-click="false"
                                     max-width="290"
                                     >
-                                    <!-- <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                        :value="computedDateFormattedMomentjs"
-                                        clearable
-                                        label="Birthdate*"
-                                        readonly
-                                        v-on="on"
-                                        ></v-text-field>
-                                    </template> -->
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
-                                            :value="computedDateFormattedMomentjs"
+                                            :value="computedBirthdateFormattedMomentjs"
                                             clearable
                                             label="Birthdate*"
                                             readonly
@@ -132,20 +154,28 @@
                                     </template>
                                     <v-date-picker
                                         v-model="professional.birthdate"
-                                        @change="date_popup = false"
+                                        @change="birthdate_popup = false"
                                     ></v-date-picker>
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="6" class="text-center">
-                                    <v-file-input
+                                    <!-- <v-file-input
                                         :rules="requiredAvatarRules"
                                         accept="image/png, image/jpeg, image/bmp"
                                         placeholder="Pick an avatar"
                                         prepend-icon="mdi-camera"
                                         label="Avatar*"
-                                        v-model="avatar">
+                                        v-model="avatar"
+                                        >
+                                    </v-file-input> -->
+                                    <v-file-input
+                                        accept="image/png, image/jpeg, image/bmp"
+                                        placeholder="Pick an avatar"
+                                        prepend-icon="mdi-camera"
+                                        label="Avatar*"
+                                        v-model="avatar"
+                                        >
                                     </v-file-input>
-                                    
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -171,26 +201,30 @@
 import moment from 'moment'
 
 export default {
-    props: [ 'professional', 'popup', 'method', 'overlay' ],
+    props: [ 'professional', 'profession', 'popup', 'method', 'overlay' ],
     data(){
         return { 
             valid: true,
             // default_birthdate: '1950-01-01',
             // birthdate: '1950-01-01',
-            date_popup: false,
+            birthdate_popup: false,
+            license_expiry_date_popup: false,
             avatar: null,
             professions_list: ['Nurse', 'Physician', 'Caregiver', 'Physical Therapist', 'Nutritionist'],
             professional_status: ['New', 'Pending','Verified'],
-            requiredStringRules: [v => !!v || 'Name is required'],
+            requiredStringRules: [v => !!v || 'Field is required'],
             requiredEmailRules: [v => !!v || 'E-mail is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
             requiredAvatarRules: [v => !!v || 'Avatar is required', v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB!'],
             popup_dialog: false,
         }
     },
     computed: {
-        computedDateFormattedMomentjs(){
+        computedBirthdateFormattedMomentjs(){
             // return this.professional.birthdate ? moment(this.professional.birthdate).format('YYYY-MM-DD') : this.birthdate
             return this.professional.birthdate ? moment(this.professional.birthdate).format('YYYY-MM-DD') : ''
+        },
+        computedExpiryDateFormattedMomentjs(){  
+            return this.professional.license_expiry_date ? moment(this.professional.license_expiry_date).format('YYYY-MM-DD') : ''
         },
         dialog(){
             this.avatar = null
@@ -211,38 +245,32 @@ export default {
             this.$parent.popupCreateProfessional()
         },
         popup_close(){  
+            this.$refs.form.reset()
             this.$parent.popupClose()
         },
         process_save(){ 
             if (this.$refs.form.validate()) {
-                const data = {
-                    first_name: this.professional.first_name,
-                    middle_name: this.professional.middle_name,
-                    last_name: this.professional.last_name,
-                    email: this.professional.email,
-                    mobile_number: this.professional.mobile_number,
-                    birthdate: this.computedDateFormattedMomentjs,
-                    avatar: this.avatar,
-                    profession: this.professional.profession,
-                    status: this.professional.status,
-                }
+                const data = this.professional
+                data.createdOn = new Date
+                data.birthdate = new Date(data.birthdate)
+                data.license_expiry_date = new Date(data.license_expiry_date)
+                data.avatar = this.avatar
+                data.profession = this.profession
                 this.$parent.saveProfessional(data)
             }
         },
         process_update(){
-            const data = {
-                document_id: this.professional.document_id,
-                first_name: this.professional.first_name,
-                middle_name: this.professional.middle_name,
-                last_name: this.professional.last_name,
-                email: this.professional.email,
-                mobile_number: this.professional.mobile_number,
-                birthdate: this.computedDateFormattedMomentjs,
-                avatar: this.avatar,
-                profession: this.professional.profession,
-                status: this.professional.status,
+            if (this.$refs.form.validate()) {
+                delete this.professional['createdOn']
+                delete this.professional['avatar']
+                const data = this.professional
+                data.birthdate = new Date(data.birthdate)
+                data.license_expiry_date = new Date(data.license_expiry_date)
+                if(this.avatar !== null) {
+                    data.avatar = this.avatar
+                }
+                this.$parent.updateProfessional(data)
             }
-            this.$parent.updateProfessional(data)
         }
     }
 }

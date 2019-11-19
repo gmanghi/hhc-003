@@ -34,7 +34,7 @@ const usersCollection = db.collection('users')
 const teamsCollection = db.collection('teams')
 const professionalCollection = db.collection('professional')
 const clientCollection = db.collection('client')
-
+const visitCollection = db.collection('visit')
 
 export {
     db,
@@ -51,4 +51,5 @@ export {
     teamsCollection,
     professionalCollection,
     clientCollection,
+    visitCollection,
 }

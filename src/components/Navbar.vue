@@ -55,7 +55,7 @@ export default {
                 { title: 'Home', icon: 'mdi-home', route:'/' },
                 { title: 'Clients/Patients', icon: 'mdi-mother-nurse', route:'/clients' },
                 { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/professionals/caregiver' },
-                { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/professionals/applicants' },
+                // { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/professionals/applicants' },
                 { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/professionals/physician' },
                 { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist' },
                 { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse' },

@@ -5,6 +5,7 @@ import Auth from './modules/Auth'
 import Member from './modules/Member'
 import Professional from './modules/Professional'
 import Client from './modules/Client'
+import ClientVisits from './modules/ClientVisits'
 
 const fb = require('.././firebaseConfig.js')
 
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     Auth,
     Member,
     Professional,
-    Client
+    Client,
+    ClientVisits,
   },
 })

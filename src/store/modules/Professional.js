@@ -11,11 +11,17 @@ const Professional = {
             first_name: null,
             middle_name: null,
             last_name: null,
-            email: null,
+            address: null,
             mobile_number: null,
-            birthdate: '1950-01-01',
+            email: null,
+            license: null,
+            license_expiry_date: '',
+            specialty: null,
+            coverage: null,
+            profession: null,
+            status: 'Verified',
+            birthdate: '',
             avatar: null,
-            status: 'New'
         },
         
     },
@@ -41,11 +47,32 @@ const Professional = {
         setLastName(state, val){
             state.professional.last_name = val
         },
-        setEmail(state, val){
-            state.professional.email = val
+        setAddress(state, val){
+            state.professional.address = val
         },
         setMobileNumber(state, val){
             state.professional.mobile_number = val
+        },
+        setEmail(state, val){
+            state.professional.email = val
+        },
+        setLicense(state, val){
+            state.professional.license = val
+        },
+        setLicenseExpiryDate(state, val){
+            state.professional.license_expiry_date = val
+        },
+        setSpecialty(state, val){
+            state.professional.specialty = val
+        },
+        setCoverage(state, val){
+            state.professional.coverage = val
+        },
+        setProfession(state, val){
+            state.professional.profession = val
+        },
+        setStatus(state, val){
+            state.professional.status = val
         },
         setBirthdate(state, val){ 
             state.professional.birthdate = val
@@ -53,23 +80,26 @@ const Professional = {
         setAvatar(state, val){
             state.professional.avatar = val
         },
-        setStatus(state, val){
-            state.professional.status = val
-        },
     },
     actions: { 
-        clearProfessional({commit}){
-            // commit('setProfessional', null)
-            commit('setDocumentId', null)
-            commit('setProfession', null)
-            commit('setFirstName', null)
-            commit('setMiddleName', null)
-            commit('setLastName', null)
-            commit('setEmail', null)
-            commit('setMobileNumber', null)
-            commit('setBirthdate', '1950-01-03')
-            commit('setAvatar', null)
-            commit('setStatus', 'New')
+        clearProfessional({commit, state}){ 
+            return new Promise((resolve, reject) => {
+                commit('setFirstName', null)
+                commit('setMiddleName', null)
+                commit('setLastName', null)
+                commit('setAddress', null)
+                commit('setMobileNumber', null)
+                commit('setEmail', null)
+                commit('setLicense', null)
+                commit('setLicenseExpiryDate', '')
+                commit('setSpecialty', null)
+                commit('setCoverage', null)
+                commit('setProfession', null)
+                commit('setStatus', 'Verified')
+                commit('setBirthdate',  '')
+                commit('setAvatar', null)
+                resolve(state.professional)
+            })
         },
         uploadAvatar({commit, state}){
             return new Promise((resolve, reject) => {
@@ -103,20 +133,9 @@ const Professional = {
                     const parent = this
                     this.dispatch("Professional/uploadAvatar").then(function(url){
                         commit('setAvatar', url)
-                        fb.professionalCollection.add({
-                            createdOn: new Date(),
-                            profession: state.professional.profession,
-                            first_name: state.professional.first_name,
-                            middle_name: state.professional.middle_name,
-                            last_name: state.professional.last_name,
-                            email: state.professional.email,
-                            mobile_number: state.professional.mobile_number,
-                            avatar: state.professional.avatar,
-                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
-                            status: state.professional.status,
-                        }).then(doc => {
+                        fb.professionalCollection.add(state.professional).then(doc => {
                             parent.dispatch("Professional/clearProfessional")
-                            resolve(doc)
+                            resolve(state.professional)
                         }).catch(error => {
                             parent.dispatch("Professional/clearProfessional")
                             reject(error)
@@ -127,18 +146,7 @@ const Professional = {
                     })
                 }
                 else{
-                    fb.professionalCollection.add({
-                        createdOn: new Date(),
-                        profession: state.professional.profession,
-                        first_name: state.professional.first_name,
-                        middle_name: state.professional.middle_name,
-                        last_name: state.professional.last_name,
-                        email: state.professional.email,
-                        mobile_number: state.professional.mobile_number,
-                        avatar: state.professional.avatar,
-                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
-                        status: state.professional.status,
-                    }).then(doc => {
+                    fb.professionalCollection.add(state.professional).then(doc => {
                         this.dispatch("Professional/clearProfessional")
                         console.log(state.professional.status)
                         resolve(doc)
@@ -151,22 +159,11 @@ const Professional = {
         },
         updateProfessional({commit, state}){
             return new Promise((resolve, reject) => {
-                if(state.professional.avatar !== null){
+                if(state.professional.avatar !== null && typeof state.professional.avatar == 'object'){ 
                     const parent = this
                     this.dispatch("Professional/uploadAvatar").then(function(url){
                         commit('setAvatar', url)
-                        fb.professionalCollection.doc(state.professional.document_id).update({
-                            createdOn: new Date(),
-                            profession: state.professional.profession,
-                            first_name: state.professional.first_name,
-                            middle_name: state.professional.middle_name,
-                            last_name: state.professional.last_name,
-                            email: state.professional.email,
-                            mobile_number: state.professional.mobile_number,
-                            avatar: state.professional.avatar,
-                            birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
-                            status: state.professional.status,
-                        }).then(doc => {
+                        fb.professionalCollection.doc(state.professional.document_id).update(state.professional).then(doc => {
                             parent.dispatch("Professional/clearProfessional")
                             resolve(doc)
                         }).catch(error => {
@@ -179,17 +176,7 @@ const Professional = {
                     })
                 }
                 else{
-                    fb.professionalCollection.doc(state.professional.document_id).update({
-                        createdOn: new Date(),
-                        profession: state.professional.profession,
-                        first_name: state.professional.first_name,
-                        middle_name: state.professional.middle_name,
-                        last_name: state.professional.last_name,
-                        email: state.professional.email,
-                        mobile_number: state.professional.mobile_number,
-                        birthdate: fb.firebase.firestore.Timestamp.fromDate(new Date(state.professional.birthdate)),
-                        status: state.professional.status,
-                    }).then(doc => {
+                    fb.professionalCollection.doc(state.professional.document_id).update(state.professional).then(doc => {
                         this.dispatch("Professional/clearProfessional")
                         console.log(state.professional.status)
                         resolve(doc)
@@ -227,7 +214,7 @@ const Professional = {
         getProfessionalsByStatusNew({commit, state}) {
             fb.professionalCollection
             .where('status','==','New')
-            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => { console.log('by status',state.professional.status)
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
                 let professionalArray = []
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
@@ -241,7 +228,7 @@ const Professional = {
         getProfessionalsByStatus({commit, state}) {
             fb.professionalCollection
             .where('status','==',state.professional.status)
-            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => { console.log('by status',state.professional.status)
+            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
                 let professionalArray = []
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
@@ -252,7 +239,9 @@ const Professional = {
                 commit('setProfessionals', professionalArray)
             })
         },
-        getProfessionalsByProfessionAndStatus({commit, state}) {  console.log('by profession and status')
+        getProfessionalsByProfessionAndStatus({commit, state}) {  
+            console.log('by profession',state.professional.profession)
+            console.log('by status',state.professional.status)
             fb.professionalCollection
             .where('profession','==',state.professional.profession)
             .where('status','==',state.professional.status)
@@ -263,7 +252,7 @@ const Professional = {
                     professional.id = doc.id
                     professionalArray.push(professional)
                 })
-
+                console.log(professionalArray)
                 commit('setProfessionals', professionalArray)
             })
         },
@@ -280,25 +269,35 @@ const Professional = {
             })
         },
         getProfessional({commit, state}) {
-            fb.professionalCollection.doc(state.professional.document_id).get().then(function(doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    commit('setProfession', data.profession)
-                    commit('setFirstName', data.first_name)
-                    commit('setMiddleName', data.middle_name)
-                    commit('setLastName', data.last_name)
-                    commit('setEmail', data.email)
-                    commit('setMobileNumber', data.mobile_number)
-                    commit('setBirthdate', data.birthdate ? moment(data.birthdate.toDate()).format('YYYY-MM-DD') : null) 
-                    commit('setAvatar', data.avatar)
-                    commit('setStatus', data.status)
-                    // console.log("Documents data:", doc.data());
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
+            return new Promise((resolve, reject) => { 
+                fb.professionalCollection.doc(state.professional.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        data.createdOn = moment(data.createdOn.toDate()).format('YYYY-MM-DD')
+                        data.birthdate = moment(data.birthdate.toDate()).format('YYYY-MM-DD')
+                        data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
+                        commit('setProfessional', data)
+                        commit('setDocumentId', doc.id)
+                        // console.log(state.professional)
+                        resolve(state.professional)
+                        
+                        // commit('setProfession', data.profession)
+                        // commit('setFirstName', data.first_name)
+                        // commit('setMiddleName', data.middle_name)
+                        // commit('setLastName', data.last_name)
+                        // commit('setEmail', data.email)
+                        // commit('setMobileNumber', data.mobile_number)
+                        // commit('setBirthdate', data.birthdate ? moment(data.birthdate.toDate()).format('YYYY-MM-DD') : null) 
+                        // commit('setAvatar', data.avatar)
+                        // commit('setStatus', data.status)
+                        // console.log("Documents data:", doc.data());
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
         }
     },
     getters: { 
