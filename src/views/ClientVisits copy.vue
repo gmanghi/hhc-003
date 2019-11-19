@@ -4,89 +4,6 @@
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-row class="fill-height">
-                <v-dialog v-model="dialog" persistent max-width="600px">
-                    <template v-slot:activator="{ on }">
-                        <v-btn
-                            fixed
-                            dark
-                            fab
-                            bottom
-                            right
-                            color="pink"
-                            @click="popup_create_visit">
-                            <v-icon small>mdi-plus</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-form
-                        ref="form"
-                        v-model="valid"
-                        lazy-validation
-                        >
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Schedule visit</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" sm="12" md="12">
-                                            <v-autocomplete
-                                                :items="professionals"
-                                                label="Name"
-                                                v-model="visit.professional"
-                                                >
-                                                <template slot="selection" slot-scope="data">
-                                                    {{data.item.first_name}} {{ data.item.last_name }}
-                                                </template>    
-                                                <template slot="item" slot-scope="data">
-                                                    {{data.item.first_name}} {{ data.item.last_name }}
-                                                </template>
-                                            </v-autocomplete>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="12">
-                                            <v-menu
-                                                v-model="visit_date_popup"
-                                                :close-on-content-click="false"
-                                                max-width="290"
-                                                >
-                                                <template v-slot:activator="{ on }">
-                                                    <v-text-field
-                                                        :value="computedVisitDateFormattedMomentjs"
-                                                        clearable
-                                                        label="Date of visit*"
-                                                        readonly
-                                                        v-on="on">
-                                                    </v-text-field>
-                                                </template>
-                                                <v-date-picker
-                                                    v-model="visit_date"
-                                                    @change="visit_date_popup = false"
-                                                ></v-date-picker>
-                                            </v-menu>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="12">
-                                            <v-combobox
-                                                v-model="visit_shift"
-                                                :items="['AM','PM']"
-                                                label="Shift"
-                                                single    
-                                            ></v-combobox>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="popup_close">Close</v-btn>
-                                <v-btn color="blue darken-1" v-if="action === 'create'" text @click="process_save">Save</v-btn>
-                                <v-btn color="blue darken-1" v-if="action === 'update'" text @click="process_update">Update</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-form>
-                    <v-overlay :value="overlay">
-                        <v-progress-circular indeterminate size="64"></v-progress-circular>
-                    </v-overlay>
-                </v-dialog>
                 <v-col>
                     <v-sheet height="64">
                         <v-toolbar flat color="white">
@@ -163,7 +80,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import ClientNavbar from '@/components/ClientNavbar'
 export default {
@@ -172,13 +88,7 @@ export default {
     },
     data() {
         return {
-            dialog: false,
-            valid: true,
-            action: 'create',
-            overlay: false,
-            visit_date_popup: false,
-            visit_date: '',
-            visit_shift: '',
+            
             today: '2019-11-19',
             focus: '2019-11-19',
             type: 'month',
@@ -193,27 +103,177 @@ export default {
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
-            // events: [],
-            visit: {},
+            events: [
+                {
+                    name: 'Nurse 1',
+                    details: 'Going to the beach!',
+                    start: '2019-11-29 07:10',
+                    end: '2019-11-29 19:00',
+                    color: 'green',
+                },
+                {
+                    name: 'Caregiver 1',
+                    details: 'Going to the beach!',
+                    start: '2018-12-29 07:10',
+                    end: '2018-12-29 19:00',
+                    color: 'blue',
+                },
+                {
+                    name: 'Physician 1',
+                    details: 'Going to the beach!',
+                    start: '2018-12-29 07:10',
+                    end: '2018-12-29 19:00',
+                    color: 'orange',
+                },
+                {
+                    name: 'Nurse 1',
+                    details: 'Going to the beach!',
+                    start: '2018-12-30 07:10',
+                    end: '2018-12-30 19:00',
+                    color: 'green',
+                },
+                {
+                    name: 'Vacation',
+                    details: 'Going to the beach!',
+                    start: '2018-12-29',
+                    end: '2019-01-01',
+                    color: 'blue',
+                },
+                {
+                    name: 'Meeting',
+                    details: 'Spending time on how we do not have enough time',
+                    start: '2019-01-07 09:00',
+                    end: '2019-01-07 09:30',
+                    color: 'indigo',
+                },
+                {
+                    name: 'Large Event',
+                    details: 'This starts in the middle of an event and spans over multiple events',
+                    start: '2018-12-31',
+                    end: '2019-01-04',
+                    color: 'deep-purple',
+                },
+                {
+                    name: '3rd to 7th',
+                    details: 'Testing',
+                    start: '2019-01-03',
+                    end: '2019-01-07',
+                    color: 'cyan',
+                },
+                {
+                    name: 'Big Meeting',
+                    details: 'A very important meeting about nothing',
+                    start: '2019-01-07 08:00',
+                    end: '2019-01-07 11:30',
+                    color: 'red',
+                },
+                {
+                    name: 'Another Meeting',
+                    details: 'Another important meeting about nothing',
+                    start: '2019-01-07 10:00',
+                    end: '2019-01-07 13:30',
+                    color: 'brown',
+                },
+                {
+                    name: '7th to 8th',
+                    start: '2019-01-07',
+                    end: '2019-01-08',
+                    color: 'blue',
+                },
+                {
+                    name: 'Lunch',
+                    details: 'Time to feed',
+                    start: '2019-01-07 12:00',
+                    end: '2019-01-07 15:00',
+                    color: 'deep-orange',
+                },
+                {
+                    name: '30th Birthday',
+                    details: 'Celebrate responsibly',
+                    start: '2019-01-03',
+                    color: 'teal',
+                },
+                {
+                    name: 'New Year',
+                    details: 'Eat chocolate until you pass out',
+                    start: '2019-01-01',
+                    end: '2019-01-02',
+                    color: 'green',
+                },
+                {
+                    name: 'Conference',
+                    details: 'The best time of my life',
+                    start: '2019-01-21',
+                    end: '2019-01-28',
+                    color: 'grey darken-1',
+                },
+                {
+                    name: 'Hackathon',
+                    details: 'Code like there is no tommorrow',
+                    start: '2019-01-30 23:00',
+                    end: '2019-02-01 08:00',
+                    color: 'black',
+                },
+                {
+                    name: 'event 1',
+                    start: '2019-01-14 18:00',
+                    end: '2019-01-14 19:00',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 2',
+                    start: '2019-01-14 18:00',
+                    end: '2019-01-14 19:00',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 5',
+                    start: '2019-01-14 18:00',
+                    end: '2019-01-14 19:00',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 3',
+                    start: '2019-01-14 18:30',
+                    end: '2019-01-14 20:30',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 4',
+                    start: '2019-01-14 19:00',
+                    end: '2019-01-14 20:00',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 6',
+                    start: '2019-01-14 21:00',
+                    end: '2019-01-14 23:00',
+                    color: '#4285F4',
+                },
+                {
+                    name: 'event 7',
+                    start: '2019-01-14 22:00',
+                    end: '2019-01-14 23:00',
+                    color: '#4285F4',
+                },
+            ],
         }
     },
+    beforeRouteUpdate (to, from, next) {
+        this.$store.commit('Client/setDocumentId', to.params.id)
+        this.$store.dispatch("Client/getClient")
+        next();
+    },
     mounted() {
-        const parent = this
-        this.$store.dispatch("ClientVisits/getVisits").then(function(data){
-            // parent.events = data
-            parent.$store.dispatch("Professional/getProfessionals")
-        }).catch(function(error){
-            console.log(error)
-        })
+        this.$store.commit('Client/setDocumentId', this.$route.params.id)
+        this.$store.dispatch("Client/getClient")
+
+        this.$refs.calendar.checkChange()
     },
     computed: {
         ...mapGetters({
-            professionals: 'Professional/professionals',
-            events: 'ClientVisits/visits'
+            client: 'Client/client'
         }),
-        computedVisitDateFormattedMomentjs(){
-            return this.visit.date ? moment(this.visit.date).format('YYYY-MM-DD') : ''
-        },
         title () {
             const { start, end } = this
             if (!start || !end) {
@@ -249,38 +309,6 @@ export default {
         },
     },
     methods: {
-        popup_close(){
-            this.dialog = false
-        },
-        popup_create_visit(){
-            this.dialog = true
-        },
-        process_save(){
-            const parent = this
-            let time_start = ''
-            let time_end = ''
-            if(this.visit_shift == 'AM'){ alert('trace1')
-                time_start = new Date(this.visit_date + ' ' + '07:00')
-                time_end = new Date(this.visit_date + ' ' + '19:00')
-            }
-            else{  alert('trace2')
-                time_start = new Date(this.visit_date + ' ' + '19:00')
-                time_end = new Date(this.visit_date + ' ' + '07:00')
-                // time_end = time_end.setDate(time_end.getDate() + 1)
-            }
-            const data = {}
-            data.professional = this.visit.professional.first_name + ' ' + this.visit.professional.last_name
-            data.time_start = time_start
-            data.time_end = time_end
-            console.log(data)
-            this.$store.commit('ClientVisits/setVisit', data)
-            this.$store.dispatch("ClientVisits/createVisit").then(function(doc){
-                console.log('saveVisit',doc)
-                parent.dialog = false
-            }).catch(function(error){
-                console.log(error)
-            })
-        },
         viewDay ({ date }) {
             this.focus = date
             this.type = 'day'
