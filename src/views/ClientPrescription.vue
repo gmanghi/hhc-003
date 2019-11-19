@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Prescriptions</h1>
+        <h1 class="subheading grey--text">Prescription</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>
@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="600px">
+                <v-dialog v-model="popup" persistent max-width="60%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -56,7 +56,60 @@
                                 <span class="headline">Prescription Form</span>
                             </v-card-title>
                             <v-card-text>
-                                <v-col cols="12" sm="12" md="12">
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                         <v-text-field label="Patient Name" v-model="prescription.prescription_patient_name"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="12">
+                                         <v-text-field label="Address" v-model="prescription.prescription_address"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="4">
+                                         <v-text-field label="Phone" v-model="prescription.prescription_phone"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="4">
+                                         <v-text-field label="Age" v-model="prescription.prescription_age"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="4">
+                                         <v-text-field label="Sex" v-model="prescription.prescription_sex"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="6">
+                                        <v-menu
+                                            :close-on-content-click="true"
+                                            max-width="290"
+                                            readonly
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    :value="computedDateFormattedMomentjs"
+                                                    clearable
+                                                    label="Date"
+                                                    readonly
+                                                    v-on="on">
+                                                </v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                @change="date_popup = false"
+                                                readonly
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-textarea name="input-7-1" label="Prescriptions" auto-grow value="" v-model="prescription.prescriptions"></v-textarea>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                         <v-text-field label="MD" v-model="prescription.prescription_md"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                         <v-text-field label="License No." v-model="prescription.prescription_license"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                         <v-text-field label="PTR" v-model="prescription.prescription_ptr"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                         <v-text-field label="S2" v-model="prescription.prescription_s2"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <!--<v-col cols="12" sm="12" md="12">
                                     <v-combobox
                                         v-model="prescription.prescription1"
                                         :items="['Patient lives alone',
@@ -79,7 +132,7 @@
                                         single    
                                         chips
                                     ></v-combobox>
-                                </v-col>
+                                </v-col>-->
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>

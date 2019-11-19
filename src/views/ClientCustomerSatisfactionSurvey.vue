@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Customer Satisfaction Surveys</h1>
+        <h1 class="subheading grey--text">Customer Satisfaction Survey</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>
@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="600px">
+                <v-dialog v-model="popup" persistent max-width="90%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -53,50 +53,247 @@
                         >
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Upload Contract</span>
+                                <span class="headline">Customer Satisfaction Survey Form</span>
                             </v-card-title>
-                            <v-card-text>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="customer_satisfaction_survey.customer_satisfaction_survey1"
-                                        :items="['Patient lives alone',
-                                                'Patient lives with other person(s) in the home',
-                                                'Patient lives in conregate situation (e.g. assissted living)']"
-                                        label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assisstance?"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="customer_satisfaction_survey.customer_satisfaction_survey2"
-                                        :items="['Around the clock',
-                                                'Regular daytime',
-                                                'Regular nightime',
-                                                'Occasional/Short-term assistance',
-                                                'None']"
-                                        label="Availability Assisstance"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="popup_close">Close</v-btn>
-                                <v-btn color="blue darken-1" v-if="method === 'create'" text @click="process_save">Save</v-btn>
-                                <v-btn color="blue darken-1" v-if="method === 'update'" text @click="process_update">Update</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-form>
-                    <v-overlay :value="overlay">
-                        <v-progress-circular indeterminate size="64"></v-progress-circular>
-                    </v-overlay>
-                </v-dialog>
-            </v-row>
-            <!-- Popup End -->
-        </v-container>
-        
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey0"
+                                    :items="['Home Health Visits','Corporate / Community Vaccination','Case Management / Caregiver and Nursing Service','Senior Residential Facility']"
+                                    label="Please put a check on the appropriate box:"
+                                    multiple    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12">
+                                <span class="body-2">Home Health Care is committed to improving its services and care for our clients and patients. Your feedbck will help and guide us in sustaining and continously improving this commitment. Please take a few  minutes to answer this Customer Satisfaction Survey form (CSS)</span>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <div class="body-2"><span class="font-weight-bold">Client from Home Health Visits/Case Management/Caregiver and Nursing Services and Vaccination Services should answer items 1-5 only</span></div>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <div class="body-2">Home Health Care staff is/are:</div>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey1"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="1. Consistent and on time"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey2"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="2. Performed Services as stated in contract/agreement"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey3"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="3. Knowledgeable and competent"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey4"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="4. Explains the services related to patient care"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey5"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="5. Respectful and courteous"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                             <v-col cols="12" md="12" sm="12">
+                                <div class="body-2"><span class="font-weight-bold">Client from Senior Residential Facility should continue to answer items 6-10</span></div>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey6"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="6. Encourages me and my family to participate in my plan of care"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey7"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="7. Explains and constantly updates me and my family about my plan of care"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey8"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="8. Performs thorough physical, emotional and functional examination daily"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey9"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="9. Frequently conducts room inspection for my safety and security"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey10"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="10. Ensures that my medicines and food are given on time"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+
+                            <v-col cols="12"><v-divider></v-divider></v-col>
+                             <v-col cols="12" sm="12" md="12">
+                                <v-combobox
+                                    v-model="customer_satisfaction_survey.customer_satisfaction_survey11"
+                                    :items="['Yes',
+                                            'No']"
+                                    label="Will you recommend Home Health Care to others?"
+                                    single    
+                                    chips
+                                ></v-combobox>
+                            </v-col>
+
+                            <v-col cols="12" md="12" sm="12">
+                                <v-textarea name="input-7-1" label="Other comments/suggestions" auto-grow value="" v-model="customer_satisfaction_survey.customer_satisfaction_survey_comments"></v-textarea>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-text-field label="Signature over printed Name" v-model="customer_satisfaction_survey.customer_satisfaction_survey_name"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-menu
+                                    :close-on-content-click="true"
+                                    max-width="290"
+                                    readonly
+                                    >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            :value="computedDateFormattedMomentjs"
+                                            clearable
+                                            label="Date"
+                                            readonly
+                                            v-on="on">
+                                        </v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        @change="date_popup = false"
+                                        readonly
+                                    ></v-date-picker>
+                                </v-menu>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <div class="body-2"><span class="font-weight-bold">If applicable</span></div>
+                            </v-col>
+                            <v-col cols="12-" md="6" sm="6">
+                                <v-text-field label="Name of Company/Organization" v-model="customer_satisfaction_survey.customer_satisfaction_survey_org"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-menu
+                                    :close-on-content-click="true"
+                                    max-width="290"
+                                    readonly
+                                    >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            :value="computedDateFormattedMomentjs"
+                                            clearable
+                                            label="Date/time in and out"
+                                            readonly
+                                            v-on="on">
+                                        </v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        @change="date_popup = false"
+                                        readonly
+                                    ></v-date-picker>
+                                </v-menu>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-text-field label="Name/signature of company representative" v-model="customer_satisfaction_survey.customer_satisfaction_survey_rep"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="6">
+                                <v-text-field label="Name of healthcare professional/signature" v-model="customer_satisfaction_survey.customer_satisfaction_survey_repsign"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                                <!--<v-card-text>
+                                    <v-col cols="12" sm="12" md="12">
+                                        <v-combobox
+                                            v-model="customer_satisfaction_survey.customer_satisfaction_survey1"
+                                            :items="['Patient lives alone',
+                                                    'Patient lives with other person(s) in the home',
+                                                    'Patient lives in conregate situation (e.g. assissted living)']"
+                                            label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assisstance?"
+                                            single    
+                                            chips
+                                        ></v-combobox>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="12">
+                                        <v-combobox
+                                            v-model="customer_satisfaction_survey.customer_satisfaction_survey2"
+                                            :items="['Around the clock',
+                                                    'Regular daytime',
+                                                    'Regular nightime',
+                                                    'Occasional/Short-term assistance',
+                                                    'None']"
+                                            label="Availability Assisstance"
+                                            single    
+                                            chips
+                                        ></v-combobox>
+                                    </v-col>
+                                </v-card-text>-->
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="popup_close">Close</v-btn>
+                                    <v-btn color="blue darken-1" v-if="method === 'create'" text @click="process_save">Save</v-btn>
+                                    <v-btn color="blue darken-1" v-if="method === 'update'" text @click="process_update">Update</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-form>
+                        <v-overlay :value="overlay">
+                            <v-progress-circular indeterminate size="64"></v-progress-circular>
+                        </v-overlay>
+                    </v-dialog>
+                </v-row>
+                <!-- Popup End -->
+            </v-container>
     </div>
 </template>
 

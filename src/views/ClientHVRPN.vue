@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="600px">
+                <v-dialog v-model="popup" persistent max-width="90%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -56,7 +56,106 @@
                                 <span class="headline">HVRPN Form</span>
                             </v-card-title>
                             <v-card-text>
-                                <v-col cols="12" sm="12" md="12">
+                            <v-row>
+                                <v-col cols="12" md="2" sm="3" xs="2">
+                                    <v-autocomplete
+                                    :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
+                                    label="Title"
+                                    v-model="hvrpn.hvrpn_title"
+                                    ></v-autocomplete>
+                                </v-col><v-col cols="12" md="4" sm="3" >
+                                    <v-text-field label="Client / Account Name*" v-model="hvrpn.hvrpn_account_name" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12"  md="3" sm="3">
+                                    <v-text-field label="Relationship to Patient" v-model="hvrpn.hvrpn_relationship"></v-text-field>
+                                </v-col>
+                                <v-col cols="12"  md="3" sm="3">
+                                    <v-text-field label="Date/Time" v-model="hvrpn.hvrpn_datetime"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-text-field
+                                    label="Landline / Mobile Phone / Fax*"
+                                    persistent-hint
+                                    required
+                                    v-model="hvrpn.hvrpn_landline_mobile_fax"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-text-field label="Email Address*" v-model="hvrpn.hvrpn_email" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-text-field label="Attending Physician*" v-model="hvrpn.hvrpn_attending_physician" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="2"  sm="3" xs="2">
+                                    <v-autocomplete
+                                    :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
+                                    label="Title"
+                                    v-model="hvrpn.patient_title"
+                                    ></v-autocomplete>
+                                </v-col>
+                                <v-col cols="12" md="5" sm="3">
+                                    <v-text-field label="Patient Name*" v-model="hvrpn.hvrpn_patient_name" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="2" sm="3">
+                                    <v-text-field label="Age" v-model="hvrpn.hvrpn_patient_age" hint="example of helper text only on focus" required></v-text-field>
+                                </v-col>
+                                    <v-col cols="12" md="3" sm="3">
+                                    <v-menu
+                                        v-model="date_popup"
+                                        :close-on-content-click="true"
+                                        max-width="290"
+                                        >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                :value="computedDateFormattedMomentjs"
+                                                clearable
+                                                label="Birthdate*"
+                                                readonly
+                                                v-on="on">
+                                            </v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="hvrpn.hvrpn_patient_birthdate"
+                                            @change="date_popup = false"
+                                        ></v-date-picker>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-text-field label="Religion" v-model="hvrpn.hvrpn_patient_religion" hint="example of helper text only on focus" required></v-text-field>
+                                </v-col>
+                                    <v-col cols="12" md="4" sm="4">
+                                    <v-text-field label="Nationality*" v-model="hvrpn.hvrpn_patient_nationality" hint="example of helper text only on focus" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="4">
+                                    <v-text-field label="Landline" v-model="hvrpn.hvrpn_patient_landline" hint="example of helper text only on focus" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12" sm="12">
+                                    <v-text-field label="Complete Address*" v-model="hvrpn.hvrpn_patient_complete_address" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12" sm="12">
+                                    <v-textarea name="input-3-1" label="Chief Complaint*" auto-grow value="" v-model="hvrpn.hvrpn_patient_chief_complaint" required></v-textarea>
+                                </v-col>
+                                <v-col cols="12"><v-divider></v-divider></v-col>
+                                <v-col cols="12" md="12" sm="12">
+                                    <v-textarea name="input-3-1" label="Physical Examination" auto-grow value="" v-model="hvrpn.hvrpn_physical_examination" required></v-textarea>
+                                </v-col>
+                                <v-col cols="12" md="6" sm="12">
+                                    <v-textarea name="input-3-1" label="New Problems" auto-grow value="" v-model="hvrpn.hvrpn_new_problems" required></v-textarea>
+                                </v-col>
+                                <v-col cols="12" md="6" sm="12">
+                                    <v-textarea name="input-3-1" label="Old Stable Problems" auto-grow value="" v-model="hvrpn.hvrpn_old_problems" required></v-textarea>
+                                </v-col>
+                                <v-col cols="12" md="12" sm="12">
+                                    <v-textarea name="input-3-1" label="Plan of Care" auto-grow value="" v-model="hvrpn.hvrpn_plan_of_care" required></v-textarea>
+                                </v-col>
+                                <v-col cols="12" md="6" sm="6">
+                                     <v-text-field label="CASE MANAGER" v-model="hvrpn.hvrpn_case_manager" required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6" sm="6">
+                                    <v-text-field label="ACCOMPLISHED BY" v-model="hvrpn.hvrpn_accomplished_by" required></v-text-field>
+                                </v-col>
+                            </v-row>
+                                <!--<v-col cols="12" sm="12" md="12">
                                     <v-combobox
                                         v-model="hvrpn.hvrpn1"
                                         :items="['Patient lives alone',
@@ -79,7 +178,7 @@
                                         single    
                                         chips
                                     ></v-combobox>
-                                </v-col>
+                                </v-col>-->
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
