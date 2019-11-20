@@ -22,10 +22,10 @@
                     <template v-slot:item.actions="{ item }">
                         <v-btn
                             color="blue-grey"
-                            class="ma-2 white--text"
+                            class="black--text"
+                            text
                             :to="{ name: 'client_details', params: { id: item.document_id } }">
-                            Details
-                            <v-icon right dark>mdi-eye</v-icon>
+                            <v-icon dark>mdi-clipboard-list-outline</v-icon>
                         </v-btn>    
                     </template>
                 </v-data-table>
@@ -54,11 +54,11 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" md="2" sm="3" xs="2">
-                                            <v-autocomplete
+                                            <v-select
                                             :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
                                             label="Title"
                                             v-model="client.client_title"
-                                            ></v-autocomplete>
+                                            ></v-select>
                                         </v-col>
                                         <v-col cols="12" md="4" sm="3" >
                                             <v-text-field label="Client / Account Name*" v-model="client.client_account_name" required></v-text-field>
@@ -89,11 +89,11 @@
                                         </v-col>
 
                                         <v-col cols="12" md="2"  sm="3" xs="2">
-                                            <v-autocomplete
+                                            <v-select
                                             :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
                                             label="Title"
                                             v-model="client.patient_title"
-                                            ></v-autocomplete>
+                                            ></v-select>
                                         </v-col>
                                         <v-col cols="12" md="5" sm="3">
                                             <v-text-field label="Patient Name*" v-model="client.patient_name" required></v-text-field>
@@ -144,36 +144,25 @@
                                         <v-col cols="12" md="12" sm="12">
                                             <v-text-field label="Complete Address*" v-model="client.patient_complete_address" required></v-text-field>
                                         </v-col>
-                                    
-                                        <v-col cols="12" md="12" sm="12">
-                                            <v-subheader class="font-weight-bold"> REQUIREMENTS (Kindly check which service request / requirement is)</v-subheader>
-                                            <v-divider></v-divider>
-                                        </v-col>
 
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Home Health Visit by HCP" value="home_health_visit_hcp"></v-checkbox>
+                                        <v-col cols="12" sm="12" md="12">
+                                            <v-combobox
+                                                v-model="client.requirements"
+                                                :items="['Home Health Visit by HCP',
+                                                        'Registered Nurse / Caregiver Deployment',
+                                                        'Laboratory / Radiology',
+                                                        'Purchase / Rental of Medicine Equipment',
+                                                        'Medical Escorting',
+                                                        'Senior Residential Facility',
+                                                        'Home Vaccination Program',
+                                                        'MDeploy']"
+                                                label="REQUIREMENTS (Kindly check which service request / requirement is)"
+                                                multiple    
+                                                chips
+                                            ></v-combobox>
                                         </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Registered Nurse / Caregiver Deployment" value="registered_nurse"></v-checkbox>
-                                         </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Laboratory / Radiology" value="lab"></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Purchase / Rental of Medicine Equipment" value="purchase"></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Medical Escorting" value="medical_escorting"></v-checkbox>
-                                         </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Senior Residential Facility" value="senior_residential_facility"></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="Home Vaccination Program" value="home_vaccination"></v-checkbox>
-                                         </v-col>
-                                       <v-col cols="12" md="6" sm="12">
-                                            <v-checkbox class="ma-0 pa-0" label="MDeploy" value="mdeploy"></v-checkbox>
-                                        </v-col>
+                                    
+                                        
 
                                         <v-col cols="12" md="12" sm="12">
                                             <v-subheader class="font-weight-bold">Mode of Payment (Kindly check the appropriate box)</v-subheader>

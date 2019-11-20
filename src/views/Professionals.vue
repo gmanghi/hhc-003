@@ -34,6 +34,17 @@
                 </v-flex>
             </v-layout>
             <ProfessionalAddEditForm v-bind:profession="profession" v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method" v-bind:overlay="overlay"></ProfessionalAddEditForm>
+            <v-snackbar
+                v-model="snackbar"
+                :multi-line="multiLine">
+                {{ notification }}
+                <v-btn
+                    color="blue"
+                    text
+                    @click="snackbar = false">
+                    Close
+                </v-btn>
+            </v-snackbar>
         </v-container>
     </div>    
 </template>
@@ -52,7 +63,10 @@ export default {
             popup: false,
             overlay: false,
             method: 'create',
-            status: 'Verified'
+            status: 'Verified',
+            notification: '',
+            multiLine: true,
+            snackbar: false,
         }
     },
     beforeRouteUpdate (to, from, next) {
@@ -91,11 +105,14 @@ export default {
                 parent.popup = true
                 parent.method = 'view'
             }).catch(function(error){
+                parent.notification = error
+                parent.snackbar = true
                 console.log(error)
             })
             // this.professional = this.$store.getters['Professional/professional']
         },
-        editProfessional(document_id){ 
+        editProfessional(document_id){
+            this.overlay = true
             const parent = this
             this.$store.dispatch("Professional/clearProfessional")
             this.$store.commit('Professional/setDocumentId', document_id)
@@ -104,45 +121,59 @@ export default {
                 parent.professional = data
                 parent.popup = true
                 parent.method = 'update'
+                parent.overlay = false
             }).catch(function(error){
+                parent.notification = error
+                parent.snackbar = true
                 console.log(error)
             })
-            // this.professional = this.$store.getters['Professional/professional']
-            
         },
         deleteProfessional(document_id){
             this.$store.commit('Professional/setDocumentId', document_id)
             this.$store.dispatch("Professional/deleteProfessional")
         },
         saveProfessional(data){
-            this.overlay = true
-            const parent = this
-            this.$store.commit('Professional/setProfessional', data)
-            this.$store.dispatch("Professional/createProfessional").then(function(doc){
-                console.log('saveProfessional',doc)
-                // parent.professional = doc
-                parent.popup = false
-                parent.overlay = false
-            }).catch(function(error){
-                console.log(error)
+            return new Promise((resolve, reject) => {
+                this.overlay = true
+                const parent = this
+                data.profession = this.profession
+                data.status = this.status
+                this.$store.commit('Professional/setProfessional', data)
+                this.$store.dispatch("Professional/createProfessional").then(function(doc){
+                    console.log('saveProfessional',doc)
+                    // parent.popup = false
+                    parent.overlay = false
+                    resolve(true)
+                }).catch(function(error){
+                    reject(error)
+                    parent.notification = error
+                    parent.snackbar = true
+                })
             })
         },
         updateProfessional(data){
-            this.overlay = true
-            const parent = this
-            this.$store.commit('Professional/setProfessional', data)
-            this.$store.dispatch("Professional/updateProfessional").then(function(doc){
-                console.log('updateProfessional',doc)
-                parent.popup = false
-                parent.method = 'create'
-                parent.overlay = false
-            }).catch(function(error){
-                console.log(error)
+            return new Promise((resolve, reject) => {
+                this.overlay = true
+                const parent = this
+                this.$store.commit('Professional/setProfessional', data)
+                this.$store.dispatch("Professional/updateProfessional").then(function(doc){
+                    console.log('updateProfessional',doc)
+                    // parent.popup = false
+                    // parent.method = 'create'
+                    parent.overlay = false
+                    resolve(true)
+                    parent.notification = 'Successfully Saved'
+                    parent.snackbar = true
+                }).catch(function(error){
+                    reject(error)
+                    parent.notification = error
+                    parent.snackbar = true
+                })
             })
         },
         popupClose(){
             this.$store.dispatch("Professional/clearProfessional")
-            this.professional = this.$store.getters['Professional/professional']
+            // this.professional = this.$store.getters['Professional/professional']
             console.log(this.professional)
             this.method = 'create'
             this.popup = false
@@ -157,6 +188,7 @@ export default {
                 parent.overlay = false
             }).catch(function(error){
                 console.log(error)
+                parent.notification = error
             })
         },
     }

@@ -212,7 +212,7 @@ export default {
             events: 'ClientVisits/visits'
         }),
         computedVisitDateFormattedMomentjs(){
-            return this.visit.date ? moment(this.visit.date).format('YYYY-MM-DD') : ''
+            return this.visit_date ? moment(this.visit_date).format('YYYY-MM-DD') : ''
         },
         title () {
             const { start, end } = this
@@ -259,14 +259,16 @@ export default {
             const parent = this
             let time_start = ''
             let time_end = ''
-            if(this.visit_shift == 'AM'){ alert('trace1')
+            if(this.visit_shift == 'AM'){
                 time_start = new Date(this.visit_date + ' ' + '07:00')
                 time_end = new Date(this.visit_date + ' ' + '19:00')
             }
-            else{  alert('trace2')
+            else{
                 time_start = new Date(this.visit_date + ' ' + '19:00')
                 time_end = new Date(this.visit_date + ' ' + '07:00')
-                // time_end = time_end.setDate(time_end.getDate() + 1)
+
+                time_end = new Date(time_end.setDate(time_end.getDate() + 1))
+                // console.log(time_end)
             }
             const data = {}
             data.professional = this.visit.professional.first_name + ' ' + this.visit.professional.last_name

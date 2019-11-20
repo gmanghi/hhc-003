@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="90%">
+                <v-dialog v-model="popup" persistent max-width="90%" :scrollable="scrollable">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed

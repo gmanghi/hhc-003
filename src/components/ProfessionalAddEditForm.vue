@@ -88,6 +88,7 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
+                                                :rules="requiredStringRules"
                                                 :value="computedExpiryDateFormattedMomentjs"
                                                 clearable
                                                 label="License Date of Expiry*"
@@ -117,7 +118,7 @@
                                         required>
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6">
+                                <!-- <v-col cols="12" sm="6">
                                     <v-select
                                         :items="professions_list"
                                         label="Profession"
@@ -126,8 +127,8 @@
                                         required
                                         >
                                     </v-select>
-                                </v-col>
-                                <v-col cols="12" sm="6">
+                                </v-col> -->
+                                <!-- <v-col cols="12" sm="6">
                                     <v-select
                                         :items="professional_status"
                                         label="Status"
@@ -136,7 +137,7 @@
                                         required    
                                         >
                                     </v-select>
-                                </v-col>
+                                </v-col> -->
                                 <v-col cols="12" sm="6">
                                     <v-menu
                                     v-model="birthdate_popup"
@@ -145,6 +146,7 @@
                                     >
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
+                                            :rules="requiredStringRules"
                                             :value="computedBirthdateFormattedMomentjs"
                                             clearable
                                             label="Birthdate*"
@@ -189,10 +191,10 @@
                     </v-card-actions>
                 </v-card>
             </v-form>
-            <v-overlay :value="overlay">
-                <v-progress-circular indeterminate size="64"></v-progress-circular>
-            </v-overlay>
         </v-dialog>
+        <v-overlay :value="overlay" z-index="202">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
     </v-row>
     <!-- Popup End -->
 </template>
@@ -256,7 +258,15 @@ export default {
                 data.license_expiry_date = new Date(data.license_expiry_date)
                 data.avatar = this.avatar
                 data.profession = this.profession
-                this.$parent.saveProfessional(data)
+                const parent = this
+                this.$parent.saveProfessional(data).then(function(result){
+                    if(result){
+                        parent.popup_close()
+                    }
+                }).catch(function (error){
+                    console.log(error)
+                    parent.popup_close()
+                })
             }
         },
         process_update(){
@@ -269,7 +279,15 @@ export default {
                 if(this.avatar !== null) {
                     data.avatar = this.avatar
                 }
-                this.$parent.updateProfessional(data)
+                const parent = this
+                this.$parent.updateProfessional(data).then(function(result){
+                    if(result){
+                        parent.popup_close()
+                    }
+                }).catch(function (error){
+                    console.log(error)
+                    parent.popup_close()
+                })
             }
         }
     }
