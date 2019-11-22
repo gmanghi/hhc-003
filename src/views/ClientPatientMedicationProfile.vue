@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="90%" :scrollable="scrollable">
+                <v-dialog v-model="popup" scrollable max-width="90%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -55,167 +55,143 @@
                             <v-card-title>
                                 <span class="headline">Patient Medication Program Form</span>
                             </v-card-title>
+                            <v-divider></v-divider>
                             <v-card-text>
-                            <v-row>
+                                <v-row>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Name" v-model="patient_medication_profile.patient_medication_profile_name"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Case #" v-model="patient_medication_profile.patient_medication_profile_case"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Diagnosis" v-model="patient_medication_profile.patient_medication_profile_diagnosis"></v-text-field>
+                                    </v-col>
                                 <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Name" v-model="patient_medication_profile.patient_medication_profile_name"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Case #" v-model="patient_medication_profile.patient_medication_profile_case"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Diagnosis" v-model="patient_medication_profile.patient_medication_profile_diagnosis"></v-text-field>
-                                </v-col>
-                               <v-col cols="12" md="6" sm="12">
-                                    <v-menu
-                                        :close-on-content-click="true"
-                                        max-width="290"
-                                        readonly
-                                        >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="Birth date"
-                                                readonly
-                                                v-on="on">
-                                            </v-text-field>
-                                        </template>
-                                        <v-date-picker
-                                            @change="date_popup = false"
+                                        <v-menu
+                                            :close-on-content-click="true"
+                                            max-width="290"
                                             readonly
-                                        ></v-date-picker>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Primary Physician" v-model="patient_medication_profile.patient_medication_profile_primaryPhysician"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Telephone Number" v-model="patient_medication_profile.patient_medication_profile_telephone"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="12" sm="12">
-                                    <v-text-field label="Allergies" v-model="patient_medication_profile.patient_medication_profile_allergies"></v-text-field>
-                                </v-col>
-                                <v-col cols="12"><v-divider></v-divider></v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-menu
-                                        :close-on-content-click="true"
-                                        max-width="290"
-                                        readonly
-                                        >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="Date"
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    :value="computedDateFormattedMomentjs"
+                                                    clearable
+                                                    label="Birth date"
+                                                    readonly
+                                                    v-on="on">
+                                                </v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                @change="date_popup = false"
                                                 readonly
-                                                v-on="on">
-                                            </v-text-field>
-                                        </template>
-                                        <v-date-picker
-                                            @change="date_popup = false"
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Primary Physician" v-model="patient_medication_profile.patient_medication_profile_primaryPhysician"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Telephone Number" v-model="patient_medication_profile.patient_medication_profile_telephone"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="12" sm="12">
+                                        <v-text-field label="Allergies" v-model="patient_medication_profile.patient_medication_profile_allergies"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12"><v-divider></v-divider></v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-menu
+                                            :close-on-content-click="true"
+                                            max-width="290"
                                             readonly
-                                        ></v-date-picker>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-combobox
-                                        v-model="patient_medication_profile.patient_medication_profile_prescribed_medication"
-                                        :items="['Routine','PRN','OTC Drugs']"
-                                        label="Prescribed Medication"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Dose" v-model="patient_medication_profile.patient_medication_profile_dose"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Route" v-model="patient_medication_profile.patient_medication_profile_route"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Frequency" v-model="patient_medication_profile.patient_medication_profile_freq"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="N/C/O" v-model="patient_medication_profile.patient_medication_profile_nco"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-menu
-                                        :close-on-content-click="true"
-                                        max-width="290"
-                                        readonly
-                                        >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="D/C Date"
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    :value="computedDateFormattedMomentjs"
+                                                    clearable
+                                                    label="Date"
+                                                    readonly
+                                                    v-on="on">
+                                                </v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                @change="date_popup = false"
                                                 readonly
-                                                v-on="on">
-                                            </v-text-field>
-                                        </template>
-                                        <v-date-picker
-                                            @change="date_popup = false"
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-combobox
+                                            v-model="patient_medication_profile.patient_medication_profile_prescribed_medication"
+                                            :items="['Routine','PRN','OTC Drugs']"
+                                            label="Prescribed Medication"
+                                            single    
+                                            chips
+                                        ></v-combobox>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Dose" v-model="patient_medication_profile.patient_medication_profile_dose"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Route" v-model="patient_medication_profile.patient_medication_profile_route"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Frequency" v-model="patient_medication_profile.patient_medication_profile_freq"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="N/C/O" v-model="patient_medication_profile.patient_medication_profile_nco"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-menu
+                                            :close-on-content-click="true"
+                                            max-width="290"
                                             readonly
-                                        ></v-date-picker>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Drug Classification" v-model="patient_medication_profile.patient_medication_profile_drug_classification"></v-text-field>
-                                </v-col>
-                                <v-col cols="12"><v-divider></v-divider></v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-text-field label="Signature over printed name" v-model="patient_medication_profile.patient_medication_profile_sign_name"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12">
-                                    <v-menu
-                                        :close-on-content-click="true"
-                                        max-width="290"
-                                        readonly
-                                        >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                :value="computedDateFormattedMomentjs"
-                                                clearable
-                                                label="Date"
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    :value="computedDateFormattedMomentjs"
+                                                    clearable
+                                                    label="D/C Date"
+                                                    readonly
+                                                    v-on="on">
+                                                </v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                @change="date_popup = false"
                                                 readonly
-                                                v-on="on">
-                                            </v-text-field>
-                                        </template>
-                                        <v-date-picker
-                                            @change="date_popup = false"
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Drug Classification" v-model="patient_medication_profile.patient_medication_profile_drug_classification"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12"><v-divider></v-divider></v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-text-field label="Signature over printed name" v-model="patient_medication_profile.patient_medication_profile_sign_name"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <v-menu
+                                            :close-on-content-click="true"
+                                            max-width="290"
                                             readonly
-                                        ></v-date-picker>
-                                    </v-menu>
-                                </v-col>
-                            </v-row>
-                                <!--
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="patient_medication_profile.patient_medication_profile1"
-                                        :items="['Patient lives alone',
-                                                'Patient lives with other person(s) in the home',
-                                                'Patient lives in conregate situation (e.g. assissted living)']"
-                                        label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assisstance?"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="patient_medication_profile.patient_medication_profile2"
-                                        :items="['Around the clock',
-                                                'Regular daytime',
-                                                'Regular nightime',
-                                                'Occasional/Short-term assistance',
-                                                'None']"
-                                        label="Availability Assisstance"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>-->
-
+                                            >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    :value="computedDateFormattedMomentjs"
+                                                    clearable
+                                                    label="Date"
+                                                    readonly
+                                                    v-on="on">
+                                                </v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                @change="date_popup = false"
+                                                readonly
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
+                                </v-row>
                             </v-card-text>
+                            <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup_close">Close</v-btn>
@@ -231,7 +207,6 @@
             </v-row>
             <!-- Popup End -->
         </v-container>
-        
     </div>
 </template>
 

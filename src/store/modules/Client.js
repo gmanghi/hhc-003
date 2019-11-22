@@ -181,7 +181,7 @@ const Client = {
         },
     },
     actions: {
-        clearCient({commit}){
+        clearClient({commit}){
             // commit('setClient', null)
             commit('setClientTitle', null)
             commit('setClienAccountName', null)
@@ -210,35 +210,22 @@ const Client = {
         },
         createClient({commit, state}){
             return new Promise((resolve, reject) => {
-                fb.clientCollection.add({
-                    createdOn: new Date(),
-                    client_title: state.client.client_title,
-                    client_account_name: state.client.client_account_name,
-                    client_position_relationship: state.client.client_position_relationship,
-                    client_primary_care: state.client.client_primary_care,
-                    client_landline_mobile_fax: state.client.client_landline_mobile_fax,
-                    client_email: state.client.client_email,
-                    client_attending_physician: state.client.client_attending_physician,
-                    client_complete_address: state.client.client_complete_address,
-                    patient_title: state.client.patient_title,
-                    patient_name: state.client.patient_name,
-                    patient_age: state.client.patient_age,
-                    patient_birthdate: state.client.patient_birthdate,
-                    patient_religion: state.client.patient_religion,
-                    patient_nationality: state.client.patient_nationality,
-                    patient_landline: state.client.patient_landline,
-                    patient_mobile: state.client.patient_mobile,
-                    patient_email: state.client.patient_email,
-                    patient_fax: state.client.patient_fax,
-                    patient_complete_address: state.client.patient_complete_address,
-                    // patient_case_management: state.client.patient_case_management,
-                    // patient_home_vaccination_program: state.client.patient_home_vaccination_program,
-                    client_status: state.client.client_status,
-                }).then(doc => {
-                    this.dispatch("Client/clearCLient")
+                fb.clientCollection.add(state.client).then(doc => {
+                    this.dispatch("Client/clearClient")
                     resolve(doc)
                 }).catch(error => {
                     this.dispatch("Client/clearClient")
+                    reject(error)
+                })
+            })
+        },
+        updateClient({commit, state}){
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).update(state.client).then(doc => {
+                    // this.dispatch("Client/clearClient")
+                    resolve(doc)
+                }).catch(error => {
+                    // this.dispatch("Client/clearClient")
                     reject(error)
                 })
             })
@@ -308,34 +295,14 @@ const Client = {
             })
         },
         getClient({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).get().then(function(doc) {
+            fb.clientCollection.doc(state.client.document_id).onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
-                    console.log(data)
-                    commit('setClientTitle', data.client_title)
-                    commit('setClienAccountName', data.client_account_name)
-                    commit('setClientPositionRelationship', data.client_position_relationship)
-                    commit('setClientPrimaryCare', data.client_primary_care)
-                    commit('setClientLandlineMobileFax', data.client_landline_mobile_fax)
-                    commit('setClientEmail', nuldata.client_email)
-                    commit('setClientAttendingPhysician', nudata.client_attending_physician)
-                    commit('setClientCompleteAddress', data.client_complete_address)
-                    commit('setPatienTitle', data.patient_title)
-                    commit('setPatientName', data.patient_name)
-                    commit('setPatientAge', nudata.patient_age)
-                    commit('setPatientBirthdate',  data.patient_birthdate ? moment(data.patient_birthdate.toDate()).format('YYYY-MM-DD') : null)
-                    commit('setPatientReligion', data.patient_religion)
-                    commit('setPatientNationality', nudata.patient_nationality)
-                    commit('setPatientLandline', data.patient_landline)
-                    commit('setPatientMobile', data.patient_mobile)
-                    commit('setPatientEmail', data.patient_email)
-                    commit('setPatientFax', data.patient_fax)
-                    commit('setPatientCompleteAddress', data.patient_complete_address)
-                    commit('setClientStatus', data.client_status)
+                    commit('setClient', data)
                 } else {
                     console.log("No such document!");
                 }
-            }).catch(function(error) {
+            }, function(error) {
                 console.log("Error getting document:", error);
             });
         },
@@ -367,7 +334,7 @@ const Client = {
         },
         getClientHids({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).get().then(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
                         commit('setClientHids', data)
@@ -376,11 +343,10 @@ const Client = {
                     } else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    console.log("Error getting document:", error);
                 });
             })
-            
         },
         getClientHVRPNs({commit, state}) {
             fb.clientCollection.doc(state.client.document_id).collection('hvrpn').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
@@ -397,7 +363,7 @@ const Client = {
         },
         getClientHVRPN({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).get().then(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
@@ -407,9 +373,23 @@ const Client = {
                     } else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    console.log("Error getting document:", error);
                 });
+
+                // fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).get().then(function(doc) {
+                //     if (doc.exists) {
+                //         const data = doc.data()
+                //         data.document_id = doc.id
+                //         commit('setClientHVRPN', data)
+                //         // commit('setClientHidsDocumentId',doc.id)
+                //         resolve(state.client.hvrpn)
+                //     } else {
+                //         reject("No such document!");
+                //     }
+                // }).catch(function(error) {
+                //     reject("Error getting document:", error);
+                // });
             })
             
         },
@@ -446,7 +426,7 @@ const Client = {
         },
         getClientPrescription({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).get().then(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
@@ -456,9 +436,23 @@ const Client = {
                     } else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    console.log("Error getting document:", error);
                 });
+
+                // fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).get().then(function(doc) {
+                //     if (doc.exists) {
+                //         const data = doc.data()
+                //         data.document_id = doc.id
+                //         commit('setClientPrescription', data)
+                //         // commit('setClientHidsDocumentId',doc.id)
+                //         resolve(state.client.prescription)
+                //     } else {
+                //         reject("No such document!");
+                //     }
+                // }).catch(function(error) {
+                //     reject("Error getting document:", error);
+                // });
             })
             
         },
@@ -495,7 +489,7 @@ const Client = {
         },
         getClientPatientMedicationProfile({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).get().then(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
@@ -505,9 +499,23 @@ const Client = {
                     } else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    console.log("Error getting document:", error);
                 });
+
+                // fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).get().then(function(doc) {
+                //     if (doc.exists) {
+                //         const data = doc.data()
+                //         data.document_id = doc.id
+                //         commit('setClientPatientMedicationProfile', data)
+                //         // commit('setClientHidsDocumentId',doc.id)
+                //         resolve(state.client.patient_medication_profile)
+                //     } else {
+                //         reject("No such document!");
+                //     }
+                // }).catch(function(error) {
+                //     reject("Error getting document:", error);
+                // });
             })
             
         },
@@ -544,7 +552,7 @@ const Client = {
         },
         getClientCustomerSatisfactionSurvey({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).get().then(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
@@ -554,9 +562,23 @@ const Client = {
                     } else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    console.log("Error getting document:", error);
                 });
+
+                // fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).get().then(function(doc) {
+                //     if (doc.exists) {
+                //         const data = doc.data()
+                //         data.document_id = doc.id
+                //         commit('setClientCustomerSatisfactionSurvey', data)
+                //         // commit('setClientHidsDocumentId',doc.id)
+                //         resolve(state.client.customer_satisfaction_survey)
+                //     } else {
+                //         reject("No such document!");
+                //     }
+                // }).catch(function(error) {
+                //     reject("Error getting document:", error);
+                // });
             })
             
         },

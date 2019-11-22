@@ -36,7 +36,7 @@
             <ProfessionalAddEditForm v-bind:profession="profession" v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method" v-bind:overlay="overlay"></ProfessionalAddEditForm>
             <v-snackbar
                 v-model="snackbar"
-                :multi-line="multiLine">
+                :multi-line="true">
                 {{ notification }}
                 <v-btn
                     color="blue"
@@ -65,7 +65,6 @@ export default {
             method: 'create',
             status: 'Verified',
             notification: '',
-            multiLine: true,
             snackbar: false,
         }
     },
@@ -97,6 +96,7 @@ export default {
     },
     methods: {
         viewProfessional(document_id){
+            this.overlay = true
             const parent = this
             this.$store.dispatch("Professional/clearProfessional")
             this.$store.commit('Professional/setDocumentId', document_id)
@@ -104,6 +104,7 @@ export default {
                 parent.professional = data
                 parent.popup = true
                 parent.method = 'view'
+                parent.overlay = false
             }).catch(function(error){
                 parent.notification = error
                 parent.snackbar = true
@@ -146,6 +147,7 @@ export default {
                     resolve(true)
                 }).catch(function(error){
                     reject(error)
+                    parent.overlay = false
                     parent.notification = error
                     parent.snackbar = true
                 })
@@ -162,10 +164,9 @@ export default {
                     // parent.method = 'create'
                     parent.overlay = false
                     resolve(true)
-                    parent.notification = 'Successfully Saved'
-                    parent.snackbar = true
                 }).catch(function(error){
                     reject(error)
+                    parent.overlay = false
                     parent.notification = error
                     parent.snackbar = true
                 })

@@ -33,7 +33,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="60%">
+                <v-dialog v-model="popup" scrollable max-width="60%">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -55,6 +55,7 @@
                             <v-card-title>
                                 <span class="headline">Prescription Form</span>
                             </v-card-title>
+                            <v-divider></v-divider>
                             <v-card-text>
                                 <v-row>
                                     <v-col cols="12" sm="12" md="12">
@@ -94,7 +95,7 @@
                                         </v-menu>
                                     </v-col>
                                     <v-col cols="12" md="12" sm="12">
-                                        <v-textarea name="input-7-1" label="Prescriptions" auto-grow value="" v-model="prescription.prescriptions"></v-textarea>
+                                        <v-textarea label="Prescriptions" auto-grow outlined v-model="prescription.prescriptions"></v-textarea>
                                     </v-col>
                                     <v-col cols="12" sm="12" md="6">
                                          <v-text-field label="MD" v-model="prescription.prescription_md"></v-text-field>
@@ -109,31 +110,8 @@
                                          <v-text-field label="S2" v-model="prescription.prescription_s2"></v-text-field>
                                     </v-col>
                                 </v-row>
-                                <!--<v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="prescription.prescription1"
-                                        :items="['Patient lives alone',
-                                                'Patient lives with other person(s) in the home',
-                                                'Patient lives in conregate situation (e.g. assissted living)']"
-                                        label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assisstance?"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-combobox
-                                        v-model="prescription.prescription2"
-                                        :items="['Around the clock',
-                                                'Regular daytime',
-                                                'Regular nightime',
-                                                'Occasional/Short-term assistance',
-                                                'None']"
-                                        label="Availability Assisstance"
-                                        single    
-                                        chips
-                                    ></v-combobox>
-                                </v-col>-->
                             </v-card-text>
+                            <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup_close">Close</v-btn>
@@ -149,7 +127,6 @@
             </v-row>
             <!-- Popup End -->
         </v-container>
-        
     </div>
 </template>
 

@@ -65,6 +65,17 @@
                                     <v-tab>Cardio Respiratory Status</v-tab>
                                     <v-tab>Elimination Status</v-tab>
                                     <v-tab>Neuro/Emotional/Behavioral Status</v-tab>
+                                    <!-- STEP 1 -->
+                                    <v-tab>Depression Screening</v-tab>
+                                    <v-tab>Mini-Mental Status Examination</v-tab>
+                                    <v-tab>ADL/IADLs</v-tab>
+                                    <v-tab>Mini-Nutritional Assessment</v-tab>
+                                    <v-tab>Immunization Record</v-tab>
+                                    <v-tab>Medications</v-tab>
+                                    <v-tab>Medication List</v-tab>
+                                    <v-tab>Pain</v-tab>
+                                    <v-tab>Summary of Findings</v-tab>
+                                    <v-tab>Plan of Care</v-tab>
                                 </v-tabs>
                             </v-card-title>
                             <v-card-text>
@@ -79,6 +90,17 @@
                                     <v-tab-item><HidsCardioRespiratoryStatus v-bind:crs="crs"></HidsCardioRespiratoryStatus></v-tab-item>
                                     <v-tab-item><HidsEliminationStatus v-bind:es="es"></HidsEliminationStatus></v-tab-item>
                                     <v-tab-item><HidsNEBStatus v-bind:nebs="nebs"></HidsNEBStatus></v-tab-item>
+                                    <!-- STEP 2 -->
+                                    <v-tab-item><DepressionScreening v-bind:ds="ds"></DepressionScreening></v-tab-item>
+                                    <v-tab-item><MiniMentalStatusExamination v-bind:mmse="mmse"></MiniMentalStatusExamination></v-tab-item>
+                                    <v-tab-item><ADLIADLs v-bind:adl="adl"></ADLIADLs></v-tab-item>
+                                    <v-tab-item><MiniNutritionalAssessment v-bind:mna="mna"></MiniNutritionalAssessment></v-tab-item>
+                                    <v-tab-item><ImmunizationRecord v-bind:ir="ir"></ImmunizationRecord></v-tab-item>
+                                    <v-tab-item><Medications v-bind:medications="medications"></Medications></v-tab-item>
+                                    <v-tab-item><MedicationList v-bind:ml="ml"></MedicationList></v-tab-item>
+                                    <v-tab-item><Pain v-bind:pain="pain"></Pain></v-tab-item>
+                                    <v-tab-item><SummaryOfFindings v-bind:sof="sof"></SummaryOfFindings></v-tab-item>
+                                    <v-tab-item><PlanOfCare v-bind:poc="poc"></PlanOfCare></v-tab-item>
                                 </v-tabs-items>
                             </v-card-text>
                             <v-card-actions>
@@ -115,6 +137,17 @@ import HidsWoundDescription from '@/components/ClientHids/WoundDescription'
 import HidsCardioRespiratoryStatus from '@/components/ClientHids/CardioRespiratoryStatus'
 import HidsEliminationStatus from '@/components/ClientHids/EliminationStatus'
 import HidsNEBStatus from '@/components/ClientHids/NEBStatus'
+// STEP 3
+import DepressionScreening from '@/components/ClientHids/DepressionScreening'
+import MiniMentalStatusExamination from '@/components/ClientHids/MiniMentalStatusExamination'
+import ADLIADLs from '@/components/ClientHids/ADLIADLs'
+import MiniNutritionalAssessment from '@/components/ClientHids/MiniNutritionalAssessment'
+import ImmunizationRecord from '@/components/ClientHids/ImmunizationRecord'
+import Medications from '@/components/ClientHids/Medications'
+import MedicationList from '@/components/ClientHids/MedicationList'
+import Pain from '@/components/ClientHids/Pain'
+import SummaryOfFindings from '@/components/ClientHids/SummaryOfFindings'
+import PlanOfCare from '@/components/ClientHids/PlanOfCare'
 export default {
     components: {
         ClientNavbar, 
@@ -128,6 +161,17 @@ export default {
         HidsCardioRespiratoryStatus,
         HidsEliminationStatus,
         HidsNEBStatus,
+        // STEP 4
+        DepressionScreening,
+        MiniMentalStatusExamination,
+        ADLIADLs,
+        MiniNutritionalAssessment,
+        ImmunizationRecord,
+        Medications,
+        MedicationList,
+        Pain,
+        SummaryOfFindings,
+        PlanOfCare,
     },
     data(){
         return {
@@ -143,7 +187,6 @@ export default {
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Edit', align: 'center', sortable: false, value: 'actions' },
             ],
-            // requiredStringRules: [v => !!v || 'Field is required'],
             hids: {},
             demographic: {},
             hopi: {},
@@ -155,6 +198,17 @@ export default {
             crs: {},
             es: {},
             nebs: {},
+            // STEP 5
+            ds: {},
+            mmse: {},
+            adl: {},
+            mna: {},
+            ir: {},
+            medications: {},
+            ml: {},
+            pain: {},
+            sof: {},
+            poc: {},
         }
     },
     beforeRouteUpdate (to, from, next) {
@@ -165,7 +219,6 @@ export default {
     mounted() {
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientHidss")
-        // this.active_tab = 0
     },
     computed: {
         ...mapGetters({
@@ -195,6 +248,18 @@ export default {
                 parent.crs = doc.crs
                 parent.es = doc.es
                 parent.nebs = doc.nebs
+                // STEP 6
+                parent.ds = doc.ds
+                parent.mmse = doc.mmse
+                parent.adl = doc.adl
+                parent.mna = doc.mna
+                parent.ir = doc.ir
+                parent.medications = doc.medications
+                parent.ml = doc.ml
+                parent.pain = doc.pain
+                parent.sof = doc.sof
+                parent.poc = doc.poc
+                //--
                 parent.popup = true
                 parent.method = 'update'
                 parent.overlay = false
@@ -219,6 +284,17 @@ export default {
                     crs: this.crs,
                     es: this.es,
                     nebs: this.nebs,
+                    // STEP 7
+                    ds: this.ds,
+                    mmse: this.mmse,
+                    adl: this.adl,
+                    mna: this.mna,
+                    ir: this.ir,
+                    medications: this.medications,
+                    ml: this.ml,
+                    pain: this.pain,
+                    sof: this.sof,
+                    poc: this.poc,
                 }
                 this.$store.commit('Client/setClientHids', data)
                 this.$store.dispatch("Client/createClientHids").then(function(doc){
@@ -246,6 +322,17 @@ export default {
                     crs: this.crs,
                     es: this.es,
                     nebs: this.nebs,
+                    // STEP 8
+                    ds: this.ds,
+                    mmse: this.mmse,
+                    adl: this.adl,
+                    mna: this.mna,
+                    ir: this.ir,
+                    medications: this.medications,
+                    ml: this.ml,
+                    pain: this.pain,
+                    sof: this.sof,
+                    poc: this.poc,
                 }
                 this.$store.commit('Client/setClientHids', data)
                 this.$store.commit('Client/setClientHidsDocumentId', this.hids.document_id)

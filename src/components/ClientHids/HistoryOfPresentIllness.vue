@@ -37,6 +37,7 @@
                             </v-col>
                             <v-col cols="12" sm="12" md="6">
                                 <v-textarea 
+                                    auto-grow outlined
                                     label="List down all diagnosis during the inpatient admission"
                                     required
                                     v-model="hopi.h4">
@@ -44,6 +45,7 @@
                             </v-col>
                             <v-col cols="12" sm="12" md="6">
                                 <v-textarea 
+                                    auto-grow outlined
                                     label="List down all procedures (dianostic/therapeutic) duritn the inpatient admission"
                                     required
                                     v-model="hopi.h5">
