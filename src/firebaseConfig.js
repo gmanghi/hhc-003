@@ -1,9 +1,10 @@
 export default {
-    apiKey: "AIzaSyBh_2lmi2j5SI8jpxPt19kdpQMxq79UzVo",
-    authDomain: "hhc-cm-staging.firebaseapp.com",
-    databaseURL: "https://hhc-cm-staging.firebaseio.com",
-    projectId: "hhc-cm-staging",
-    storageBucket: "hhc-cm-staging.appspot.com",
-    messagingSenderId: "274310537447",
-    appId: "1:274310537447:web:3fbcfb87ee3fd4e6890242"
+    apiKey: "AIzaSyAsfBA0RjtGuJs_KR1nzna8H5E4z6r0b6o",
+    authDomain: "hhc-ph-case-management.firebaseapp.com",
+    databaseURL: "https://hhc-ph-case-management.firebaseio.com",
+    projectId: "hhc-ph-case-management",
+    storageBucket: "hhc-ph-case-management.appspot.com",
+    messagingSenderId: "1034542419709",
+    appId: "1:1034542419709:web:7d7b37753e6edcf5bd7894",
+    measurementId: "G-2FLM1FERLZ"
 }
