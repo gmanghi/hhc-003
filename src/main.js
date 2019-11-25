@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
-const fb = require('./firebaseConfig')
+const fb = require('./firebaseInit')
 
 Vue.config.productionTip = false
 

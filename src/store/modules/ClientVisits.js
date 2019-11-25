@@ -1,5 +1,5 @@
 import moment from 'moment'
-const fb = require('../../firebaseConfig.js')
+const fb = require('../../firebaseInit.js')
 const CLientVisits = {
     namespaced: true,
     state: { 

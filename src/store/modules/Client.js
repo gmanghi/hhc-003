@@ -1,6 +1,6 @@
 import { resolve } from 'url'
 import moment from 'moment'
-const fb = require('../../firebaseConfig.js')
+const fb = require('../../firebaseInit.js')
 const Client = {
     namespaced: true,
     state: { 

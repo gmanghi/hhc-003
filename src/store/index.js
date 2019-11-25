@@ -7,7 +7,7 @@ import Professional from './modules/Professional'
 import Client from './modules/Client'
 import ClientVisits from './modules/ClientVisits'
 
-const fb = require('.././firebaseConfig.js')
+const fb = require('.././firebaseInit.js')
 
 fb.auth.onAuthStateChanged(user => {
   if (user) {

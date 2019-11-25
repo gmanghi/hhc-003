@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  const fb = require('../firebaseConfig.js')
+  const fb = require('../firebaseInit.js')
   export default {
     props: {
       source: String,
