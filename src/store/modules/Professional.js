@@ -274,11 +274,11 @@ const Professional = {
                     if (doc.exists) {
                         const data = doc.data();
                         data.createdOn = moment(data.createdOn.toDate()).format('YYYY-MM-DD')
-                        data.birthdate = moment(data.birthdate.toDate()).format('YYYY-MM-DD')
-                        data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
+                        // data.birthdate = moment(data.birthdate.toDate()).format('YYYY-MM-DD')
+                        // data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
                         commit('setProfessional', data)
                         commit('setDocumentId', doc.id)
-                        // console.log(state.professional)
+                        console.log(state.professional)
                         resolve(state.professional)
                         
                         // commit('setProfession', data.profession)

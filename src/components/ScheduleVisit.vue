@@ -129,6 +129,7 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 export default {
+    props: [ 'professional', 'professional_id', 'client', 'client_id' ],
     data() {
         return {
             valid: true,
@@ -149,10 +150,11 @@ export default {
     computed: {
         ...mapGetters({
             professionals: 'Professional/professionals',
+            clients: 'Clients/clients',
         }),
-        computedVisitDateFormattedMomentjs(){
-            return this.visit_date ? moment(this.visit_date).format('YYYY-MM-DD') : ''
-        },
+        // computedVisitDateFormattedMomentjs(){
+        //     return this.visit_date ? moment(this.visit_date).format('YYYY-MM-DD') : ''
+        // },
     },
     methods: {
         select_professional(){
@@ -165,38 +167,7 @@ export default {
             this.dialog = false
         },
         process_save(){
-            
-            // this.overlay = true
-            // const parent = this
-            // let time_start = ''
-            // let time_end = ''
-            // if(this.visit_shift == 'AM'){
-            //     time_start = new Date(this.visit_date + ' ' + '07:00')
-            //     time_end = new Date(this.visit_date + ' ' + '19:00')
-            // }
-            // else{
-            //     time_start = new Date(this.visit_date + ' ' + '19:00')
-            //     time_end = new Date(this.visit_date + ' ' + '07:00')
 
-            //     time_end = new Date(time_end.setDate(time_end.getDate() + 1))
-            //     // console.log(time_end)
-            // }
-            // const data = {}
-            // data.patient = this.client_id
-            // data.professional = this.visit.professional.id
-            // data.time_start = time_start
-            // data.time_end = time_end
-            // console.log(data)
-            // this.$store.commit('ClientVisits/setVisit', data)
-            // this.$store.dispatch("ClientVisits/createVisit").then(function(doc){
-            //     console.log('saveVisit',doc)
-            //     parent.dialog = false
-            //     parent.overlay = false
-            // }).catch(function(error){
-            //     parent.overlay = false
-            //     parent.snackbar = true
-            //     parent.notification = error
-            // })
         },
     }
 }

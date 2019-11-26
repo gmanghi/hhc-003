@@ -17,14 +17,17 @@
                             <div class="grey--text">{{ professional.mobile_number }}</div>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn text color="grey" @click="viewProfessional(professional.id)">
+                            <v-btn 
+                                text color="grey" 
+                                :to="{ name: 'professional_details', params: { id: professional.id } }"
+                                >
                                 <v-icon small left>mdi-eye</v-icon>
                                 <span>View</span>
                             </v-btn>
-                            <v-btn text color="grey" @click="editProfessional(professional.id)">
+                            <!-- <v-btn text color="grey" @click="editProfessional(professional.id)">
                                 <v-icon small left>mdi-pencil</v-icon>
                                 <span>Edit</span>
-                            </v-btn>
+                            </v-btn> -->
                             <v-btn text color="grey" @click="deleteProfessional(professional.id)">
                                 <v-icon small left>mdi-delete</v-icon>
                                 <span>Delete</span>
@@ -33,7 +36,13 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-            <ProfessionalAddEditForm v-bind:profession="profession" v-bind:professional="professional" v-bind:popup="popup" v-bind:method="method" v-bind:overlay="overlay"></ProfessionalAddEditForm>
+            <ProfessionalAddEditForm 
+                v-bind:profession="profession" 
+                v-bind:professional="professional" 
+                v-bind:popup="popup" 
+                v-bind:method="method" 
+                v-bind:overlay="overlay"
+            ></ProfessionalAddEditForm>
             <v-snackbar
                 v-model="snackbar"
                 :multi-line="true">
@@ -179,7 +188,7 @@ export default {
             this.method = 'create'
             this.popup = false
         },
-        popupCreateProfessional(){
+        popupOpen(){
             const parent = this
             this.$store.dispatch("Professional/clearProfessional").then(function(data){
                 console.log(data)

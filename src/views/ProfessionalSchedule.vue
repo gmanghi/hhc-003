@@ -2,8 +2,8 @@
     <div id="client-visits">
         <h1 class="subheading grey--text">Schedule</h1>
         <v-container>
-            <ClientNavbar></ClientNavbar>
-            <ScheduleVisit v-bind:client_id="client_id"></ScheduleVisit>
+            <ProfessionalNavbar></ProfessionalNavbar>
+            <ScheduleVisit v-bind:professional_id="professional_id"></ScheduleVisit>
             <v-card>
                 <v-card-text>
                     <v-container>
@@ -89,11 +89,11 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import ClientNavbar from '@/components/ClientNavbar'
+import ProfessionalNavbar from '@/components/ProfessionalNavbar'
 import ScheduleVisit from '@/components/ScheduleVisit'
 export default {
     components: {
-        ClientNavbar, ScheduleVisit
+        ProfessionalNavbar, ScheduleVisit
     },
     data() {
         return {
@@ -113,11 +113,11 @@ export default {
             selectedOpen: false,
             events: [],
             //--
-            client_id: '',
+            professional_id: '',
         }
     },
     mounted(){
-        this.client_id = this.$route.params.id
+        this.professional_id = this.$route.params.id
     },
     computed: {
         title () {

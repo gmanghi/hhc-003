@@ -10,8 +10,20 @@
                     bottom
                     right
                     color="pink"
-                    @click="popup_create_professional">
+                    v-if="method == 'create'"
+                    @click="pop_professional_form">
                     <v-icon small>mdi-plus</v-icon>
+                </v-btn>
+                <v-btn
+                    fixed
+                    dark
+                    fab
+                    bottom
+                    right
+                    color="green"
+                    v-if="method == 'update'"
+                    @click="pop_professional_form">
+                    <v-icon small>mdi-pencil</v-icon>
                 </v-btn>
             </template>
             <v-form
@@ -89,7 +101,7 @@
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
                                                 :rules="requiredStringRules"
-                                                :value="computedExpiryDateFormattedMomentjs"
+                                                :value="professional.license_expiry_date"
                                                 clearable
                                                 label="License Date of Expiry*"
                                                 readonly
@@ -118,26 +130,6 @@
                                         required>
                                     </v-text-field>
                                 </v-col>
-                                <!-- <v-col cols="12" sm="6">
-                                    <v-select
-                                        :items="professions_list"
-                                        label="Profession"
-                                        :rules="requiredStringRules"
-                                        v-model="professional.profession"
-                                        required
-                                        >
-                                    </v-select>
-                                </v-col> -->
-                                <!-- <v-col cols="12" sm="6">
-                                    <v-select
-                                        :items="professional_status"
-                                        label="Status"
-                                        v-model="professional.status"
-                                        :rules="requiredStringRules"
-                                        required    
-                                        >
-                                    </v-select>
-                                </v-col> -->
                                 <v-col cols="12" sm="6">
                                     <v-menu
                                     v-model="birthdate_popup"
@@ -147,7 +139,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             :rules="requiredStringRules"
-                                            :value="computedBirthdateFormattedMomentjs"
+                                            :value="professional.birthdate"
                                             clearable
                                             label="Birthdate*"
                                             readonly
@@ -161,15 +153,6 @@
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="6" class="text-center">
-                                    <!-- <v-file-input
-                                        :rules="requiredAvatarRules"
-                                        accept="image/png, image/jpeg, image/bmp"
-                                        placeholder="Pick an avatar"
-                                        prepend-icon="mdi-camera"
-                                        label="Avatar*"
-                                        v-model="avatar"
-                                        >
-                                    </v-file-input> -->
                                     <v-file-input
                                         accept="image/png, image/jpeg, image/bmp"
                                         placeholder="Pick an avatar"
@@ -203,7 +186,7 @@
 import moment from 'moment'
 
 export default {
-    props: [ 'professional', 'profession', 'popup', 'method', 'overlay' ],
+    props: [ 'professional', 'profession', 'popup', 'method', 'overlay', 'document_id' ],
     data(){
         return { 
             valid: true,
@@ -242,10 +225,13 @@ export default {
         
     },
     methods: {
-        popup_create_professional(){ 
-            // this.birthdate = this.default_birthdate
-            this.$parent.popupCreateProfessional()
+        pop_professional_form(){
+            this.$parent.popupOpen()
         },
+        // popup_create_professional(){ 
+        //     // this.birthdate = this.default_birthdate
+        //     this.$parent.popupCreateProfessional()
+        // },
         popup_close(){  
             this.$refs.form.reset()
             this.$parent.popupClose()
@@ -274,20 +260,33 @@ export default {
                 delete this.professional['createdOn']
                 delete this.professional['avatar']
                 const data = this.professional
-                data.birthdate = new Date(data.birthdate)
-                data.license_expiry_date = new Date(data.license_expiry_date)
+                data.document_id = this.document_id
+                // data.birthdate = new Date(data.birthdate)
+                // data.license_expiry_date = new Date(data.license_expiry_date)
                 if(this.avatar !== null) {
                     data.avatar = this.avatar
                 }
                 const parent = this
-                this.$parent.updateProfessional(data).then(function(result){
-                    if(result){
-                        parent.popup_close()
-                    }
-                }).catch(function (error){
-                    console.log(error)
+
+                this.$store.commit('Professional/setProfessional', data)
+                this.$store.dispatch("Professional/updateProfessional").then(function(doc){
+                    console.log('updateProfessional',doc)
                     parent.popup_close()
+                }).catch(function(error){
+                    parent.popup_close()
+                    parent.notification = error
+                    parent.snackbar = true
                 })
+
+
+                // this.$parent.updateProfessional(data).then(function(result){
+                //     if(result){
+                //         parent.popup_close()
+                //     }
+                // }).catch(function (error){
+                //     console.log(error)
+                //     parent.popup_close()
+                // })
             }
         }
     }

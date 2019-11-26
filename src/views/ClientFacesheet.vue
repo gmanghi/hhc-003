@@ -7,13 +7,13 @@
                 
                 <v-card-text>
                     <v-row>
-                        <v-col cols="12" md="12" sm="12" xs="12">
+                        <!-- <v-col cols="12" md="12" sm="12" xs="12">
                             <div class="text-right">
                                 <v-btn class="ma-2" tile outlined color="success" @click="edit">
                                     <v-icon left>mdi-pencil</v-icon> Edit Details
                                 </v-btn>
                             </div>
-                        </v-col>
+                        </v-col> -->
                         <v-col cols="12" md="2" sm="3" xs="2">
                             <v-select
                             :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
@@ -265,9 +265,9 @@ export default {
         },
     },
     methods: {
-        edit(){
-            this.popup = true
-        },
+        // edit(){
+        //     this.popup = true
+        // },
         popupOpen(){
             this.popup = true
         },
