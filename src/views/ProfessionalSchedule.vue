@@ -118,6 +118,7 @@ export default {
     },
     mounted(){
         this.professional_id = this.$route.params.id
+        
     },
     computed: {
         title () {

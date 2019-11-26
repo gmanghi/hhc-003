@@ -262,6 +262,7 @@ const Professional = {
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
                     professional.id = doc.id
+                    professional.fullname = professional.first_name + ' ' + professional.last_name
                     professionalArray.push(professional)
                 })
 
