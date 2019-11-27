@@ -3,7 +3,7 @@
         <h1 class="subheading grey--text">Schedule</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
-            <ScheduleVisit v-bind:client_id="client_id"></ScheduleVisit>
+            <ScheduleVisit v-bind:prop_client_id="client_id" v-bind:client="client"></ScheduleVisit>
             <v-card>
                 <v-card-text>
                     <v-container>
@@ -97,8 +97,8 @@ export default {
     },
     data() {
         return {
-            today: '2019-11-19',
-            focus: '2019-11-19',
+            today: moment().format('YYYY-MM-DD'),
+            focus: moment().format('YYYY-MM-DD'),
             type: 'month',
             typeToLabel: {
                 month: 'Month',
@@ -111,15 +111,34 @@ export default {
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
-            events: [],
+            // events: [],
             //--
             client_id: '',
+            client: {},
         }
     },
     mounted(){
         this.client_id = this.$route.params.id
+        const parent = this
+
+        this.$store.commit('Client/setDocumentId', this.client_id)
+        this.$store.dispatch("Client/getClient").then(function(response){
+            parent.client = response
+        }).catch(function(error){
+            console.log(error)
+        });
+
+        this.$store.commit('ClientVisits/setClientId', this.client_id)
+        this.$store.dispatch("ClientVisits/getPatientSchedule").then(function(data){
+            console.log(data)
+        }).catch(function(error){
+            console.log(error)
+        })
     },
     computed: {
+        ...mapGetters({
+            events: 'ClientVisits/visits'
+        }),
         title () {
             const { start, end } = this
             if (!start || !end) {

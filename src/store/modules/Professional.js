@@ -279,7 +279,7 @@ const Professional = {
                         // data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
                         commit('setProfessional', data)
                         commit('setDocumentId', doc.id)
-                        console.log(state.professional)
+                        // console.log(state.professional)
                         resolve(state.professional)
                         
                         // commit('setProfession', data.profession)

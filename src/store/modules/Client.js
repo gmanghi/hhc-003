@@ -289,22 +289,23 @@ const Client = {
                     client.document_id = doc.id
                     clientArray.push(client)
                 })
-
                 commit('setClients', clientArray)
-                console.log(state.clients)
             })
         },
         getClient({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).onSnapshot(function(doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    commit('setClient', data)
-                } else {
-                    console.log("No such document!");
-                }
-            }, function(error) {
-                console.log("Error getting document:", error);
-            });
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.doc(state.client.document_id).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        commit('setClient', data)
+                        resolve(state.client)
+                    } else {
+                        reject("No such document!");
+                    }
+                }).catch(function(error) {
+                    reject("Error getting document:", error);
+                });
+            })
         },
         getClientContracts({commit, state}) {
             fb.clientCollection.doc(state.client.document_id).collection('contract').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
