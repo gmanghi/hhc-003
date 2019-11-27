@@ -3,6 +3,15 @@
         <v-container>
             <v-row>
                 <v-col cols="12" sm="12" md="12">
+                    <v-textarea 
+                        auto-grow outlined
+                        label="SUMMARY OF FINDINGS:"
+                        required
+                        v-model="sof.sof1">
+                    </v-textarea>
+                </v-col>
+
+                <!--<v-col cols="12" sm="12" md="12">
                     <v-combobox
                         v-model="sof.sof1"
                         :items="['Patient lives alone',
@@ -12,7 +21,7 @@
                         single    
                         chips
                     ></v-combobox>
-                </v-col>
+                </v-col>-->
             </v-row>
         </v-container>
     </div>
