@@ -197,19 +197,24 @@ const Professional = {
                 console.error("Error removing document: ", error);
             });
         },
-        getProfessionalsByProfession({commit, state}) {  console.log('by profession')
-            fb.professionalCollection
-            .where('profession','==',state.professional.profession)
-            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
-                let professionalArray = []
-                querySnapshot.forEach(doc => {
-                    let professional = doc.data()
-                    professional.id = doc.id
-                    professionalArray.push(professional)
+        getProfessionalsByProfession({commit, state}) { 
+            return new Promise((resolve, reject) => {
+                fb.professionalCollection
+                .where('profession','==',state.professional.profession)
+                .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                    let professionalArray = []
+                    querySnapshot.forEach(doc => {
+                        let professional = doc.data()
+                        professional.id = doc.id
+                        professionalArray.push(professional)
+                    })
+                    commit('setProfessionals', professionalArray)
+                    resolve(state.professionals)
+                }, error => {
+                    reject(error)
                 })
-
-                commit('setProfessionals', professionalArray)
             })
+            
         },
         getProfessionalsByStatusNew({commit, state}) {
             fb.professionalCollection

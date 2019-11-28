@@ -84,9 +84,18 @@ export default {
         else{
             this.profession = to.params.profession.charAt(0).toUpperCase() + to.params.profession.slice(1)
         }
+        this.overlay = true
+        const parent = this
+        this.$store.commit('Professional/setProfessionals', [])
         this.$store.commit('Professional/setProfession', this.profession)
-        this.$store.dispatch("Professional/getProfessionalsByProfession")
-        next();
+        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(data) {
+            parent.overlay = false
+            next();
+        }).catch(function (error){
+            parent.overlay = false
+            parent.snackbar = true
+            parent.notification = error
+        })
     },
     mounted() {
         if(this.$route.params.profession == 'physical-therapist'){
@@ -95,8 +104,17 @@ export default {
         else{
             this.profession = this.$route.params.profession.charAt(0).toUpperCase() + this.$route.params.profession.slice(1)
         }
+        this.overlay = true
+        const parent = this
+        this.$store.commit('Professional/setProfessionals', [])
         this.$store.commit('Professional/setProfession', this.profession)
-        this.$store.dispatch("Professional/getProfessionalsByProfession")
+        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(data) {
+            parent.overlay = false
+        }).catch(function (error){
+            parent.overlay = false
+            parent.snackbar = true
+            parent.notification = error
+        })
     },
     computed: {
         ...mapGetters({
