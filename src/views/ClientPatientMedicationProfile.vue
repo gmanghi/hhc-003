@@ -75,7 +75,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="patient_medication_profile.date1"
                                                     clearable
                                                     label="Birth date"
                                                     readonly
@@ -83,8 +83,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="patient_medication_profile.date1"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -106,7 +106,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="patient_medication_profile.date2"
                                                     clearable
                                                     label="Date"
                                                     readonly
@@ -114,8 +114,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="patient_medication_profile.date2"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -148,7 +148,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="patient_medication_profile.date3"
                                                     clearable
                                                     label="D/C Date"
                                                     readonly
@@ -156,8 +156,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="patient_medication_profile.date3"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -176,7 +176,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="patient_medication_profile.date4"
                                                     clearable
                                                     label="Date"
                                                     readonly
@@ -184,8 +184,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="patient_medication_profile.date4"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>

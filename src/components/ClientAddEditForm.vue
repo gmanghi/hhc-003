@@ -2,7 +2,7 @@
     <!-- Popup Start -->
     <v-row justify="center">
         <v-dialog v-model="popup" scrollable max-width="90%">
-            <template v-slot:activator="{ on }" v-if="method === 'create'">
+            <template v-slot:activator="{ on }">
                 <v-btn
                     fixed
                     dark
@@ -10,8 +10,20 @@
                     bottom
                     right
                     color="pink"
+                    v-if="method == 'create'"
                     @click="pop_client_form">
                     <v-icon small>mdi-plus</v-icon>
+                </v-btn>
+                 <v-btn
+                    fixed
+                    dark
+                    fab
+                    bottom
+                    right
+                    color="green"
+                    v-if="method == 'update'"
+                    @click="pop_client_form">
+                    <v-icon small>mdi-pencil</v-icon>
                 </v-btn>
             </template>
             <v-form>
@@ -261,6 +273,9 @@ export default {
             // client: {},
             // method: 'create',
         }
+    },
+    mounted(){
+        console.log(this.method)
     },
     computed: {
         computedDateFormattedMomentjs(){

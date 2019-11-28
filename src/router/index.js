@@ -31,18 +31,34 @@ const router = new Router({
 			name: 'login',
 			component: Login
 		},
+		// {
+		// 	path: '/professionals/applicants',
+		// 	name: 'applicants',
+		// 	component: () => import('../views/Applicants.vue'),
+		// 	meta: {
+		// 		requiresAuth: true
+		// 	}
+		// },
 		{
-			path: '/professionals/applicants',
-			name: 'applicants',
-			component: () => import('../views/Applicants.vue'),
+			path: '/professionals/:profession',
+			name: 'professionals',
+			component: () => import('../views/Professionals.vue'),
 			meta: {
 				requiresAuth: true
 			}
 		},
 		{
-			path: '/professionals/:profession',
-			name: 'professionals',
-			component: () => import('../views/Professionals.vue'),
+			path: '/professionals/:profession/:id/details',
+			name: 'professional_details',
+			component: () => import('../views/ProfessionalsView.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/professionals/:profession/:id/schedule',
+			name: 'professional_schedule',
+			component: () => import('../views/ProfessionalSchedule.vue'),
 			meta: {
 				requiresAuth: true
 			}

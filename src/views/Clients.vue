@@ -24,7 +24,8 @@
                             color="blue-grey"
                             class="black--text"
                             text
-                            :to="{ name: 'client_details', params: { id: item.document_id } }">
+                            :to="{ name: 'client_details', params: { id: item.document_id } }"
+                            >
                             <v-icon dark>mdi-clipboard-list-outline</v-icon>
                         </v-btn>    
                     </template>

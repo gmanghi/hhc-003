@@ -1,3 +1,4 @@
+// Staging Configuration
 export default {
     apiKey: "AIzaSyC8UwonfBrVGfoLMUKyQ_Z-_DJqLv4PZFU",
     authDomain: "hhc-ph-cm-staging.firebaseapp.com",

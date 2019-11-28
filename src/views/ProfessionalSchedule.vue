@@ -2,8 +2,8 @@
     <div id="client-visits">
         <h1 class="subheading grey--text">Schedule</h1>
         <v-container>
-            <ClientNavbar></ClientNavbar>
-            <ScheduleVisit v-bind:prop_client_id="client_id" v-bind:client="client"></ScheduleVisit>
+            <ProfessionalNavbar></ProfessionalNavbar>
+            <ScheduleVisit v-bind:prop_professional_id="professional_id" v-bind:professional="professional"></ScheduleVisit>
             <v-card>
                 <v-card-text>
                     <v-container>
@@ -89,11 +89,11 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import ClientNavbar from '@/components/ClientNavbar'
+import ProfessionalNavbar from '@/components/ProfessionalNavbar'
 import ScheduleVisit from '@/components/ScheduleVisit'
 export default {
     components: {
-        ClientNavbar, ScheduleVisit
+        ProfessionalNavbar, ScheduleVisit
     },
     data() {
         return {
@@ -113,23 +113,22 @@ export default {
             selectedOpen: false,
             // events: [],
             //--
-            client_id: '',
-            client: {},
+            professional_id: '',
+            professional: {},
         }
     },
     mounted(){
-        this.client_id = this.$route.params.id
+        this.professional_id = this.$route.params.id
         const parent = this
-
-        this.$store.commit('Client/setDocumentId', this.client_id)
-        this.$store.dispatch("Client/getClient").then(function(response){
-            parent.client = response
+        
+        this.$store.commit('Professional/setDocumentId', this.professional_id)
+        this.$store.dispatch("Professional/getProfessional").then(function(response){
+            parent.professional = response
         }).catch(function(error){
             console.log(error)
         });
-
-        this.$store.commit('ClientVisits/setClientId', this.client_id)
-        this.$store.dispatch("ClientVisits/getPatientSchedule").then(function(data){
+        this.$store.commit('ClientVisits/setProfessionalId', this.professional_id)
+        this.$store.dispatch("ClientVisits/getProfessionalSchedule").then(function(data){
             console.log(data)
         }).catch(function(error){
             console.log(error)

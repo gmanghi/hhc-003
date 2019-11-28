@@ -197,19 +197,24 @@ const Professional = {
                 console.error("Error removing document: ", error);
             });
         },
-        getProfessionalsByProfession({commit, state}) {  console.log('by profession')
-            fb.professionalCollection
-            .where('profession','==',state.professional.profession)
-            .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
-                let professionalArray = []
-                querySnapshot.forEach(doc => {
-                    let professional = doc.data()
-                    professional.id = doc.id
-                    professionalArray.push(professional)
+        getProfessionalsByProfession({commit, state}) { 
+            return new Promise((resolve, reject) => {
+                fb.professionalCollection
+                .where('profession','==',state.professional.profession)
+                .orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                    let professionalArray = []
+                    querySnapshot.forEach(doc => {
+                        let professional = doc.data()
+                        professional.id = doc.id
+                        professionalArray.push(professional)
+                    })
+                    commit('setProfessionals', professionalArray)
+                    resolve(state.professionals)
+                }, error => {
+                    reject(error)
                 })
-
-                commit('setProfessionals', professionalArray)
             })
+            
         },
         getProfessionalsByStatusNew({commit, state}) {
             fb.professionalCollection
@@ -262,6 +267,7 @@ const Professional = {
                 querySnapshot.forEach(doc => {
                     let professional = doc.data()
                     professional.id = doc.id
+                    professional.fullname = professional.first_name + ' ' + professional.last_name
                     professionalArray.push(professional)
                 })
 
@@ -274,8 +280,8 @@ const Professional = {
                     if (doc.exists) {
                         const data = doc.data();
                         data.createdOn = moment(data.createdOn.toDate()).format('YYYY-MM-DD')
-                        data.birthdate = moment(data.birthdate.toDate()).format('YYYY-MM-DD')
-                        data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
+                        // data.birthdate = moment(data.birthdate.toDate()).format('YYYY-MM-DD')
+                        // data.license_expiry_date = moment(data.license_expiry_date.toDate()).format('YYYY-MM-DD')
                         commit('setProfessional', data)
                         commit('setDocumentId', doc.id)
                         // console.log(state.professional)

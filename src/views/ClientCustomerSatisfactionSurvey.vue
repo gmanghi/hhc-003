@@ -206,7 +206,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="customer_satisfaction_survey.date1"
                                                     clearable
                                                     label="Date"
                                                     readonly
@@ -214,8 +214,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="customer_satisfaction_survey.date2"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -233,7 +233,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="customer_satisfaction_survey.date2"
                                                     clearable
                                                     label="Date/time in and out"
                                                     readonly
@@ -241,8 +241,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="customer_satisfaction_survey.date2"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>

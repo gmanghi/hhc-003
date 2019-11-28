@@ -81,7 +81,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="prescription.date"
                                                     clearable
                                                     label="Date"
                                                     readonly
@@ -89,8 +89,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
+                                                v-model="prescription.date"
                                                 @change="date_popup = false"
-                                                readonly
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>

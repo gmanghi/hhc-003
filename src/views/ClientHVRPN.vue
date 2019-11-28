@@ -108,7 +108,7 @@
                                             >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    :value="computedDateFormattedMomentjs"
+                                                    :value="hvrpn.hvrpn_patient_birthdate"
                                                     clearable
                                                     label="Birthdate*"
                                                     readonly
@@ -181,6 +181,7 @@ import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
         return {
+            date_popup: false,
             overlay: false,
             valid: true,
             popup: false,
