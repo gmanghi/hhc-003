@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <v-row>
-                 <v-col cols="12" sm="12" md="3">
+                <v-col cols="12" sm="12" md="3">
                     <div class="subtitle-1"><span class="font-weight-bold">Cognitive functioning: </span> patient's current (day of assessment) level of alertness, orientation, comprehension, concentration and immediate memory for simple commands</div>
                 </v-col>
                 <v-col cols="12" sm="12" md="1">

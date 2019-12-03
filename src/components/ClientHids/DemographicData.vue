@@ -14,7 +14,7 @@
                         <v-row>
                             <v-col cols="12" sm="12" md="3">
                                 <v-text-field 
-                                    label="Name*"
+                                    label="Name"
                                     required
                                     :rules="requiredStringRules"
                                     v-model="demographic.d1"
@@ -82,7 +82,7 @@
                                         <v-text-field
                                             :value="computedDateOfBirth"
                                             clearable
-                                            label="Date of Birth*"
+                                            label="Date of Birth"
                                             readonly
                                             v-on="on">
                                         </v-text-field>
@@ -162,7 +162,7 @@
                                         <v-text-field
                                             :value="computedDateOfVisit"
                                             clearable
-                                            label="Date of Visit*"
+                                            label="Date of Visit"
                                             readonly
                                             v-on="on">
                                         </v-text-field>

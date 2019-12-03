@@ -19,34 +19,34 @@
                             :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
                             label="Title"
                             v-model="client.client_title"
+                            readonly
                             ></v-select>
                         </v-col>
                         <v-col cols="12" md="4" sm="3" >
-                            <v-text-field label="Client / Account Name*" v-model="client.client_account_name" required></v-text-field>
+                            <v-text-field label="Client / Account Name" v-model="client.client_account_name" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12"  md="3" sm="3">
-                            <v-text-field label="Position / Relationship" v-model="client.client_position_relationship" hint="example of helper text only on focus"></v-text-field>
+                            <v-text-field label="Position / Relationship" v-model="client.client_position_relationship" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3" sm="3" xs="2">
-                            <v-text-field label="Primary Care YES, If NO*" v-model="client.client_primary_care" required></v-text-field>
+                            <v-text-field label="Primary Care YES, If NO" v-model="client.client_primary_care" readonly></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="4" sm="4">
                             <v-text-field
-                            label="Landline / Mobile Phone / Fax*"
-                            persistent-hint
-                            required
+                            label="Landline / Mobile Phone / Fax"
+                            readonly
                             v-model="client.client_landline_mobile_fax"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Email Address*" v-model="client.client_email" required></v-text-field>
+                            <v-text-field label="Email Address" v-model="client.client_email" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Attending Physician*" v-model="client.client_attending_physician" required></v-text-field>
+                            <v-text-field label="Attending Physician" v-model="client.client_attending_physician" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field label="Complete Address*" v-model="client.client_complete_address" required></v-text-field>
+                            <v-text-field label="Complete Address" v-model="client.client_complete_address" readonly></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="2"  sm="3" xs="2">
@@ -54,13 +54,14 @@
                             :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
                             label="Title"
                             v-model="client.patient_title"
+                            readonly
                             ></v-select>
                         </v-col>
                         <v-col cols="12" md="5" sm="3">
-                            <v-text-field label="Patient Name*" v-model="client.patient_name" required></v-text-field>
+                            <v-text-field label="Patient Name" v-model="client.patient_name" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="2" sm="3">
-                            <v-text-field label="Age" v-model="client.patient_age" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Age" v-model="client.patient_age" readonly></v-text-field>
                         </v-col>
                             <v-col cols="12" md="3" sm="3">
                             <v-menu
@@ -72,7 +73,7 @@
                                     <v-text-field
                                         :value="computedDateFormattedMomentjs"
                                         clearable
-                                        label="Birthdate*"
+                                        label="Birthdate"
                                         readonly
                                         v-on="on">
                                     </v-text-field>
@@ -84,26 +85,26 @@
                             </v-menu>
                         </v-col>
                         <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Religion" v-model="client.patient_religion" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Religion" v-model="client.patient_religion" readonly></v-text-field>
                         </v-col>
                             <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Nationality*" v-model="client.patient_nationality" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Nationality" v-model="client.patient_nationality" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Landline" v-model="client.patient_landline" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Landline" v-model="client.patient_landline" readonly></v-text-field>
                         </v-col>
 
                             <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Mobile Phone*" v-model="client.patient_mobile" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Mobile Phone" v-model="client.patient_mobile" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Email Address*" v-model="client.patient_email" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Email Address" v-model="client.patient_email" readonly></v-text-field>
                         </v-col>
                             <v-col cols="12" md="4" sm="4">
-                            <v-text-field label="Fax" v-model="client.patient_fax" hint="example of helper text only on focus" required></v-text-field>
+                            <v-text-field label="Fax" v-model="client.patient_fax" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field label="Complete Address*" v-model="client.patient_complete_address" required></v-text-field>
+                            <v-text-field label="Complete Address" v-model="client.patient_complete_address" readonly></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="12" md="12">
@@ -120,6 +121,7 @@
                                 label="REQUIREMENTS (Kindly check which service request / requirement is)"
                                 multiple    
                                 chips
+                                readonly
                             ></v-combobox>
                         </v-col>
                     
@@ -136,6 +138,7 @@
                                 label="Cash"
                                 multiple    
                                 chips
+                                readonly
                             ></v-combobox>
                         </v-col>
                         <v-col cols="12" xs="12" sm="12" md="12">
@@ -147,6 +150,7 @@
                                 label="Check"
                                 multiple    
                                 chips
+                                readonly
                             ></v-combobox>
                         </v-col>
                         <v-col cols="12" xs="12" sm="12" md="12">
@@ -158,34 +162,35 @@
                                 label="Online Transaction"
                                 multiple    
                                 chips
+                                readonly
                             ></v-combobox>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
-                            <v-text-field label="Credit Card (In HHC Office Only)" v-model="client.credit_card" hint="Bank Card/Card No." presistent-hint></v-text-field>
+                            <v-text-field label="Credit Card (In HHC Office Only)" v-model="client.credit_card" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6" sm="12">
-                            <v-text-field  class="ma-0 pa-0" label="Bank Name:" v-model="client.bank_name" required></v-text-field>
+                            <v-text-field  class="ma-0 pa-0" label="Bank Name:" v-model="client.bank_name" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6" sm="12">
-                            <v-text-field class="ma-0 pa-0" label="Branch:" v-model="client.bank_branch" required></v-text-field>
+                            <v-text-field class="ma-0 pa-0" label="Branch:" v-model="client.bank_branch" readonly></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
                             <v-divider></v-divider>
                         </v-col>
                         <v-col cols="12" md="6" sm="12">
                             <v-flex class="font-weight-bold">DATA GATHERED BY:</v-flex>
-                            <v-text-field label="Name and Signature:" v-model="client.gathered_by"></v-text-field>
-                            <v-text-field label="Date / Time Recieved:" v-model="client.gathered_when"></v-text-field>
+                            <v-text-field label="Name and Signature:" v-model="client.gathered_by" readonly></v-text-field>
+                            <v-text-field label="Date / Time Recieved:" v-model="client.gathered_when" readonly></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="6" sm="12">
                             <v-flex class="font-weight-bold">ENDORSED FOR ACTION TO:</v-flex>
-                            <v-text-field label="Name and Signature:" v-model="client.endorsed_action_to"></v-text-field>
-                            <v-text-field label="Date / Time Recieved:"  v-model="client.endorsed_action_when"></v-text-field>
+                            <v-text-field label="Name and Signature:" v-model="client.endorsed_action_to" readonly></v-text-field>
+                            <v-text-field label="Date / Time Recieved:"  v-model="client.endorsed_action_when" readonly></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="12" sm="12">
-                            <v-textarea label="ACTION TAKEN:" auto-grow outlined rows="3" row-height="30" v-model="client.action_taken"></v-textarea>
+                            <v-textarea label="ACTION TAKEN:" auto-grow outlined rows="3" row-height="30" v-model="client.action_taken" readonly></v-textarea>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
                             <v-divider></v-divider>
@@ -201,6 +206,7 @@
                                 label="SURVEY: How did you get to know Home Health Care?"
                                 multiple    
                                 chips
+                                readonly
                             ></v-combobox>
                         </v-col>
                         <v-col cols="12" md="12" sm="12" xs="12">
@@ -208,6 +214,7 @@
                             :items="['New', 'Pending', 'Verified']"
                             label="Status"
                             v-model="client.client_status"
+                            readonly
                             ></v-autocomplete>
                         </v-col>
                     </v-row>

@@ -26,7 +26,11 @@
                     <v-icon small>mdi-pencil</v-icon>
                 </v-btn>
             </template>
-            <v-form>
+            <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation>
+
                 <v-card>
                     <v-card-title>
                         <span class="headline">Facesheet</span>
@@ -39,32 +43,33 @@
                                 :items="['Mr.', 'Ms.', 'Mrs.', 'Dr.']"
                                 label="Title"
                                 v-model="client.client_title"
+                                :rules="requiredStringRules"
+                                required
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" md="4" sm="3" >
-                                <v-text-field label="Client / Account Name*" v-model="client.client_account_name"></v-text-field>
+                                <v-text-field label="Client / Account Name" v-model="client.client_account_name" :rules="requiredStringRules" required></v-text-field>
                             </v-col>
                             <v-col cols="12"  md="3" sm="3">
                                 <v-text-field label="Position / Relationship" v-model="client.client_position_relationship"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="3" sm="3" xs="2">
-                                <v-text-field label="Primary Care YES, If NO*" v-model="client.client_primary_care"></v-text-field>
+                                <v-text-field label="Primary Care YES, If NO" v-model="client.client_primary_care"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
                                 <v-text-field
-                                label="Landline / Mobile Phone / Fax*"
-                                persistent-hint
+                                label="Landline / Mobile Phone / Fax"
                                 v-model="client.client_landline_mobile_fax"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Email Address*" v-model="client.client_email"></v-text-field>
+                                <v-text-field label="Email Address" v-model="client.client_email"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Attending Physician*" v-model="client.client_attending_physician"></v-text-field>
+                                <v-text-field label="Attending Physician" v-model="client.client_attending_physician"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="12">
-                                <v-text-field label="Complete Address*" v-model="client.client_complete_address"></v-text-field>
+                                <v-text-field label="Complete Address" v-model="client.client_complete_address"></v-text-field>
                             </v-col>
 
                             <v-col cols="12" md="2"  sm="3" xs="2">
@@ -75,7 +80,7 @@
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" md="5" sm="3">
-                                <v-text-field label="Patient Name*" v-model="client.patient_name"></v-text-field>
+                                <v-text-field label="Patient Name" v-model="client.patient_name"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="2" sm="3">
                                 <v-text-field label="Age" v-model="client.patient_age"></v-text-field>
@@ -90,7 +95,7 @@
                                         <v-text-field
                                             :value="computedDateFormattedMomentjs"
                                             clearable
-                                            label="Birthdate*"
+                                            label="Birthdate"
                                             readonly
                                             v-on="on">
                                         </v-text-field>
@@ -105,23 +110,23 @@
                                 <v-text-field label="Religion" v-model="client.patient_religion"></v-text-field>
                             </v-col>
                                 <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Nationality*" v-model="client.patient_nationality"></v-text-field>
+                                <v-text-field label="Nationality" v-model="client.patient_nationality"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
                                 <v-text-field label="Landline" v-model="client.patient_landline"></v-text-field>
                             </v-col>
 
                                 <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Mobile Phone*" v-model="client.patient_mobile"></v-text-field>
+                                <v-text-field label="Mobile Phone" v-model="client.patient_mobile"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Email Address*" v-model="client.patient_email"></v-text-field>
+                                <v-text-field label="Email Address" v-model="client.patient_email"></v-text-field>
                             </v-col>
                                 <v-col cols="12" md="4" sm="4">
                                 <v-text-field label="Fax" v-model="client.patient_fax"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="12" sm="12">
-                                <v-text-field label="Complete Address*" v-model="client.patient_complete_address"></v-text-field>
+                                <v-text-field label="Complete Address" v-model="client.patient_complete_address"></v-text-field>
                             </v-col>
 
                             <v-col cols="12" sm="12" md="12">
@@ -179,7 +184,7 @@
                                 ></v-combobox>
                             </v-col>
                             <v-col cols="12" md="12" sm="12">
-                                <v-text-field label="Credit Card (In HHC Office Only)" v-model="client.credit_card" hint="Bank Card/Card No." presistent-hint></v-text-field>
+                                <v-text-field label="Credit Card (In HHC Office Only)" v-model="client.credit_card"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
                                 <v-text-field label="Bank Name:" v-model="client.bank_name"></v-text-field>
@@ -270,6 +275,7 @@ export default {
             overlay: false,
             snackbar: false,
             notification: '',
+            requiredStringRules: [v => !!v || 'Field is required'],
             // client: {},
             // method: 'create',
         }
