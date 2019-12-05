@@ -2,24 +2,22 @@
     <div>
         <v-container>
             <v-row>
-                <v-col cols="12" sm="6" md="3">
+                <v-col cols="12" sm="6" md="6">
                     <div class="subtitle-1"><span class="font-weight-bold">Wound/s Present</span></div>
                 </v-col>
-                <v-col cols="12" sm="6" md="9">
+                <v-col cols="12" sm="3" md="3">
                     <v-combobox
-                        v-model="integumentary.i1"
-                        :items="['Past','Present']"
-                        label="No"
-                        multiple    
+                        v-model="integumentary.i1_past"
+                        :items="['Yes','No']"
+                        label="Past"
                         chips
                     ></v-combobox>
                 </v-col>
-                <v-col cols="12" sm="6" md="9" offset-md="3">
+                <v-col cols="12" sm="3" md="3">
                     <v-combobox
-                        v-model="integumentary.i2"
-                        :items="['Past','Present']"
-                        label="Yes"
-                        multiple    
+                        v-model="integumentary.i1_present"
+                        :items="['Yes','No']"
+                        label="Present"
                         chips
                     ></v-combobox>
                 </v-col>
