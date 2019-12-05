@@ -83,7 +83,7 @@
                                 <v-col cols="12" md="3" sm="3">
                                 <v-menu
                                     v-model="date_popup"
-                                    :close-on-content-click="true"
+                                    :close-on-content-click="false"
                                     max-width="290"
                                     >
                                     <template v-slot:activator="{ on }">
