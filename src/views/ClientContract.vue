@@ -85,6 +85,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
@@ -93,8 +94,8 @@ export default {
             valid: true,
             popup: false,
             search: '',
-            contracts: [],
-            contract: {},
+            // contracts: [],
+            contract: [],
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Contract URL', align: 'center', sortable: true, value: 'url' },
@@ -105,37 +106,21 @@ export default {
     components: {
         ClientNavbar
     },
-    beforeRouteUpdate (to, from, next) {
-        this.overlay = true
-        const parent = this
-        this.$store.commit('Client/setDocumentId', to.params.id)
-        this.$store.dispatch("Client/getClientContracts").then(function(docs){
-            parent.contracts = docs
-            parent.overlay = false
-            console.log(docs)
-        }).catch(function(error){
-            parent.overlay = false
-            console.log(error)
-        })
-        next();
-    },
     mounted() {
         this.overlay = true
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientContracts").then(function(docs){
-            parent.contracts = docs
             parent.overlay = false
-            console.log(docs)
         }).catch(function(error){
             parent.overlay = false
             console.log(error)
         })
     },
     computed: {
-        // ...mapGetters({
-        //     contracts: 'Client/contracts'
-        // }),
+        ...mapGetters({
+            contracts: 'Client/contracts'
+        }),
     },
     methods: {
         process_save(){ 

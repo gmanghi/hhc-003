@@ -7,6 +7,11 @@ const Client = {
         clients: [],
         client: {
             document_id: null,
+            client_hids_document_id: null,
+            client_hvrpn_document_id: null,
+            client_prescription_document_id: null,
+            client_patient_medication_profile_document_id: null,
+            client_customer_satisfaction_survey_document_id: null,
             client_title: null,
             client_account_name: null,
             client_position_relationship: null,
@@ -36,11 +41,15 @@ const Client = {
             hvrpns: [],
             hvrpn: {},
             prescriptions: [],
-            prescription: {},
+            prescription: {
+                document_id: ''
+            },
             patient_medication_profiles: [],
             patient_medication_profile: {},
             customer_satisfaction_surveys: [],
             customer_satisfaction_survey: {},
+            
+            hidss: {}
         },
     },
     mutations: {
@@ -141,7 +150,8 @@ const Client = {
             state.client.hvrpn = val
         },
         setClientHVRPNDocumentId(state, val){
-            state.client.hvrpn.document_id = val
+            // state.client.hvrpn.document_id = val
+            state.client_hvrpn_document_id = val
         },
         setClientPrescriptions(state, val){
             state.client.prescriptions = val
@@ -150,7 +160,8 @@ const Client = {
             state.client.prescription = val
         },
         setClientPrescriptionDocumentId(state, val){
-            state.client.prescription.document_id = val
+            // state.client.prescription.document_id = val
+            state.client_prescription_document_id = val
         },
         setClientPatientMedicationProfiles(state, val){
             state.client.patient_medication_profiles = val
@@ -159,7 +170,8 @@ const Client = {
             state.client.patient_medication_profile = val
         },
         setClientPatientMedicationProfileDocumentId(state, val){
-            state.client.patient_medication_profile.document_id = val
+            // state.client.patient_medication_profile.document_id = val
+            state.client_patient_medication_profile_document_id = val
         },
         setClientCustomerSatisfactionSurveys(state, val){
             state.client.customer_satisfaction_surveys = val
@@ -168,10 +180,12 @@ const Client = {
             state.client.customer_satisfaction_survey = val
         },
         setClientCustomerSatisfactionSurveyDocumentId(state, val){
-            state.client.customer_satisfaction_survey.document_id = val
+            // state.client.customer_satisfaction_survey.document_id = val
+            state.client_customer_satisfaction_survey_document_id = val
         },
         setClientHidsDocumentId(state, val){
-            state.client.hids.document_id = val
+            // state.client.hids.document_id = val
+            state.client_hids_document_id = val
         },
         setClientHidsDemographic(state, val){
             state.client.hids.demographic = val
@@ -297,12 +311,56 @@ const Client = {
                 })
             })
         },
-        getClient({commit, state}) {
+        getClient({commit, state}) { 
+            const parent = this
             return new Promise((resolve, reject) => { 
-                fb.clientCollection.doc(state.client.document_id).get().then(function(doc) {
-                    if (doc.exists) {
+                fb.clientCollection.doc(state.client.document_id).get().then(function(doc) { 
+                    if (doc.exists) { 
                         const data = doc.data();
                         commit('setClient', data)
+
+                        // Contracts
+                        parent.dispatch("Client/getClientContracts").then(function(data){
+                            console.log('Client Init Contract Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init Contract Error', error)
+                        })
+
+                        // HIDSs
+                        parent.dispatch("Client/getClientHidss").then(function(data){
+                            console.log('Client Init HIDSs Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init HIDSs Error', error)
+                        })
+                        
+                        // HVRPNs
+                        parent.dispatch("Client/getClientHVRPNs").then(function(data){
+                            console.log('Client Init HVRPNs Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init HVRPNs Error', error)
+                        })
+
+                        // Prescriptions
+                        parent.dispatch("Client/getClientPrescriptions").then(function(data){
+                            console.log('Client Init Prescriptions Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init Prescriptions Error', error)
+                        })
+                        
+                        // PatientMedicationProfiles
+                        parent.dispatch("Client/getClientPatientMedicationProfiles").then(function(data){
+                            console.log('Client Init PatientMedicationProfiles Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init PatientMedicationProfiles Error', error)
+                        })
+
+                        // ClientCustomerSatisfactionSurveys
+                        parent.dispatch("Client/getClientCustomerSatisfactionSurveys").then(function(data){
+                            console.log('Client Init ClientCustomerSatisfactionSurveys Initialized', data)
+                        }).catch(function(error){
+                            console.log('Client Init ClientCustomerSatisfactionSurveys Error', error)
+                        })
+
                         resolve(state.client)
                     } else {
                         reject("No such document!");
@@ -350,7 +408,7 @@ const Client = {
         },
         getClientHids({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client.hids.document_id).onSnapshot(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('hids').doc(state.client_hids_document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
                         commit('setClientHids', data)
@@ -386,12 +444,11 @@ const Client = {
         },
         getClientHVRPN({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).onSnapshot(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client_hvrpn_document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
                         commit('setClientHVRPN', data)
-                        // commit('setClientHidsDocumentId',doc.id)
                         resolve(state.client.hvrpn)
                     } else {
                         reject("No such document!");
@@ -430,6 +487,7 @@ const Client = {
                         prescription.createdOn = moment(prescription.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
                         clientPrescriptionNArray.push(prescription)
                     })
+                    console.log(clientPrescriptionNArray)
                     commit('setClientPrescriptions', clientPrescriptionNArray)
                     resolve(state.client.prescriptions)
                 }, function(error) {
@@ -440,12 +498,12 @@ const Client = {
         },
         getClientPrescription({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).onSnapshot(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client_prescription_document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
                         commit('setClientPrescription', data)
-                        // commit('setClientHidsDocumentId',doc.id)
+                        console.log('tracee3',state.client.prescription)
                         resolve(state.client.prescription)
                     } else {
                         reject("No such document!");
@@ -494,7 +552,7 @@ const Client = {
         },
         getClientPatientMedicationProfile({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).onSnapshot(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client_patient_medication_profile_document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
@@ -550,12 +608,11 @@ const Client = {
         },
         getClientCustomerSatisfactionSurvey({commit, state}) {
             return new Promise((resolve, reject) => {
-                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).onSnapshot(function(doc) {
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client_customer_satisfaction_survey_document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data()
                         data.document_id = doc.id
                         commit('setClientCustomerSatisfactionSurvey', data)
-                        // commit('setClientHidsDocumentId',doc.id)
                         resolve(state.client.customer_satisfaction_survey)
                     } else {
                         reject("No such document!");
@@ -602,13 +659,13 @@ const Client = {
         contracts: (state, getters) => {
             return state.client.contracts
         },
-        hidss: (state, getters) => { console.log('trace',state.client.hidss);
+        hidss: (state, getters) => { console.log('trace1')
             return state.client.hidss
         },
         hvrpns: (state, getters) => {
             return state.client.hvrpns
         },
-        prescriptions: (state, getters) => {
+        prescriptions: (state, getters) => { 
             return state.client.prescriptions
         },
         patient_medication_profiles: (state, getters) => {

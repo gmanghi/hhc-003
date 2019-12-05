@@ -221,7 +221,6 @@ export default {
             popup: false,
             search: '',
             method: 'create',
-            patient_medication_profiles: [],
             patient_medication_profile: {},
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
@@ -234,37 +233,21 @@ export default {
     components: {
         ClientNavbar
     },
-    beforeRouteUpdate (to, from, next) {
-        this.overlay = true
-        const parent = this
-        this.$store.commit('Client/setDocumentId', to.params.id)
-        this.$store.dispatch("Client/getClientPatientMedicationProfiles").then(function(docs){
-            parent.patient_medication_profiles = docs
-            parent.overlay = false
-            console.log(docs)
-        }).catch(function(error){
-            parent.overlay = false
-            console.log(error)
-        })
-        next();
-    },
     mounted() {
         this.overlay = true
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientPatientMedicationProfiles").then(function(docs){
-            parent.patient_medication_profiles = docs
             parent.overlay = false
-            console.log(docs)
         }).catch(function(error){
             parent.overlay = false
             console.log(error)
         })
     },
     computed: {
-        // ...mapGetters({
-        //     patient_medication_profiles: 'Client/patient_medication_profiles'
-        // }),
+        ...mapGetters({
+            patient_medication_profiles: 'Client/patient_medication_profiles'
+        }),
     },
     methods: {
         edit_pmp(document_id){

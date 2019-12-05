@@ -187,7 +187,7 @@ export default {
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Edit', align: 'center', sortable: false, value: 'actions' },
             ],
-            hidss: [],
+            // hidss: [],
             hids: {},
             demographic: {},
             hopi: {},
@@ -212,37 +212,23 @@ export default {
             poc: {},
         }
     },
-    beforeRouteUpdate (to, from, next) {
-        this.overlay = true
-        const parent = this
-        this.$store.commit('Client/setDocumentId', to.params.id)
-        this.$store.dispatch("Client/getClientHidss").then(function(docs){
-            parent.hidss = docs
-            parent.overlay = false
-            console.log(docs)
-        }).catch(function(error){
-            parent.overlay = false
-            console.log(error)
-        })
-        next();
-    },
-    mounted() {
-        this.overlay = true
+    mounted() { console.log('trace2')
+        // this.overlay = true
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
+        // this.$store.dispatch("Client/getClient")
         this.$store.dispatch("Client/getClientHidss").then(function(docs){
             parent.hidss = docs
             parent.overlay = false
-            console.log(docs)
         }).catch(function(error){
             parent.overlay = false
             console.log(error)
         })
     },
     computed: {
-        // ...mapGetters({
-        //     hidss: 'Client/hidss',
-        // }),
+        ...mapGetters({
+            hidss: 'Client/hidss',
+        }),
     },
     watch:{
         tab: function(val){
@@ -250,7 +236,7 @@ export default {
         }
     },
     methods: {
-        edit_hids(document_id){
+        edit_hids(document_id){ console.log(document_id)
             this.overlay = true
             let parent = this
             this.$store.commit('Client/setClientHidsDocumentId', document_id)

@@ -296,11 +296,6 @@ export default {
     components: {
         ClientNavbar
     },
-    beforeRouteUpdate (to, from, next) {
-        this.$store.commit('Client/setDocumentId', to.params.id)
-        this.$store.dispatch("Client/getClientCustomerSatisfactionSurveys");
-        next();
-    },
     mounted() {
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientCustomerSatisfactionSurveys");
