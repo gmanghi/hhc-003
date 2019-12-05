@@ -187,6 +187,7 @@ export default {
             popup: false,
             search: '',
             method: 'create',
+            hvrpns: [],
             hvrpn: {},
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
@@ -200,18 +201,36 @@ export default {
         ClientNavbar
     },
     beforeRouteUpdate (to, from, next) {
+        this.overlay = true
+        const parent = this
         this.$store.commit('Client/setDocumentId', to.params.id)
-        this.$store.dispatch("Client/getClientHVRPNs");
+        this.$store.dispatch("Client/getClientHVRPNs").then(function(docs){
+            parent.hvrpns = docs
+            parent.overlay = false
+            console.log(docs)
+        }).catch(function(error){
+            parent.overlay = false
+            console.log(error)
+        })
         next();
     },
     mounted() {
+        this.overlay = true
+        const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
-        this.$store.dispatch("Client/getClientHVRPNs");
+        this.$store.dispatch("Client/getClientHVRPNs").then(function(docs){
+            parent.hvrpns = docs
+            parent.overlay = false
+            console.log(docs)
+        }).catch(function(error){
+            parent.overlay = false
+            console.log(error)
+        })
     },
     computed: {
-        ...mapGetters({
-            hvrpns: 'Client/hvrpns'
-        }),
+        // ...mapGetters({
+        //     hvrpns: 'Client/hvrpns'
+        // }),
     },
     methods: {
         edit_hvrpn(document_id){

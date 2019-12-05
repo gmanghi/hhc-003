@@ -240,8 +240,8 @@ export default {
             if (this.$refs.form.validate()) {
                 const data = this.professional
                 data.createdOn = new Date
-                data.birthdate = new Date(data.birthdate)
-                data.license_expiry_date = new Date(data.license_expiry_date)
+                // data.birthdate = new Date(data.birthdate)
+                // data.license_expiry_date = new Date(data.license_expiry_date)
                 data.avatar = this.avatar
                 data.profession = this.profession
                 const parent = this
