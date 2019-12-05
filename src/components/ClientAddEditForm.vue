@@ -85,10 +85,10 @@
                             <v-col cols="12" md="2" sm="3">
                                 <v-text-field label="Age" v-model="client.patient_age"></v-text-field>
                             </v-col>
-                                <v-col cols="12" md="3" sm="3">
+                            <v-col cols="12" md="3" sm="3">
                                 <v-menu
                                     v-model="date_popup"
-                                    :close-on-content-click="true"
+                                    :close-on-content-click="false"
                                     max-width="290"
                                     >
                                     <template v-slot:activator="{ on }">
@@ -285,7 +285,7 @@ export default {
     },
     computed: {
         computedDateFormattedMomentjs(){
-            return this.client.patient_birthdate ? moment(this.client.patient_birthdate).format('YYYY-MM-DD') : ''
+            return this.client.patient_birthdate ? moment(this.client.patient_birthdate).format('YYYY-MM-DD') : this.client.patient_birthdate
         },
     },
     methods: {

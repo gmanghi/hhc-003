@@ -100,7 +100,6 @@
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="Area of Coverage" 
-
                                     v-model="professional.coverage" 
                                     required>
                                 </v-text-field>
