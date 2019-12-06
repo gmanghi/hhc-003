@@ -69,7 +69,8 @@
                                     </v-col>
                                 <v-col cols="12" md="6" sm="12">
                                         <v-menu
-                                            :close-on-content-click="true"
+                                            v-model="patient_medication_profile_date1"
+                                            :close-on-content-click="false"
                                             max-width="290"
                                             readonly
                                             >
@@ -84,7 +85,7 @@
                                             </template>
                                             <v-date-picker
                                                 v-model="patient_medication_profile.date1"
-                                                @change="date_popup = false"
+                                                @change="patient_medication_profile_date1 = false"
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -216,6 +217,7 @@ import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
         return {
+            patient_medication_profile_date1: false,
             overlay: false,
             valid: true,
             popup: false,

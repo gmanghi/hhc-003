@@ -102,8 +102,8 @@
                                     </v-col>
                                         <v-col cols="12" md="3" sm="3">
                                         <v-menu
-                                            v-model="date_popup"
-                                            :close-on-content-click="true"
+                                            v-model="hvrpn_patient_birthdate_date_popup"
+                                            :close-on-content-click="false"
                                             max-width="290"
                                             >
                                             <template v-slot:activator="{ on }">
@@ -117,7 +117,7 @@
                                             </template>
                                             <v-date-picker
                                                 v-model="hvrpn.hvrpn_patient_birthdate"
-                                                @change="date_popup = false"
+                                                @change="hvrpn_patient_birthdate_date_popup = false"
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -181,6 +181,7 @@ import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
         return {
+            hvrpn_patient_birthdate_date_popup: false,
             date_popup: false,
             overlay: false,
             valid: true,
