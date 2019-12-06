@@ -200,7 +200,8 @@
                                     </v-col>
                                     <v-col cols="12" md="6" sm="6">
                                         <v-menu
-                                            :close-on-content-click="true"
+                                            v-model="customer_satisfaction_survey_date1"
+                                            :close-on-content-click="false"
                                             max-width="290"
                                             readonly
                                             >
@@ -214,8 +215,8 @@
                                                 </v-text-field>
                                             </template>
                                             <v-date-picker
-                                                v-model="customer_satisfaction_survey.date2"
-                                                @change="date_popup = false"
+                                                v-model="customer_satisfaction_survey.date1"
+                                                @change="customer_satisfaction_survey_date1 = false"
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -227,7 +228,8 @@
                                     </v-col>
                                     <v-col cols="12" md="6" sm="6">
                                         <v-menu
-                                            :close-on-content-click="true"
+                                            v-model="customer_satisfaction_survey_date2"
+                                            :close-on-content-click="false"
                                             max-width="290"
                                             readonly
                                             >
@@ -242,7 +244,7 @@
                                             </template>
                                             <v-date-picker
                                                 v-model="customer_satisfaction_survey.date2"
-                                                @change="date_popup = false"
+                                                @change="customer_satisfaction_survey_date2 = false"
                                             ></v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -279,6 +281,8 @@ import ClientNavbar from '@/components/ClientNavbar'
 export default {
     data(){
         return {
+            customer_satisfaction_survey_date1: false,
+            customer_satisfaction_survey_date2: false,
             overlay: false,
             valid: true,
             popup: false,

@@ -300,14 +300,15 @@ export default {
                 let date_until = new Date(this.visit_date_until)
                 let number_of_days = new Date(date_until.getTime() - date_start.getTime() ) / (1000 * 3600 * 24)
 
+                const parent = this
+
                 for(let a = 0; a <= number_of_days; a++){
                     let moment_start_object = moment(new Date(this.visit_date_start + ' ' + this.shift_time_start))
                     moment_start_object.add(a, 'days')
                     let shift_start = moment_start_object.format('YYYY-MM-DD HH:mm')
-                    console.log(shift_start)
+
                     moment_start_object.add(this.required_number_of_hours, 'hours')
                     let shift_end = moment_start_object.format('YYYY-MM-DD HH:mm')
-                    console.log(shift_end)
 
                     let data = {
                         client_id: this.client_id,
