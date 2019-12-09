@@ -260,6 +260,9 @@
                         v-model="ds.ds15_present"
                     ></v-select>
                 </v-col>
+                <v-col cols="12" sm="12" md="12">
+                    <div class="subtitle-1"><span class="font-weight-bold">Interpretation: </span>Answers count one (1) point: < 5 = Normal; 5 - 10 = Mild to Moderate Depression; > 10 Suggest Severe</div>
+                </v-col>
                 
             </v-row>
         </v-container>

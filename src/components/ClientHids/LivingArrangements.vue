@@ -7,8 +7,8 @@
                         v-model="la.la1"
                         :items="['Patient lives alone',
                                 'Patient lives with other person(s) in the home',
-                                'Patient lives in conregate situation (e.g. assissted living)']"
-                        label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assisstance?"
+                                'Patient lives in conregate situation (e.g. assisted living)']"
+                        label="Patient Living Situation: Which of the following best describes the patient's residential circumstances and availability of assistance?"
                         single    
                         chips
                     ></v-combobox>
@@ -18,10 +18,10 @@
                         v-model="la.la2"
                         :items="['Around the clock',
                                 'Regular daytime',
-                                'Regular nightime',
+                                'Regular nighttime',
                                 'Occasional/Short-term assistance',
                                 'None']"
-                        label="Availability Assisstance"
+                        label="Availability Assistance"
                         single    
                         chips
                     ></v-combobox>

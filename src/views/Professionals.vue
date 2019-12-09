@@ -67,6 +67,7 @@ export default {
     data() {
         return {
             profession: '',
+            professionals: [],
             professional: {},
             default_avatar: 'https://firebasestorage.googleapis.com/v0/b/hhc-002.appspot.com/o/gku6f58eqo.bmp?alt=media&token=070c70e4-dcf0-47d0-b0d9-d8f5cf1071cb',
             popup: false,
@@ -88,7 +89,8 @@ export default {
         const parent = this
         this.$store.commit('Professional/setProfessionals', [])
         this.$store.commit('Professional/setProfession', this.profession)
-        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(data) {
+        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(docs) {
+            parent.professionals = docs
             parent.overlay = false
             next();
         }).catch(function (error){
@@ -108,7 +110,8 @@ export default {
         const parent = this
         this.$store.commit('Professional/setProfessionals', [])
         this.$store.commit('Professional/setProfession', this.profession)
-        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(data) {
+        this.$store.dispatch("Professional/getProfessionalsByProfession").then(function(docs) {
+            parent.professionals = docs
             parent.overlay = false
         }).catch(function (error){
             parent.overlay = false
@@ -117,9 +120,9 @@ export default {
         })
     },
     computed: {
-        ...mapGetters({
-            professionals: 'Professional/professionals'
-        })
+        // ...mapGetters({
+        //     professionals: 'Professional/professionals'
+        // })
     },
     methods: {
         viewProfessional(document_id){

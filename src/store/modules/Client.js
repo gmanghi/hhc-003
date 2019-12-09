@@ -282,14 +282,19 @@ const Client = {
             })
         },
         getClients({commit, state}) {
-            fb.clientCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
-                let clientArray = []
-                querySnapshot.forEach(doc => {
-                    let client = doc.data()
-                    client.document_id = doc.id
-                    clientArray.push(client)
+            return new Promise((resolve, reject) => { 
+                fb.clientCollection.orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+                    let clientArray = []
+                    querySnapshot.forEach(doc => {
+                        let client = doc.data()
+                        client.document_id = doc.id
+                        clientArray.push(client)
+                    })
+                    commit('setClients', clientArray)
+                    resolve(state.clients)
+                }, function(error){
+                    reject(error)
                 })
-                commit('setClients', clientArray)
             })
         },
         getClient({commit, state}) {
@@ -308,30 +313,40 @@ const Client = {
             })
         },
         getClientContracts({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('contract').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientContractArray = []
-                querySnapshot.forEach(doc => {
-                    let contract = doc.data()
-                    contract.document_id = doc.id
-                    contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientContractArray.push(contract)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('contract').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientContractArray = []
+                    querySnapshot.forEach(doc => {
+                        let contract = doc.data()
+                        contract.document_id = doc.id
+                        contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientContractArray.push(contract)
+                    })
+                    commit('setClientContracts', clientContractArray)
+                    resolve(state.client.contracts)
+                }, function(error) {
+                    reject(error)
                 })
-
-                commit('setClientContracts', clientContractArray)
             })
+            
         },
         getClientHidss({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('hids').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientHidsArray = []
-                querySnapshot.forEach(doc => {
-                    let hids = doc.data()
-                    hids.document_id = doc.id
-                    hids.createdOn = moment(hids.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientHidsArray.push(hids)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hids').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientHidsArray = []
+                    querySnapshot.forEach(doc => {
+                        let hids = doc.data()
+                        hids.document_id = doc.id
+                        hids.createdOn = moment(hids.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientHidsArray.push(hids)
+                    })
+                    commit('setClientHidss', clientHidsArray)
+                    resolve(state.client.hidss)
+                }, function(error) {
+                    reject(error)
                 })
-
-                commit('setClientHidss', clientHidsArray)
-            })
+            });
+            
         },
         getClientHids({commit, state}) {
             return new Promise((resolve, reject) => {
@@ -345,22 +360,29 @@ const Client = {
                         reject("No such document!");
                     }
                 }, function(error) {
+                    reject(error)
                     console.log("Error getting document:", error);
                 });
             })
         },
         getClientHVRPNs({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('hvrpn').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientHVRPNArray = []
-                querySnapshot.forEach(doc => {
-                    let hvrpn = doc.data()
-                    hvrpn.document_id = doc.id
-                    hvrpn.createdOn = moment(hvrpn.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientHVRPNArray.push(hvrpn)
-                })
-
-                commit('setClientHVRPNs', clientHVRPNArray)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('hvrpn').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientHVRPNArray = []
+                    querySnapshot.forEach(doc => {
+                        let hvrpn = doc.data()
+                        hvrpn.document_id = doc.id
+                        hvrpn.createdOn = moment(hvrpn.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientHVRPNArray.push(hvrpn)
+                    })
+                    commit('setClientHVRPNs', clientHVRPNArray)
+                    resolve(state.client.hvrpns)
+                }, function(error) {
+                    reject(error)
+                    console.log("Error getting document:", error);
+                });
             })
+            
         },
         getClientHVRPN({commit, state}) {
             return new Promise((resolve, reject) => {
@@ -375,24 +397,10 @@ const Client = {
                         reject("No such document!");
                     }
                 }, function(error) {
+                    reject(error)
                     console.log("Error getting document:", error);
                 });
-
-                // fb.clientCollection.doc(state.client.document_id).collection('hvrpn').doc(state.client.hvrpn.document_id).get().then(function(doc) {
-                //     if (doc.exists) {
-                //         const data = doc.data()
-                //         data.document_id = doc.id
-                //         commit('setClientHVRPN', data)
-                //         // commit('setClientHidsDocumentId',doc.id)
-                //         resolve(state.client.hvrpn)
-                //     } else {
-                //         reject("No such document!");
-                //     }
-                // }).catch(function(error) {
-                //     reject("Error getting document:", error);
-                // });
             })
-            
         },
         createClientHVRPN({commit, state}){
             return new Promise((resolve, reject) => { 
@@ -413,16 +421,21 @@ const Client = {
             })
         },
         getClientPrescriptions({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('prescription').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientPrescriptionNArray = []
-                querySnapshot.forEach(doc => {
-                    let prescription = doc.data()
-                    prescription.document_id = doc.id
-                    prescription.createdOn = moment(prescription.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientPrescriptionNArray.push(prescription)
-                })
-
-                commit('setClientPrescriptions', clientPrescriptionNArray)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('prescription').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientPrescriptionNArray = []
+                    querySnapshot.forEach(doc => {
+                        let prescription = doc.data()
+                        prescription.document_id = doc.id
+                        prescription.createdOn = moment(prescription.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientPrescriptionNArray.push(prescription)
+                    })
+                    commit('setClientPrescriptions', clientPrescriptionNArray)
+                    resolve(state.client.prescriptions)
+                }, function(error) {
+                    reject(error)
+                    console.log("Error getting document:", error);
+                });
             })
         },
         getClientPrescription({commit, state}) {
@@ -438,24 +451,10 @@ const Client = {
                         reject("No such document!");
                     }
                 }, function(error) {
+                    reject(error)
                     console.log("Error getting document:", error);
                 });
-
-                // fb.clientCollection.doc(state.client.document_id).collection('prescription').doc(state.client.prescription.document_id).get().then(function(doc) {
-                //     if (doc.exists) {
-                //         const data = doc.data()
-                //         data.document_id = doc.id
-                //         commit('setClientPrescription', data)
-                //         // commit('setClientHidsDocumentId',doc.id)
-                //         resolve(state.client.prescription)
-                //     } else {
-                //         reject("No such document!");
-                //     }
-                // }).catch(function(error) {
-                //     reject("Error getting document:", error);
-                // });
             })
-            
         },
         createClientPrescription({commit, state}){
             return new Promise((resolve, reject) => { 
@@ -476,16 +475,21 @@ const Client = {
             })
         },
         getClientPatientMedicationProfiles({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientPatientMedicationProfilesArray = []
-                querySnapshot.forEach(doc => {
-                    let pmp = doc.data()
-                    pmp.document_id = doc.id
-                    pmp.createdOn = moment(pmp.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientPatientMedicationProfilesArray.push(pmp)
-                })
-
-                commit('setClientPatientMedicationProfiles', clientPatientMedicationProfilesArray)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientPatientMedicationProfilesArray = []
+                    querySnapshot.forEach(doc => {
+                        let pmp = doc.data()
+                        pmp.document_id = doc.id
+                        pmp.createdOn = moment(pmp.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientPatientMedicationProfilesArray.push(pmp)
+                    })
+                    commit('setClientPatientMedicationProfiles', clientPatientMedicationProfilesArray)
+                    resolve(state.client.patient_medication_profiles)
+                }, function(error) {
+                    reject(error)
+                    console.log("Error getting document:", error);
+                });
             })
         },
         getClientPatientMedicationProfile({commit, state}) {
@@ -501,22 +505,9 @@ const Client = {
                         reject("No such document!");
                     }
                 }, function(error) {
+                    reject(error)
                     console.log("Error getting document:", error);
                 });
-
-                // fb.clientCollection.doc(state.client.document_id).collection('patient_medication_profile').doc(state.client.patient_medication_profile.document_id).get().then(function(doc) {
-                //     if (doc.exists) {
-                //         const data = doc.data()
-                //         data.document_id = doc.id
-                //         commit('setClientPatientMedicationProfile', data)
-                //         // commit('setClientHidsDocumentId',doc.id)
-                //         resolve(state.client.patient_medication_profile)
-                //     } else {
-                //         reject("No such document!");
-                //     }
-                // }).catch(function(error) {
-                //     reject("Error getting document:", error);
-                // });
             })
             
         },
@@ -539,17 +530,23 @@ const Client = {
             })
         },
         getClientCustomerSatisfactionSurveys({commit, state}) {
-            fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
-                let clientCustomerSatisfactionSurveysNArray = []
-                querySnapshot.forEach(doc => {
-                    let css = doc.data()
-                    css.document_id = doc.id
-                    css.createdOn = moment(css.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
-                    clientCustomerSatisfactionSurveysNArray.push(css)
-                })
-
-                commit('setClientCustomerSatisfactionSurveys', clientCustomerSatisfactionSurveysNArray)
+            return new Promise((resolve, reject) => {
+                fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').orderBy('createdOn','desc').onSnapshot(querySnapshot => {
+                    let clientCustomerSatisfactionSurveysNArray = []
+                    querySnapshot.forEach(doc => {
+                        let css = doc.data()
+                        css.document_id = doc.id
+                        css.createdOn = moment(css.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
+                        clientCustomerSatisfactionSurveysNArray.push(css)
+                    })
+                    commit('setClientCustomerSatisfactionSurveys', clientCustomerSatisfactionSurveysNArray)
+                    resolve(state.client.customer_satisfaction_surveys)
+                }, function(error) {
+                    reject(error)
+                    console.log("Error getting document:", error);
+                });
             })
+            
         },
         getClientCustomerSatisfactionSurvey({commit, state}) {
             return new Promise((resolve, reject) => {
@@ -564,22 +561,9 @@ const Client = {
                         reject("No such document!");
                     }
                 }, function(error) {
+                    reject(error)
                     console.log("Error getting document:", error);
                 });
-
-                // fb.clientCollection.doc(state.client.document_id).collection('customer_satisfaction_survey').doc(state.client.customer_satisfaction_survey.document_id).get().then(function(doc) {
-                //     if (doc.exists) {
-                //         const data = doc.data()
-                //         data.document_id = doc.id
-                //         commit('setClientCustomerSatisfactionSurvey', data)
-                //         // commit('setClientHidsDocumentId',doc.id)
-                //         resolve(state.client.customer_satisfaction_survey)
-                //     } else {
-                //         reject("No such document!");
-                //     }
-                // }).catch(function(error) {
-                //     reject("Error getting document:", error);
-                // });
             })
             
         },
@@ -618,7 +602,7 @@ const Client = {
         contracts: (state, getters) => {
             return state.client.contracts
         },
-        hidss: (state, getters) => {
+        hidss: (state, getters) => { console.log('trace',state.client.hidss);
             return state.client.hidss
         },
         hvrpns: (state, getters) => {

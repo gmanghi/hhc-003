@@ -13,7 +13,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
-                    <div class="subtitle-1">iabetic foot care including monitoring for the  b. presence of skin lesions on the lower extremities and patient/caregiver education on proper foot care</div>
+                    <div class="subtitle-1">Diabetic foot care including monitoring for the  b. presence of skin lesions on the lower extremities and patient/caregiver education on proper foot care</div>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                     <v-text-field 
@@ -43,7 +43,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
-                    <div class="subtitle-1">tervention(s) to monitor and mitigate pain  </div>
+                    <div class="subtitle-1">Intervention(s) to monitor and mitigate pain  </div>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                     <v-text-field 
@@ -53,7 +53,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
-                    <div class="subtitle-1">tervention(s) to prevent pressure ulcers   </div>
+                    <div class="subtitle-1">Intervention(s) to prevent pressure ulcers   </div>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                     <v-text-field 
@@ -82,7 +82,23 @@
                         v-model="poc.poc8"
                     ></v-text-field>
                 </v-col>
-
+                <v-col cols="12" sm="12" md="12">
+                    <div class="subtitle-1"><span class="font-weight-bold">* Adapted from OASIS Form developed by Centers for Medical and Medicaid Services (CMS), USA</span></div>
+                </v-col>
+                <v-col cols="12" sm="12" md="6">
+                    <v-text-field 
+                        label="(Signature/Title)"
+                        required
+                        v-model="poc.poc9"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="6">
+                    <v-text-field 
+                        label="Date"
+                        required
+                        v-model="poc.poc10"
+                    ></v-text-field>
+                </v-col>
                 <!--<v-col cols="12" sm="12" md="12">
                     <v-combobox
                         v-model="poc.poc1"
