@@ -132,20 +132,22 @@
                             <v-col cols="12" sm="12" md="12">
                                 <v-combobox
                                     v-model="client.requirements"
-                                    :items="['Home Health Visit by HCP',
-                                            'Registered Nurse / Caregiver Deployment',
-                                            'Laboratory / Radiology',
-                                            'Purchase / Rental of Medicine Equipment',
-                                            'Medical Escorting',
-                                            'Senior Residential Facility',
-                                            'Home Vaccination Program',
-                                            'MDeploy']"
+                                    :items="['Home Health Care Visit',
+                                        'Home Care',
+                                        'Laboratory / Radiology',
+                                        'Purchase and/or Rental of Medical Equipment',
+                                        'Medical Escorting',
+                                        'Long Term Care Placement',
+                                        'Home Vaccination Program',
+                                        'MDeploy']"
                                     label="REQUIREMENTS (Kindly check which service request / requirement is)"
                                     multiple    
                                     chips
                                 ></v-combobox>
                             </v-col>
-                        
+                            <v-col cols="12" md="12" sm="12">
+                                <v-textarea label="Requirements Notes / Remarks:" auto-grow outlined rows="3" row-height="30" v-model="client.notes_remarks"></v-textarea>
+                            </v-col>
                             <v-col cols="12" md="12" sm="12">
                                 <v-flex :inset="false" class="font-weight-bold">Mode of Payment (Kindly check the appropriate box)</v-flex>
                                 <v-divider></v-divider>

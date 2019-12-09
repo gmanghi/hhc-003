@@ -50,7 +50,7 @@
                     <div class="body-2">NA - Patient nonresponsive </div>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <div class="subtitle-1">When Anxious (Reported or Abserved)</div>
+                    <div class="subtitle-1">When Anxious (Reported or Observed)</div>
                 </v-col>
                 <v-col cols="12" sm="12" md="1">
                     <v-select

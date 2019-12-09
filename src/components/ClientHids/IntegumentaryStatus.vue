@@ -7,7 +7,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
                     <v-combobox
-                        v-model="integumentary.i1_past"
+                        v-model="integumentary.i1"
                         :items="['Yes','No']"
                         label="Past"
                         chips
@@ -15,7 +15,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
                     <v-combobox
-                        v-model="integumentary.i1_present"
+                        v-model="integumentary.i2"
                         :items="['Yes','No']"
                         label="Present"
                         chips
@@ -70,13 +70,7 @@
                     ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6" md="9" offset-md="3">
-                    <v-combobox
-                        v-model="integumentary.i8"
-                        :items="['Past','Present']"
-                        label="Sites"
-                        multiple    
-                        chips
-                    ></v-combobox>
+                     <v-text-field label="Sites" v-model="integumentary.i8"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="9" offset-md="3">
                     <v-text-field 
@@ -138,13 +132,7 @@
                     ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6" md="9" offset-md="3">
-                    <v-combobox
-                        v-model="integumentary.i16"
-                        :items="['Past','Present']"
-                        label="NA"
-                        multiple    
-                        chips
-                    ></v-combobox>
+                    <v-text-field label="NA" v-model="integumentary.i16"></v-text-field>
                 </v-col>
             </v-row>
         </v-container>
