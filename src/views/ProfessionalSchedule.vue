@@ -72,6 +72,7 @@
                                                 <span v-html="selectedEvent.details"></span>
                                             </v-card-text>
                                             <v-card-actions>
+                                                <v-btn text color="secondary" @click="process_delete(selectedEvent.id)">Delete</v-btn>
                                                 <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
                                             </v-card-actions>
                                         </v-card>
@@ -215,6 +216,16 @@ export default {
                 ? 'th'
                 : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
         },
+        process_delete (id) {
+            this.$store.commit('ClientVisits/setDocumentId', id)
+            const parent = this
+            this.$store.dispatch("ClientVisits/deleteVisit").then(function(data){
+                parent.selectedOpen = false
+            }).catch(function(error){
+                console.log(error)
+            })
+            
+        }
     },
 }
 </script>

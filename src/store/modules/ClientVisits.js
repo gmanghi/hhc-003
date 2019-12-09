@@ -15,12 +15,15 @@ const CLientVisits = {
         setVisit(state, val){
             state.visit = val
         },
+        setDocumentId(state, val){
+            state.visit.document_id = val
+        },
         setClientId(state, val){
             state.client_id = val
         },
         setProfessionalId(state, val){
             state.professional_id = val
-        }
+        },
     },
     actions: { 
         clearVisit({commit}){
@@ -34,10 +37,13 @@ const CLientVisits = {
                         let data = doc.data()
                         data.id = doc.id
                         data.name = data.patient_name
-                        // data.details = 'data.professional'
                         data.color = 'green'
-                        // data.start = moment(data.time_start.toDate()).format('YYYY-MM-DD hh:mm')
-                        // data.end = moment(data.time_end.toDate()).format('YYYY-MM-DD hh:mm')
+
+                        let details = ''
+                        details += 'Time-In: ' + data.start + '<br />'
+                        details += 'Time-Out: ' + data.end + '<br />'
+                        data.details = details
+                       
                         container.push(data)
                     })
                     commit('setVisits', container)
@@ -55,10 +61,13 @@ const CLientVisits = {
                         let data = doc.data()
                         data.id = doc.id
                         data.name = data.professional_name
-                        // data.details = 'data.professional'
                         data.color = 'green'
-                        // data.start = moment(data.time_start.toDate()).format('YYYY-MM-DD hh:mm')
-                        // data.end = moment(data.time_end.toDate()).format('YYYY-MM-DD hh:mm')
+
+                        let details = ''
+                        details += 'Time-In: ' + data.start + '<br />'
+                        details += 'Time-Out: ' + data.end + '<br />'
+                        data.details = details
+
                         container.push(data)
                     })
                     commit('setVisits', container)
@@ -75,8 +84,6 @@ const CLientVisits = {
                     querySnapshot.forEach(doc => {
                         let data = doc.data()
                         data.id = doc.id
-                        // data.name = 'hello'
-                        // data.details = 'data.professional'
                         data.color = 'green'
                         // data.start = moment(data.time_start.toDate()).format('YYYY-MM-DD hh:mm')
                         // data.end = moment(data.time_end.toDate()).format('YYYY-MM-DD hh:mm')
@@ -99,7 +106,16 @@ const CLientVisits = {
                     reject(error)
                 })
             })
-        }
+        },
+        deleteVisit({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fb.visitCollection.doc(state.visit.document_id).delete().then(function() {
+                    resolve("Document successfully deleted!")
+                }).catch(function(error) {
+                    reject("Error removing document: ", error);
+                });
+            })
+        },
     },
     getters: { 
         visits: (state, getters) => {
