@@ -20,21 +20,21 @@
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field 
                                     label="First Name"
-                                    required
+                                    readonly
                                     v-model="professional.first_name">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field 
-                                    label="Middle Name" 
+                                    label="Middle Name"
+                                    readonly
                                     v-model="professional.middle_name">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field
                                     label="Last Name"
-                                    required
-
+                                    readonly
                                     v-model="professional.last_name">
                                 </v-text-field>
                             </v-col>
@@ -42,30 +42,28 @@
                                 <v-text-field 
                                     label="Address" 
                                     v-model="professional.address" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="Mobile Number" 
                                     v-model="professional.mobile_number" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="Email*" 
-
                                     v-model="professional.email" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="PRC ID/NC2 Number" 
-
                                     v-model="professional.license" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
@@ -92,17 +90,15 @@
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="Specialty" 
-
                                     v-model="professional.specialty" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field 
                                     label="Area of Coverage" 
-
                                     v-model="professional.coverage" 
-                                    required>
+                                    readonly>
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">

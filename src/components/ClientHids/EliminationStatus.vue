@@ -26,7 +26,7 @@
                     <div class="body-2">UK - Unknown</div>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
-                    <div class="subtitle-1"><span class="font-weight-bold">Urinary Incontinence or Urinary Catherer Presence</span></div>
+                    <div class="subtitle-1"><span class="font-weight-bold">Urinary Incontinence or Urinary Catheter Presence</span></div>
                 </v-col>
                 <v-col cols="12" sm="12" md="1">
                     <v-select
@@ -43,7 +43,7 @@
                     ></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="7">
-                    <div class="body-2">1. No incontinence or catherer (includes anuria or ostomy for urinary drainage)</div>
+                    <div class="body-2">1. No incontinence or catheter (includes anuria or ostomy for urinary drainage)</div>
                     <div class="body-2">2. Patient is incontinent</div>
                     <div class="body-2">3. Patient requires a urinary catherer (i.e.,external, indwelling, intermittent, suprapubic)</div>
                 </v-col>

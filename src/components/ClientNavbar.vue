@@ -18,7 +18,7 @@
         </v-btn>
         <v-btn text color="grey" :href="hvrpn_url">
             <v-icon left>mdi-note-text-outline</v-icon>
-            <span class="caption text-uppercase">Home Visit Report/Progress Notes</span>
+            <span class="caption text-uppercase">Home Health Care Visit</span>
         </v-btn>
         <v-btn text color="grey" :href="prescription_url">
             <v-icon left>mdi-note-text-outline</v-icon>
