@@ -67,7 +67,7 @@
                                     <v-col cols="12" md="6" sm="12">
                                         <v-text-field label="Diagnosis" v-model="patient_medication_profile.patient_medication_profile_diagnosis"></v-text-field>
                                     </v-col>
-                                <v-col cols="12" md="6" sm="12">
+                                    <v-col cols="12" md="6" sm="12">
                                         <v-menu
                                             v-model="patient_medication_profile_date1"
                                             :close-on-content-click="false"
@@ -98,80 +98,247 @@
                                     <v-col cols="12" md="12" sm="12">
                                         <v-text-field label="Allergies" v-model="patient_medication_profile.patient_medication_profile_allergies"></v-text-field>
                                     </v-col>
+
                                     <v-col cols="12"><v-divider></v-divider></v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-menu
-                                            :close-on-content-click="true"
-                                            max-width="290"
-                                            readonly
-                                            >
-                                            <template v-slot:activator="{ on }">
-                                                <v-text-field
-                                                    :value="patient_medication_profile.date2"
-                                                    clearable
-                                                    label="Date"
-                                                    readonly
-                                                    v-on="on">
-                                                </v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="patient_medication_profile.date2"
-                                                @change="date_popup = false"
-                                            ></v-date-picker>
-                                        </v-menu>
+                                    
+                                    <v-col cols="12" v-for="(routine, index) in routines" v-bind:key="routine.id">
+                                        <v-card color="#385F73" dark>
+                                            <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_routine_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
+                                            <v-col cols="12" md="12" sm="12">
+                                                <v-row>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="routines[index].date_popup"
+                                                            :close-on-content-click="true"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="routines[index].date"
+                                                                    clearable
+                                                                    label="Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="routines[index].date"
+                                                                @change="routines[index].date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Dose" v-model="routines[index].dose"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Route" v-model="routines[index].route"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Frequency" v-model="routines[index].freq"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="N/C/O" v-model="routines[index].n_c_o"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="routines[index].d_c_date_popup"
+                                                            :close-on-content-click="false"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="routines[index].d_c_date"
+                                                                    clearable
+                                                                    label="D/C Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="routines[index].d_c_date"
+                                                                @change="routines[index].d_c_date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="routines[index].drug_classification"></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                            <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->
+                                        </v-card>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-combobox
-                                            v-model="patient_medication_profile.patient_medication_profile_prescribed_medication"
-                                            :items="['Routine','PRN','OTC Drugs']"
-                                            label="Prescribed Medication"
-                                            single    
-                                            chips
-                                        ></v-combobox>
+                                     <v-col cols="12">
+                                         <div class="text-right">
+                                            <v-btn class="mx-2" fab dark color="indigo" @click="append_routine_to_array"><v-icon dark>mdi-plus</v-icon></v-btn>
+                                         </div>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Dose" v-model="patient_medication_profile.patient_medication_profile_dose"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Route" v-model="patient_medication_profile.patient_medication_profile_route"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Frequency" v-model="patient_medication_profile.patient_medication_profile_freq"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="N/C/O" v-model="patient_medication_profile.patient_medication_profile_nco"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-menu
-                                            :close-on-content-click="true"
-                                            max-width="290"
-                                            readonly
-                                            >
-                                            <template v-slot:activator="{ on }">
-                                                <v-text-field
-                                                    :value="patient_medication_profile.date3"
-                                                    clearable
-                                                    label="D/C Date"
-                                                    readonly
-                                                    v-on="on">
-                                                </v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="patient_medication_profile.date3"
-                                                @change="date_popup = false"
-                                            ></v-date-picker>
-                                        </v-menu>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Drug Classification" v-model="patient_medication_profile.patient_medication_profile_drug_classification"></v-text-field>
-                                    </v-col>
+                                   
                                     <v-col cols="12"><v-divider></v-divider></v-col>
+
+                                    <v-col cols="12" v-for="(prn, index) in prns" v-bind:key="prn.id">
+                                        <v-card color="#385F73" dark>
+                                            <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_prn_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
+                                            <v-col cols="12" md="12" sm="12">
+                                                <v-row>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="prns[index].date_popup"
+                                                            :close-on-content-click="true"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="prns[index].date"
+                                                                    clearable
+                                                                    label="Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="prns[index].date"
+                                                                @change="prns[index].date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Dose" v-model="prns[index].dose"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Route" v-model="prns[index].route"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Frequency" v-model="prns[index].freq"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="N/C/O" v-model="prns[index].n_c_o"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="prns[index].d_c_date_popup"
+                                                            :close-on-content-click="false"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="prns[index].d_c_date"
+                                                                    clearable
+                                                                    label="D/C Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="prns[index].d_c_date"
+                                                                @change="prns[index].d_c_date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="prns[index].drug_classification"></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                            <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->
+                                        </v-card>
+                                    </v-col>
+                                     <v-col cols="12">
+                                         <div class="text-right">
+                                            <v-btn class="mx-2" fab dark color="indigo" @click="append_prn_to_array"><v-icon dark>mdi-plus</v-icon></v-btn>
+                                         </div>
+                                    </v-col>
+                                   
+                                    <v-col cols="12"><v-divider></v-divider></v-col>
+
+                                    <v-col cols="12" v-for="(otc_drug, index) in otc_drugs" v-bind:key="otc_drug.id">
+                                        <v-card color="#385F73" dark>
+                                            <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_otc_drug_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
+                                            <v-col cols="12" md="12" sm="12">
+                                                <v-row>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="otc_drugs[index].date_popup"
+                                                            :close-on-content-click="true"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="otc_drugs[index].date"
+                                                                    clearable
+                                                                    label="Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="otc_drugs[index].date"
+                                                                @change="otc_drugs[index].date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Dose" v-model="otc_drugs[index].dose"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Route" v-model="otc_drugs[index].route"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="Frequency" v-model="otc_drugs[index].freq"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="1" sm="12">
+                                                        <v-text-field label="N/C/O" v-model="otc_drugs[index].n_c_o"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="2" sm="12">
+                                                        <v-menu
+                                                            v-model="otc_drugs[index].d_c_date_popup"
+                                                            :close-on-content-click="false"
+                                                            max-width="290"
+                                                            readonly
+                                                            >
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-text-field
+                                                                    :value="otc_drugs[index].d_c_date"
+                                                                    clearable
+                                                                    label="D/C Date"
+                                                                    readonly
+                                                                    v-on="on">
+                                                                </v-text-field>
+                                                            </template>
+                                                            <v-date-picker
+                                                                v-model="otc_drugs[index].d_c_date"
+                                                                @change="otc_drugs[index].d_c_date_popup = false"
+                                                            ></v-date-picker>
+                                                        </v-menu>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="otc_drugs[index].drug_classification"></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                            <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->
+                                        </v-card>
+                                    </v-col>
+                                     <v-col cols="12">
+                                         <div class="text-right">
+                                            <v-btn class="mx-2" fab dark color="indigo" @click="append_otc_drug_to_array"><v-icon dark>mdi-plus</v-icon></v-btn>
+                                         </div>
+                                    </v-col>
+                                   
+                                    <v-col cols="12"><v-divider></v-divider></v-col>
+
                                     <v-col cols="12" md="6" sm="12">
                                         <v-text-field label="Signature over printed name" v-model="patient_medication_profile.patient_medication_profile_sign_name"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" md="6" sm="12">
                                         <v-menu
-                                            :close-on-content-click="true"
+                                            v-model="patient_medication_profile_date2"
+                                            :close-on-content-click="false"
                                             max-width="290"
                                             readonly
                                             >
@@ -186,8 +353,9 @@
                                             </template>
                                             <v-date-picker
                                                 v-model="patient_medication_profile.date4"
-                                                @change="date_popup = false"
-                                            ></v-date-picker>
+                                                @change="patient_medication_profile_date2 = false"
+                                            >
+                                            </v-date-picker>
                                         </v-menu>
                                     </v-col>
                                 </v-row>
@@ -214,17 +382,22 @@
 <script>
 import { mapGetters } from 'vuex'
 import ClientNavbar from '@/components/ClientNavbar'
+import PatientMedicationProfileRoutines from '@/components/PatientMedicationProfileRoutines'
 export default {
     data(){
         return {
+            routines: [],
+            prns: [],
+            otc_drugs: [],
             patient_medication_profile_date1: false,
+            patient_medication_profile_date2: false,
             overlay: false,
             valid: true,
             popup: false,
             search: '',
             method: 'create',
-            patient_medication_profiles: [],
-            patient_medication_profile: {},
+            // patient_medication_profiles: [],
+            patient_medication_profile: { routines: [] },
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Edit', align: 'center', sortable: false, value: 'actions' },
@@ -234,14 +407,15 @@ export default {
         }
     },
     components: {
-        ClientNavbar
+        ClientNavbar,
+        PatientMedicationProfileRoutines
     },
     beforeRouteUpdate (to, from, next) {
         this.overlay = true
         const parent = this
         this.$store.commit('Client/setDocumentId', to.params.id)
         this.$store.dispatch("Client/getClientPatientMedicationProfiles").then(function(docs){
-            parent.patient_medication_profiles = docs
+            // parent.patient_medication_profiles = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
@@ -255,20 +429,69 @@ export default {
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientPatientMedicationProfiles").then(function(docs){
-            parent.patient_medication_profiles = docs
+            // parent.patient_medication_profiles = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
             parent.overlay = false
             console.log(error)
         })
+
+        this.append_routine_to_array()
+        this.append_prn_to_array()
+        this.append_otc_drug_to_array()
     },
     computed: {
-        // ...mapGetters({
-        //     patient_medication_profiles: 'Client/patient_medication_profiles'
-        // }),
+        ...mapGetters({
+            patient_medication_profiles: 'Client/patient_medication_profiles'
+        }),
     },
     methods: {
+        remove_routine_from_array(index){
+            this.routines.splice(index, 1)
+        },
+        append_routine_to_array(){
+            let empty_routine = {
+                date: '',
+                dose: '',
+                route: '',
+                freq: '',
+                n_c_o: '',
+                d_c_date: '',
+                drug_classification: '',
+            }
+            this.routines.push(empty_routine)
+        },
+        remove_prn_from_array(index){
+            this.prns.splice(index, 1)
+        },
+        append_prn_to_array(){
+            let empty_prn = {
+                date: '',
+                dose: '',
+                route: '',
+                freq: '',
+                n_c_o: '',
+                d_c_date: '',
+                drug_classification: '',
+            }
+            this.prns.push(empty_prn)
+        },
+        remove_otc_drug_from_array(index){
+            this.otc_drugs.splice(index, 1)
+        },
+        append_otc_drug_to_array(){
+            let empty_otc_drug = {
+                date: '',
+                dose: '',
+                route: '',
+                freq: '',
+                n_c_o: '',
+                d_c_date: '',
+                drug_classification: '',
+            }
+            this.otc_drugs.push(empty_otc_drug)
+        },
         edit_pmp(document_id){
             this.overlay = true
             let parent = this
@@ -276,6 +499,9 @@ export default {
             this.$store.dispatch("Client/getClientPatientMedicationProfile").then(function(doc){
                 console.log(doc)
                 parent.patient_medication_profile = doc
+                parent.routines = doc.routines
+                parent.prns = doc.prns
+                parent.otc_drugs = doc.otc_drugs
                 parent.popup = true
                 parent.method = 'update'
                 parent.overlay = false
@@ -288,6 +514,9 @@ export default {
             if (this.$refs.form.validate()) {
                 this.overlay = true
                 this.patient_medication_profile.createdOn = new Date
+                this.patient_medication_profile.routines = this.routines
+                this.patient_medication_profile.prns = this.prns
+                this.patient_medication_profile.otc_drugs = this.otc_drugs
                 const data = this.patient_medication_profile
                 const parent = this
                 this.$store.commit('Client/setClientPatientMedicationProfile', data)
@@ -305,6 +534,7 @@ export default {
             if (this.$refs.form.validate()) {
                 this.overlay = true
                 const parent = this
+                this.patient_medication_profile.routines = this.routines
                 const data = this.patient_medication_profile
                 this.$store.commit('Client/setClientPatientMedicationProfile', data)
                 this.$store.commit('Client/setClientPatientMedicationProfileDocumentId', this.patient_medication_profile.document_id)
