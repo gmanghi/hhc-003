@@ -141,7 +141,7 @@ export default {
             popup: false,
             method: 'create',
             search: '',
-            prescriptions: [],
+            // prescriptions: [],
             prescription: {},
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
@@ -159,7 +159,7 @@ export default {
         const parent = this
         this.$store.commit('Client/setDocumentId', to.params.id)
         this.$store.dispatch("Client/getClientPrescriptions").then(function(docs){
-            parent.prescriptions = docs
+            // parent.prescriptions = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
@@ -173,7 +173,7 @@ export default {
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientPrescriptions").then(function(docs){
-            parent.prescriptions = docs
+            // parent.prescriptions = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
@@ -182,9 +182,9 @@ export default {
         })
     },
     computed: {
-        // ...mapGetters({
-        //     prescriptions: 'Client/prescriptions'
-        // }),
+        ...mapGetters({
+            prescriptions: 'Client/prescriptions'
+        }),
     },
     methods: {
         edit_prescription(document_id){
