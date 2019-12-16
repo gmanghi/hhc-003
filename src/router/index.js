@@ -31,6 +31,14 @@ const router = new Router({
 			name: 'login',
 			component: Login
 		},
+		{
+			path: '/profile',
+			name: 'profile',
+			component: () => import('../views/Profile.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
 		// {
 		// 	path: '/professionals/applicants',
 		// 	name: 'applicants',

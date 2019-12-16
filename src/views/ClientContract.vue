@@ -139,11 +139,13 @@ export default {
         ...mapGetters({
             contracts: 'Client/contracts',
         }),
+        currentUserProfile() {
+            return this.$store.getters["Auth/getCurrentUserProfile"];
+        }
     },
     methods: {
         process_save(){ 
             if (this.$refs.form.validate()) {
-                console.log('final', document.getElementById('upload').files);
                 this.overlay = true
                 const parent = this
                 this.$store.getters['Client/facesheet'](this.$route.params.id).then(function (data){
@@ -153,15 +155,14 @@ export default {
                         recipient_address: data.client_complete_address,
                         recipient_contact_number: data.client_landline_mobile_fax,
                         recipient_email: data.client_email,
-                        status: 'pending',
+                        status: 'Pending',
                         url: parent.contract,
-                        nurse_case_manager: 'Nurse Case Manager',
-                        position: 'Position',
-                        contact_number: 'Contact Number',
+                        nurse_case_manager: parent.currentUserProfile.name,
+                        position: parent.currentUserProfile.position,
+                        contact_number: parent.currentUserProfile.contact_number,
                     }
                     parent.$store.commit('Client/setClientContract', contract)
                     parent.$store.dispatch("Client/createClientContract").then(function(doc){
-                        console.log('saveClientContract',doc)
                         parent.$refs.form.reset()
                         parent.popup = false
                         parent.contract = []

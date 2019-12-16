@@ -34,15 +34,25 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
-        }
+        },
     },
     getters: {
         getFileData: (state, getters) => {
             return state.fileData
         },
+        getCurrentUserProfile: (state, getters) => {
+            if(state.userProfile){
+                return state.userProfile
+            }
+        },
         getCurrentUserEmail: (state, getters) => {
             if(state.currentUser){
                 return state.currentUser.email
+            }
+        },
+        getCurrentUserId: (state, getters) => {
+            if(state.currentUser){
+                return state.currentUser.uid
             }
         },
     }
