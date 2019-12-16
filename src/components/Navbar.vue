@@ -17,11 +17,25 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                    <v-list-item-title>{{ currentUserEmail }}</v-list-item-title>
+                    <v-list-item-title>
+                        {{ currentUserEmail }}
+                    </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
 
-             <v-divider></v-divider>
+            <v-list-item dense route link to="profile">
+                <v-list-item-icon>
+                    <v-icon>mdi-settings</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                    <v-list-item-title>
+                        Settings
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+           
+            <v-divider></v-divider>
 
             <v-list dense>
 

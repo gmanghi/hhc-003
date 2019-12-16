@@ -12,13 +12,12 @@ import { mapGetters } from 'vuex';
 import { mapState } from 'vuex';
 import Navbar from "@/components/Navbar.vue";
 export default {
-  name: 'App',
-  components: { Navbar },
-  computed: {
-      currentUserEmail() { 
-        return this.$store.getters["Auth/getCurrentUserEmail"];
-      }
-    }
-  
+    name: 'App',
+    components: { Navbar },
+    computed: {
+        currentUserEmail() { 
+          return this.$store.getters["Auth/getCurrentUserEmail"];
+        }
+    },
 };
 </script>
