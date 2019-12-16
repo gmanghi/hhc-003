@@ -230,7 +230,7 @@ const Client = {
                 })
             })
         },
-        createClientContract({commit, state}){
+        createClientContract({commit, state}){ console.log('hello',state.client.contract)
             return new Promise((resolve, reject) => {
                 const fileData = state.client.contract.url;
                 const fileName =  Math.random().toString(36).substring(2)
@@ -241,7 +241,7 @@ const Client = {
                 }
 
                 const storageRef = fb.storage.ref(fileName+fileExtension).put(fileData);
-                console.log('client',state.client)
+                
                 storageRef.on(`state_changed`, snapshot => {
                     console.log((snapshot.bytesTransferred/snapshot.totalBytes)*100);
                 },error => {
@@ -249,6 +249,7 @@ const Client = {
                 },() => {
                     storageRef.snapshot.ref.getDownloadURL().then( (url) => {
                         commit('setClientContractUrl', url)
+                        
                         fb.clientCollection.doc(state.client.document_id).collection('contract').add(state.client.contract).then(doc => {
                             resolve(doc)
                         }).catch(error => {
