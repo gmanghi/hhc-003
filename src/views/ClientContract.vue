@@ -137,7 +137,6 @@ export default {
     computed: {
         ...mapGetters({
             contracts: 'Client/contracts',
-            client: 'Client/client'
         }),
     },
     methods: {
@@ -160,6 +159,7 @@ export default {
                     }
                     console.log(contract)
                     parent.$store.commit('Client/setClientContract', contract)
+                    parent.$store.commit('Client/setDocumentId', parent.$route.params.id)
                     parent.$store.dispatch("Client/createClientContract").then(function(doc){
                         console.log('saveClientContract',doc)
                         parent.popup = false
@@ -171,10 +171,6 @@ export default {
                 }).catch(function(error){
                     console.log(error)
                 })
-                
-
-                
-
             }
         },
     }
