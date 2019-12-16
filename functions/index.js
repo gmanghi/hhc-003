@@ -36,7 +36,7 @@ exports.createContract = functions.firestore.document('client/{clientId}/contrac
 
         const details = snap.data();
 
-        if(details.status == 'pending'){
+        if(details.status == 'Pending'){
             const mailOptions = {
                 from: 'Online Raffle <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
                 to: details.recipient_email,
