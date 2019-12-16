@@ -55,6 +55,7 @@
                                     <v-row>
                                         <v-col cols="12">
                                             <v-file-input 
+                                                id="upload"
                                                 accept="application/pdf"
                                                 show-size label="Contract"
                                                 :rules="requiredFileRules"
@@ -142,9 +143,10 @@ export default {
     methods: {
         process_save(){ 
             if (this.$refs.form.validate()) {
+                console.log('final', document.getElementById('upload').files);
+                this.overlay = true
                 const parent = this
-                this.$store.dispatch("Client/getClient").then(function(data){
-                    parent.overlay = true
+                this.$store.getters['Client/facesheet'](this.$route.params.id).then(function (data){
                     const contract = {
                         createdOn: new Date(),
                         recipient_name: data.client_account_name,
@@ -157,18 +159,17 @@ export default {
                         position: 'Position',
                         contact_number: 'Contact Number',
                     }
-                    console.log(contract)
                     parent.$store.commit('Client/setClientContract', contract)
-                    parent.$store.commit('Client/setDocumentId', parent.$route.params.id)
                     parent.$store.dispatch("Client/createClientContract").then(function(doc){
                         console.log('saveClientContract',doc)
+                        parent.$refs.form.reset()
                         parent.popup = false
-                        parent.contract = null
+                        parent.contract = []
                         parent.overlay = false
                     }).catch(function(error){
                         console.log(error)
                     })
-                }).catch(function(error){
+                }).catch(function (error){
                     console.log(error)
                 })
             }
