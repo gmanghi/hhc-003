@@ -230,7 +230,7 @@ const Client = {
                 })
             })
         },
-        createClientContract({commit, state}){ console.log('hello',state.client.contract)
+        createClientContract({commit, state}){
             return new Promise((resolve, reject) => {
                 const fileData = state.client.contract.url;
                 const fileName =  Math.random().toString(36).substring(2)
@@ -296,18 +296,34 @@ const Client = {
             })
         },
         getClient({commit, state}) {
-            return new Promise((resolve, reject) => { 
-                fb.clientCollection.doc(state.client.document_id).get().then(function(doc) {
+            return new Promise((resolve, reject) => {
+                const parent = this
+                fb.clientCollection.doc(state.client.document_id).onSnapshot(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
                         commit('setClient', data)
-                        resolve(state.client)
-                    } else {
+                        resolve(data)
+                    } 
+                    else {
                         reject("No such document!");
                     }
-                }).catch(function(error) {
-                    reject("Error getting document:", error);
+                }, function(error) {
+                    reject(error)
+                    console.log("Error getting document:", error);
                 });
+
+                // fb.clientCollection.doc(state.client.document_id).collection('contract').get().then(function(doc) {
+                //     if (doc.exists) {
+                //         const data = doc.data();
+                //         console.log(data)
+                //         commit('setClient', data)
+                //         resolve(data)
+                //     } else {
+                //         reject("No such document!");
+                //     }
+                // }).catch(function(error) {
+                //     reject("Error getting document:", error);
+                // });
             })
         },
         getClientContracts({commit, state}) {
@@ -317,6 +333,7 @@ const Client = {
                     querySnapshot.forEach(doc => {
                         let contract = doc.data()
                         contract.document_id = doc.id
+                        console.log(contract.createdOn.toDate().toDateString())
                         contract.createdOn = moment(contract.createdOn.toDate()).format('YYYY-MM-DD HH:mm:ss')
                         clientContractArray.push(contract)
                     })
@@ -591,6 +608,18 @@ const Client = {
         client: (state, getters) => {
             return state.client
         }, 
+        facesheet: (state) => (id) => {
+            return fb.clientCollection.doc(id).get().then(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    return data
+                } else {
+                   console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        },
         client_name: (state, getters) => {
             return state.client_account_name
         }, 
