@@ -93,11 +93,13 @@ export default {
             valid: true,
             popup: false,
             search: '',
-            contracts: [],
-            contract: {},
+            // contracts: [],
+            contract: [],
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Contract URL', align: 'center', sortable: true, value: 'url' },
+                { text: 'Client Email', align: 'center', sortable: true, value: 'sentto' },
+                { text: 'Status', align: 'center', sortable: true, value: 'status' },
             ],
             requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
@@ -110,7 +112,7 @@ export default {
         const parent = this
         this.$store.commit('Client/setDocumentId', to.params.id)
         this.$store.dispatch("Client/getClientContracts").then(function(docs){
-            parent.contracts = docs
+            // parent.contracts = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
@@ -124,7 +126,7 @@ export default {
         const parent = this
         this.$store.commit('Client/setDocumentId', this.$route.params.id)
         this.$store.dispatch("Client/getClientContracts").then(function(docs){
-            parent.contracts = docs
+            // parent.contracts = docs
             parent.overlay = false
             console.log(docs)
         }).catch(function(error){
@@ -133,13 +135,16 @@ export default {
         })
     },
     computed: {
-        // ...mapGetters({
-        //     contracts: 'Client/contracts'
-        // }),
+        ...mapGetters({
+            contracts: 'Client/contracts'
+        }),
     },
     methods: {
         process_save(){ 
             if (this.$refs.form.validate()) {
+                // this.$store.commit('Client/setDocumentId', this.$route.params.id)
+                // this.$store.dispatch("Client/getClient")
+                // const client = this.$store.getters["Client/client"]
                 this.overlay = true
                 const data = {
                     url: this.contract,

@@ -241,7 +241,7 @@ const Client = {
                 }
 
                 const storageRef = fb.storage.ref(fileName+fileExtension).put(fileData);
-
+                console.log('client',state.client)
                 storageRef.on(`state_changed`, snapshot => {
                     console.log((snapshot.bytesTransferred/snapshot.totalBytes)*100);
                 },error => {
@@ -252,6 +252,9 @@ const Client = {
                         fb.clientCollection.doc(state.client.document_id).collection('contract').add({
                             createdOn: new Date(),
                             url: state.client.contract.url,
+                            // sentto: state.client.client_email,
+                            sentto: 'admin2dev@homehealthcareph.com',
+                            status: 'pending'
                         }).then(doc => {
                             resolve(doc)
                         }).catch(error => {
