@@ -98,7 +98,7 @@ export default {
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
                 { text: 'Contract URL', align: 'center', sortable: true, value: 'url' },
-                { text: 'Client Email', align: 'center', sortable: true, value: 'sentto' },
+                { text: 'Recipient Email', align: 'center', sortable: true, value: 'recipient_email' },
                 { text: 'Status', align: 'center', sortable: true, value: 'status' },
             ],
             requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
@@ -136,29 +136,45 @@ export default {
     },
     computed: {
         ...mapGetters({
-            contracts: 'Client/contracts'
+            contracts: 'Client/contracts',
+            client: 'Client/client'
         }),
     },
     methods: {
         process_save(){ 
             if (this.$refs.form.validate()) {
-                // this.$store.commit('Client/setDocumentId', this.$route.params.id)
-                // this.$store.dispatch("Client/getClient")
-                // const client = this.$store.getters["Client/client"]
-                this.overlay = true
-                const data = {
-                    url: this.contract,
-                }
                 const parent = this
-                this.$store.commit('Client/setClientContract', data)
-                this.$store.dispatch("Client/createClientContract").then(function(doc){
-                    console.log('saveClientContract',doc)
-                    parent.popup = false
-                    parent.contract = null
-                    parent.overlay = false
+                this.$store.dispatch("Client/getClient").then(function(data){
+                    parent.overlay = true
+                    const contract = {
+                        createdOn: new Date(),
+                        recipient_name: data.client_account_name,
+                        recipient_address: data.client_complete_address,
+                        recipient_contact_number: data.client_landline_mobile_fax,
+                        recipient_email: data.client_email,
+                        status: 'pending',
+                        url: parent.contract,
+                        nurse_case_manager: 'Nurse Case Manager',
+                        position: 'Position',
+                        contact_number: 'Contact Number',
+                    }
+                    console.log(contract)
+                    parent.$store.commit('Client/setClientContract', contract)
+                    parent.$store.dispatch("Client/createClientContract").then(function(doc){
+                        console.log('saveClientContract',doc)
+                        parent.popup = false
+                        parent.contract = null
+                        parent.overlay = false
+                    }).catch(function(error){
+                        console.log(error)
+                    })
                 }).catch(function(error){
                     console.log(error)
                 })
+                
+
+                
+
             }
         },
     }

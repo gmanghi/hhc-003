@@ -249,13 +249,7 @@ const Client = {
                 },() => {
                     storageRef.snapshot.ref.getDownloadURL().then( (url) => {
                         commit('setClientContractUrl', url)
-                        fb.clientCollection.doc(state.client.document_id).collection('contract').add({
-                            createdOn: new Date(),
-                            url: state.client.contract.url,
-                            // sentto: state.client.client_email,
-                            sentto: 'admin2dev@homehealthcareph.com',
-                            status: 'pending'
-                        }).then(doc => {
+                        fb.clientCollection.doc(state.client.document_id).collection('contract').add(state.client.contract).then(doc => {
                             resolve(doc)
                         }).catch(error => {
                             reject(error)
