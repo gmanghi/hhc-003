@@ -1,5 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const firebase = require('firebase');
+const randomstring = require('randomstring');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
 const cors = require('cors')({origin:true});
@@ -22,6 +24,28 @@ let transporter = nodemailer.createTransport({
         pass: 'dodgy.123'
     }
 });
+
+exports.createUser = functions.firestore.document('users/{userId}').onCreate((snap, context) => {
+
+    return new Promise((resolve, reject) => {
+        const userId = context.params.userId;
+
+        const contractRef = admin.firestore().collection('users').doc(userId)
+
+        const details = snap.data();
+
+        if(details.status == 'Created'){
+            const password = randomstring.generate(7);
+            firebase.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
+                console.log(user)
+            }).catch(err => {
+                console.log(error)
+            })      
+        }
+    })
+    
+});
+
 
 exports.createContract = functions.firestore.document('client/{clientId}/contract/{contractId}').onCreate((snap, context) => {
 

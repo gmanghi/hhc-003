@@ -44,6 +44,22 @@ const router = new Router({
 				requiresAuth: true
 			}
 		},
+		{
+			path: '/register',
+			name: 'register',
+			component: () => import('../views/Register.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/users',
+			name: 'users',
+			component: () => import('../views/Users.vue'),
+			meta: {
+				requiresAuth: true
+			}
+		},
 		// {
 		// 	path: '/professionals/applicants',
 		// 	name: 'applicants',
