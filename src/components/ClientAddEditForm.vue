@@ -132,13 +132,13 @@
                             <v-col cols="12" sm="12" md="12">
                                 <v-combobox
                                     v-model="client.requirements"
-                                    :items="['Home Health Care Visit',
-                                        'Home Care',
+                                    :items="['Home Health Care Visit (HHS)',
+                                        'Home Care (Case Management)',
                                         'Laboratory / Radiology',
-                                        'Purchase and/or Rental of Medical Equipment',
+                                        'Purchase and/or Rental of Medical Equipment (PRME)',
                                         'Medical Escorting',
-                                        'Long Term Care Placement',
-                                        'Home Vaccination Program',
+                                        'Long Term Care Placement (SeniorRES)',
+                                        'Home Vaccination Program (VacciFAM)',
                                         'MDeploy']"
                                     label="REQUIREMENTS (Kindly check which service request / requirement is)"
                                     multiple    
@@ -168,7 +168,7 @@
                                     v-model="client.check"
                                     :items="['Will bring in the office',
                                             'For Pick up (Minimum of P10,000.00)',
-                                            'Will Deposit (Please E-mail deposit slip to casemanagement@homehealthcare.com.ph or Fax to Tel.No.02-791-86-80 w/ Patients Name)']"
+                                            'Will Deposit (Please E-mail deposit slip to billing2@homehealthcareph.com or Fax 7958-0718(602) with Patient\'s Name)']"
                                     label="Check"
                                     multiple    
                                     chips

@@ -45,7 +45,7 @@
                 <v-col cols="12" sm="12" md="7">
                     <div class="body-2">1. No incontinence or catheter (includes anuria or ostomy for urinary drainage)</div>
                     <div class="body-2">2. Patient is incontinent</div>
-                    <div class="body-2">3. Patient requires a urinary catherer (i.e.,external, indwelling, intermittent, suprapubic)</div>
+                    <div class="body-2">3. Patient requires a urinary catheter (i.e.,external, indwelling, intermittent, suprapubic)</div>
                 </v-col>
                 <v-col cols="12" sm="12" md="3">
                     <div class="subtitle-1">When does <span class="font-weight-bold">Urinary Incontinence</span> occur?</div>

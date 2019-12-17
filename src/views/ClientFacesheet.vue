@@ -136,7 +136,7 @@
                             <v-combobox
                                 v-model="client.cash"
                                 :items="['Will bring in the office',
-                                        'For Pick up (Minimum of P10,000.00)']"
+                                        'For Pick up (Minimum of P10,000.00) billing']"
                                 label="Cash"
                                 multiple    
                                 chips
@@ -148,7 +148,7 @@
                                 v-model="client.check"
                                 :items="['Will bring in the office',
                                         'For Pick up (Minimum of P10,000.00)',
-                                        'Will Deposit (Please E-mail deposit slip to casemanagement@homehealthcare.com.ph or Fax to Tel.No.02-791-86-80 w/ Patients Name)']"
+                                        'Will Deposit (Please E-mail deposit slip to billing2@homehealthcareph.com or Fax 7958-0718(602) with Patient\'s Name)']"
                                 label="Check"
                                 multiple    
                                 chips

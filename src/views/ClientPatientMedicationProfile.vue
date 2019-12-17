@@ -100,6 +100,7 @@
                                     </v-col>
 
                                     <v-col cols="12"><v-divider></v-divider></v-col>
+                                    <v-col cols="12 subtitle-1 font-weight-bold">Prescribed Routine Medication</v-col>
                                     
                                     <v-col cols="12" v-for="(routine, index) in routines" v-bind:key="routine.id">
                                         <v-card color="#385F73" dark>
@@ -177,6 +178,7 @@
                                     </v-col>
                                    
                                     <v-col cols="12"><v-divider></v-divider></v-col>
+                                    <v-col cols="12 subtitle-1 font-weight-bold">Prescribed PRN Medication</v-col>
 
                                     <v-col cols="12" v-for="(prn, index) in prns" v-bind:key="prn.id">
                                         <v-card color="#385F73" dark>
@@ -254,6 +256,7 @@
                                     </v-col>
                                    
                                     <v-col cols="12"><v-divider></v-divider></v-col>
+                                    <v-col cols="12 subtitle-1 font-weight-bold">OTC Drugs</v-col>
 
                                     <v-col cols="12" v-for="(otc_drug, index) in otc_drugs" v-bind:key="otc_drug.id">
                                         <v-card color="#385F73" dark>
