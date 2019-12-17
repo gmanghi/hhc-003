@@ -30,6 +30,7 @@ export default {
         },
         fetchUserProfile({ commit, state }) {
             fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
+                console.log(res.data())
                 commit('setUserProfile', res.data())
             }).catch(err => {
                 console.log(err)
@@ -41,7 +42,7 @@ export default {
             return state.fileData
         },
         getCurrentUserProfile: (state, getters) => {
-            if(state.userProfile){
+            if(state.userProfile){ console.log(state.userProfile)
                 return state.userProfile
             }
         },

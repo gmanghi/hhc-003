@@ -16,7 +16,10 @@ export default {
     components: { Navbar },
     computed: {
         currentUserEmail() { 
-          return this.$store.getters["Auth/getCurrentUserEmail"];
+            return this.$store.getters["Auth/getCurrentUserEmail"];
+        },
+        currentUserProfile() {
+            return this.$store.getters["Auth/getCurrentUserProfile"];
         }
     },
 };

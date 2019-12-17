@@ -32,6 +32,11 @@ const router = new Router({
 			component: Login
 		},
 		{
+			path: '/forgot-password',
+			name: 'forgot_password',
+			component: () => import('../views/ForgotPassword.vue'),
+		},
+		{
 			path: '/profile',
 			name: 'profile',
 			component: () => import('../views/Profile.vue'),
