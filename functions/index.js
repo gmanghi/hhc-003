@@ -30,16 +30,18 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
     return new Promise((resolve, reject) => {
         const userId = context.params.userId;
 
-        const contractRef = admin.firestore().collection('users').doc(userId)
+        const usersRef = admin.firestore().collection('users').doc(userId)
 
         const details = snap.data();
 
         if(details.status == 'Created'){
             const password = 'pass123';
             functions.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
-                console.log(user)
-            }).catch(err => {
-                console.log(error)
+                details.status = 'Verified'
+                usersRef.update(details)
+            }).catch(error => {
+                details.status = error
+                usersRef.update(details)
             })      
         }
     })
