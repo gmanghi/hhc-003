@@ -23,17 +23,21 @@
                 </v-list-item-content>
             </v-list-item>
 
-            <v-list-item dense route link to="profile">
-                <v-list-item-icon>
-                    <v-icon>mdi-settings</v-icon>
-                </v-list-item-icon>
+            <v-list dense>
+                <v-list-item
+                    v-for="item in configurations"
+                    :key="item.title"
+                    link
+                    route :to="item.route">
+                    <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
 
-                <v-list-item-content>
-                    <v-list-item-title>
-                        Settings
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
            
             <v-divider></v-divider>
 
@@ -73,6 +77,12 @@ export default {
                 { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist' },
                 { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse' },
                 { title: 'Nutritionist', icon: 'mdi-mother-nurse', route:'/professionals/nutritionist' },
+                //{ title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
+                //{ title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
+            ],
+            configurations: [
+                
+                { title: 'Profile', icon: 'mdi-settings', route:'/profile' },
                 //{ title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
                 //{ title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
             ],
