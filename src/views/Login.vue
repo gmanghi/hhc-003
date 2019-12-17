@@ -46,8 +46,10 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
+                  
+                   <v-btn id="login" text color="error" to="/forgot-password">Forgot Password</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn id="login" color="primary" @click="login">Login</v-btn>
+                  <v-btn id="login" outlined color="primary" @click="login">Login</v-btn>
                 </v-card-actions>
               </form>
               
@@ -89,6 +91,22 @@
         fb.auth.signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).then(user => {
             this.$store.commit('Auth/setCurrentUser', user.user)
             this.$store.dispatch('Auth/fetchUserProfile')
+
+            console.log('trace',this.$store.getters["Auth/getCurrentUserProfile"])
+
+            // fb.usersCollection.doc(this.currentUserId).set({
+            //     name: this.name,
+            //     position: this.position,
+            //     contact_number: this.contact_number,
+            // }).then(() => {
+            //     alert('Profile Updated')
+            //     this.$store.dispatch('Auth/fetchUserProfile')
+            // }).catch(err => {
+            //     console.log(err)
+            // })
+
+
+            
             this.$router.push('/')
         }).catch(err => {
             alert(err.message);
