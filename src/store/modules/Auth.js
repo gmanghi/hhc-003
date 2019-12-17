@@ -5,9 +5,7 @@ export default {
         currentUser: null,
         currentUserEmail: null,
         userProfile: {},
-        // members: [],
-        fileData: {},
-        
+        users: []
     },
     mutations: {
         setCurrentUser(state, val) {
@@ -19,8 +17,8 @@ export default {
         // setMembers(state, val){
         //   state.members = val
         // },
-        setFileData(state, val){
-            state.fileData = val
+        setUsers(state, val){
+            state.users = val
         }
     },
     actions: {
@@ -30,11 +28,22 @@ export default {
         },
         fetchUserProfile({ commit, state }) {
             fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
-                console.log(res.data())
                 commit('setUserProfile', res.data())
             }).catch(err => {
                 console.log(err)
             })
+        },
+        fetchUsers({ commit, state }) {
+            fb.usersCollection.orderBy('name','desc').onSnapshot(querySnapshot => {
+                let a = []
+                querySnapshot.forEach(doc => {
+                    let b = doc.data()
+                    a.push(b)
+                })
+                commit('setUsers', a)
+            }, function(err) {
+                console.log(err)
+            });
         },
     },
     getters: {
@@ -54,6 +63,11 @@ export default {
         getCurrentUserId: (state, getters) => {
             if(state.currentUser){
                 return state.currentUser.uid
+            }
+        },
+        getUsers: (state, getters) => {
+            if(state.users){
+                return state.users
             }
         },
     }
