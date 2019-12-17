@@ -83,8 +83,8 @@ export default {
             configurations: [
                 
                 { title: 'Profile', icon: 'mdi-face-profile', route:'/profile' },
-                { title: 'Register', icon: 'mdi-account-plus', route:'/register' },
-                { title: 'Users', icon: 'mdi-account-plus', route:'/users' },
+                // { title: 'Register', icon: 'mdi-account-plus', route:'/register' },
+                { title: 'Users', icon: 'mdi-account-group', route:'/users' },
                 //{ title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
                 //{ title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
             ],
