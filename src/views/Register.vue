@@ -93,6 +93,7 @@ export default {
                             parent.snackbar = true
                             parent.notification = 'Successfully Created'
                             parent.$refs.form.reset()
+                            parent.$router.push('/users')
                         }).catch(error => {
                             parent.overlay = false
                             parent.snackbar = true
@@ -139,6 +140,9 @@ export default {
                 //     parent.snackbar = true
                 //     parent.notification = err
                 // })                
+            }
+            else{
+                this.overlay = false
             }
         }
     }

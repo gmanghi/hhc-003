@@ -42,12 +42,19 @@ export default {
     },
     computed: {
         currentUserEmail() { 
+            this.$store.dispatch('Auth/fetchUserProfile');
             return this.$store.getters["Auth/getCurrentUserEmail"];
         },
         currentUserId() {
             return this.$store.getters["Auth/getCurrentUserId"];
         },
-        currentUserProfile() {
+        currentUserProfile() { 
+            // alert(this.currentUserId)
+            // fb.usersCollection.doc(this.currentUserId).get().then(res => {
+            //     return res.data()
+            // }).catch(err => {
+            //     console.log(err)
+            // })
             return this.$store.getters["Auth/getCurrentUserProfile"];
         }
     },

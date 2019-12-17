@@ -4,6 +4,14 @@
         <v-container>
             <v-card>
                 <v-card-title>
+                    <v-btn
+                        color="primary"
+                        text
+                        to="register"
+                    >
+                        Add User
+                        <v-icon right outlined>mdi-account-plus</v-icon>
+                    </v-btn>  
                     <v-spacer></v-spacer>
                     <v-text-field
                         v-model="search"
@@ -22,6 +30,8 @@
                         <v-btn
                             color="error"
                             text
+                            @click="reset(item.email)"
+                            :disabled="item.status == 'Verified' ? false : true"
                         >
                             Reset Password
                             <v-icon right outlined>mdi-lock-reset</v-icon>
@@ -35,6 +45,7 @@
 </template>
 
 <script>
+const fb = require('../firebaseInit.js')
 import { mapGetters } from 'vuex'
 export default {
     data(){
@@ -58,5 +69,14 @@ export default {
             users: 'Auth/getUsers',
         }),
     },
+    methods: {
+        reset(email) {
+            fb.auth.sendPasswordResetEmail(email).then(() => {
+                alert('Password reset link was sent to the email')
+            }).catch(err => {
+                alert(err)
+            })
+        }
+    }
 }
 </script>

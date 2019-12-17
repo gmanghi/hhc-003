@@ -51,7 +51,7 @@ export default {
             return state.fileData
         },
         getCurrentUserProfile: (state, getters) => {
-            if(state.userProfile){ console.log(state.userProfile)
+            if(state.userProfile){
                 return state.userProfile
             }
         },

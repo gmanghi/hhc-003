@@ -27,24 +27,96 @@ let transporter = nodemailer.createTransport({
 
 exports.createUser = functions.firestore.document('users/{userId}').onCreate((snap, context) => {
 
-    return new Promise((resolve, reject) => {
-        const userId = context.params.userId;
+    // return new Promise((resolve, reject) => {
+        // const userId = context.params.userId;
 
-        const usersRef = admin.firestore().collection('users').doc(userId)
+        // const usersRef = admin.firestore().collection('users').doc(userId)
 
-        const details = snap.data();
+        // const details = snap.data();
 
-        if(details.status == 'Created'){
-            const password = 'pass123';
-            functions.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
-                details.status = 'Verified'
-                usersRef.update(details)
-            }).catch(error => {
-                details.status = error
-                usersRef.update(details)
-            })      
-        }
-    })
+        // if(details.status == 'Created'){
+            // const password = 'pass123';
+            // return functions.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
+                // details.status = 'Verified'
+                // resolve(usersRef.update(details))
+            // }).catch(error => {
+                // details.status = error
+                // reject(usersRef.update(details))
+            // })      
+        // }
+    // })
+	
+	
+	return new Promise((resolve, reject) => {
+		const userId = context.params.userId;
+
+		const usersRef = admin.firestore().collection('users').doc(userId)
+
+		const details = snap.data();
+		console.log('details',details)
+
+		if(details.status == 'Created'){
+			// const password = 'pass123';
+			
+			return admin.auth().createUser({
+				uid: userId,
+				email: details.email,
+				emailVerified: true,
+				password: 'pass123',
+				displayName: details.name,
+				photoURL: "https://firebasestorage.googleapis.com/v0/b/hhc-002.appspot.com/o/gku6f58eqo.bmp?alt=media&token=070c70e4-dcf0-47d0-b0d9-d8f5cf1071cb",
+				disabled: false
+			}).then(function(userRecord) {
+				console.log("Successfully created new user:", userRecord.uid);
+				admin.auth().generatePasswordResetLink(userRecord.email).then(function(link){
+					console.log('link',link)
+					const mailOptions = {
+						from: 'Online Raffle <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+						to: userRecord.email,
+						subject: 'Home Health Care - Password Reset', // email subject
+						html: 'Hello,<br /><br />Follow this link to reset your HHC-PH-CM password for your '+userRecord.email+'.com account.<br /><br /><a href="'+link+'">'+link+'</a><br /><br />If you didn’t ask to reset your password, you can ignore this email.<br /><br />Thanks,<br /><br />Your HHC team',
+					};
+					
+					return transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+							details.status = error
+							console.log('this is an error',error);
+							usersRef.update(details)
+							reject(error)
+						} 
+						else {
+							details.status = 'Verified'
+							console.log('Email sent: ' + info.response);
+							resolve(usersRef.update(details))
+						}
+					});
+				}).catch(function(error){
+					reject("Error generating link", error);
+				})
+				// console.log('reset link',resetLink)
+				// return admin.auth.sendPasswordResetEmail(userRecord.email).then(() => {
+					// details.status = 'Verified'
+					// console.log("Successfully verified new user:", userRecord.uid);
+					// resolve(usersRef.update(details))
+				// }).catch(error => {
+					// reject("Error verifying new user:", error);
+				// })
+			}).catch(function(error) {
+				reject("Error creating new user:", error);
+			});
+			
+			
+			
+			// functions.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
+				// details.status = 'Verified'
+				// return usersRef.update(details)
+			// }).catch(error => {
+				// details.status = error
+				// return usersRef.update(details)
+			// })      
+		}
+	})
+	
     
 });
 
