@@ -49,7 +49,7 @@
 
 <script>
 const fb = require('../firebaseInit.js')
-import randomstring from 'randomstring'
+// import randomstring from 'randomstring'
 export default {
     data(){
         return {

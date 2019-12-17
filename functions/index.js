@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const firebase = require('firebase');
+// const firebase = require('firebase');
 // const randomstring = require('randomstring');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
@@ -36,7 +36,7 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 
         if(details.status == 'Created'){
             const password = 'pass123';
-            firebase.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
+            functions.auth.createUserWithEmailAndPassword(details.email, password).then(user => {
                 console.log(user)
             }).catch(err => {
                 console.log(error)
