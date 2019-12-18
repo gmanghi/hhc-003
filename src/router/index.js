@@ -13,7 +13,7 @@ const router = new Router({
 		{
 			path: '*',
 			redirect: '/home',
-			component: Home,
+			component: () => import('../views/Clients.vue'),
 			meta: {
 				requiresAuth: true
 			}
@@ -21,7 +21,7 @@ const router = new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: Home,
+			component: () => import('../views/Clients.vue'),
 			meta: {
 				requiresAuth: true
 			}
