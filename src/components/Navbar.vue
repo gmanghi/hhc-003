@@ -13,7 +13,7 @@
         <v-navigation-drawer absolute temporary v-model="drawer">
             <v-list-item>
                 <v-list-item-avatar>
-                    <v-avatar color="teal">
+                    <v-avatar color="teal" size="36">
                         <span class="white--text headline">{{ currentUserDisplayName.charAt(0).toUpperCase() }}</span>
                     </v-avatar>
                 </v-list-item-avatar>
@@ -32,7 +32,7 @@
                     link
                     route :to="item.route">
                     <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
+                        <v-icon size="36">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
 
                     <v-list-item-content>
@@ -50,7 +50,9 @@
                     link
                     route :to="item.route">
                     <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
+                        <v-avatar color="orange" size="36">
+                        <span class="white--text">{{ item.acronym }}</span>
+                    </v-avatar>
                     </v-list-item-icon>
 
                     <v-list-item-content>
@@ -71,14 +73,14 @@ export default {
         return {
             drawer: false,
             items: [
-                { title: 'Home', icon: 'mdi-home', route:'/' },
-                { title: 'Clients/Patients', icon: 'mdi-mother-nurse', route:'/clients' },
-                { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/professionals/caregiver' },
+                // { title: 'Home', icon: 'mdi-home', route:'/' },
+                { title: 'Clients/Patients', icon: 'mdi-mother-nurse', route:'/clients', acronym: 'C/P' },
+                { title: 'Caregivers', icon: 'mdi-mother-nurse', route:'/professionals/caregiver', acronym: 'CG' },
                 // { title: 'Applicants', icon: 'mdi-mother-nurse', route:'/professionals/applicants' },
-                { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/professionals/physician' },
-                { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist' },
-                { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse' },
-                { title: 'Nutritionist', icon: 'mdi-mother-nurse', route:'/professionals/nutritionist' },
+                { title: 'Physicians', icon: 'mdi-mother-nurse', route:'/professionals/physician', acronym: 'MD' },
+                { title: 'Physical Therapists', icon: 'mdi-mother-nurse', route:'/professionals/physical-therapist', acronym: 'PT' },
+                { title: 'Nurses', icon: 'mdi-mother-nurse', route:'/professionals/nurse', acronym: 'RN' },
+                { title: 'Nutritionist', icon: 'mdi-mother-nurse', route:'/professionals/nutritionist', acronym: 'N' },
                 //{ title: 'Projects', icon: 'mdi-mother-nurse', route:'/projects' },
                 //{ title: 'Teams', icon: 'mdi-mother-nurse', route:'/teams' },
             ],
