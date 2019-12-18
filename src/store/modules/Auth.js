@@ -60,6 +60,11 @@ export default {
                 return state.currentUser.email
             }
         },
+        getCurrentUserDisplayName: (state, getters) => {
+            if(state.currentUser){
+                return state.currentUser.displayName
+            }
+        },
         getCurrentUserId: (state, getters) => {
             if(state.currentUser){
                 return state.currentUser.uid

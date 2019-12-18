@@ -14,13 +14,13 @@
             <v-list-item>
                 <v-list-item-avatar>
                     <v-avatar color="teal">
-                        <span class="white--text headline">{{ currentUserEmail.charAt(0).toUpperCase() }}</span>
+                        <span class="white--text headline">{{ currentUserDisplayName.charAt(0).toUpperCase() }}</span>
                     </v-avatar>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
                     <v-list-item-title>
-                        {{ currentUserEmail }}
+                        {{ currentUserDisplayName }}
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
@@ -93,7 +93,7 @@ export default {
         }
     },
     props: [
-        'currentUserEmail'
+        'currentUserEmail', 'currentUserDisplayName'
     ],
     // computed: {
     //     ...mapState([ 'Auth/currentUser' ])

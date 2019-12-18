@@ -61,7 +61,8 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 			return admin.auth().createUser({
 				uid: userId,
 				email: details.email,
-				emailVerified: true,
+                emailVerified: true,
+                phoneNumber: details.contact_number,
 				password: 'pass123',
 				displayName: details.name,
 				photoURL: "https://firebasestorage.googleapis.com/v0/b/hhc-002.appspot.com/o/gku6f58eqo.bmp?alt=media&token=070c70e4-dcf0-47d0-b0d9-d8f5cf1071cb",

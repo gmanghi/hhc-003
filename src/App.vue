@@ -1,6 +1,6 @@
 <template>
   <v-app class="grey lighten-4">
-    <Navbar v-if="currentUserEmail" :currentUserEmail="currentUserEmail" />
+    <Navbar v-if="currentUserEmail" :currentUserEmail="currentUserEmail" :currentUserDisplayName="currentUserDisplayName" />
     <v-content class="mx-4 my-4">
       <router-view></router-view>
     </v-content>
@@ -15,6 +15,9 @@ export default {
     name: 'App',
     components: { Navbar },
     computed: {
+        currentUserDisplayName(){
+          return this.$store.getters["Auth/getCurrentUserDisplayName"];
+        },
         currentUserEmail() { 
             return this.$store.getters["Auth/getCurrentUserEmail"];
         },
