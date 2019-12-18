@@ -71,7 +71,7 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 				admin.auth().generatePasswordResetLink(userRecord.email).then(function(link){
 					console.log('link',link)
 					const mailOptions = {
-						from: 'Online Raffle <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+						from: 'Home Health Care <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
 						to: userRecord.email,
 						subject: 'Home Health Care - Password Reset', // email subject
 						html: 'Hello,<br /><br />Follow this link to reset your HHC-PH-CM password for your '+userRecord.email+'.com account.<br /><br /><a href="'+link+'">'+link+'</a><br /><br />If you didn’t ask to reset your password, you can ignore this email.<br /><br />Thanks,<br /><br />Your HHC team',
@@ -136,7 +136,7 @@ exports.createContract = functions.firestore.document('client/{clientId}/contrac
 
         if(details.status == 'Pending'){
             const mailOptions = {
-                from: 'Online Raffle <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+                from: 'Home Health Care <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
                 to: details.recipient_email,
                 subject: 'Home Health Care - Contract', // email subject
                 html: moment(details.createdOn).format('LL')+'<br /><br /><b>Client Name:</b> '+details.recipient_name+'<br /><b>Address:</b> '+details.recipient_address+'<br /><b>Contact number:</b> '+details.recipient_contact_number+'<br /><b>Email:</b> '+details.recipient_email+'<br /><br /><br /><b>Dear Ms/Mr. '+details.recipient_name+',</b><p>Home Health Care Placements, Inc. can deploy healthcare professionals (HCPs) for homecare and hospice for your love one, through our CareNET Unit, (Caregiver/Nurse Sourcing).</p><p>A Nurse Case Manager will be your point of contact to coordinate the needs of your love one. We involve families in the Plan of Care in coordination with your Attending Physician.</p><p>Our staff are trained in long term care, are licensed HCPs with NBI and medical clearance.</p><p>Attached is the document of our deployment proposal.</p><p>Should you have any concerns, please feel free to get in touch with your Nurse Case Manager.</p><br /><br />Sincerely,<br /><br /><b>Nurse Case Manager:</b> '+details.nurse_case_manager+'<br /><b>Position:</b> '+details.position+'<br /><b>Contact Number:</b> '+details.contact_number+'',
