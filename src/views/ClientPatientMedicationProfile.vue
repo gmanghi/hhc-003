@@ -107,6 +107,12 @@
                                             <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_routine_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
                                             <v-col cols="12" md="12" sm="12">
                                                 <v-row>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="Prescribed Routine Medication" v-model="routines[index].prescribed_routine_medication"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="routines[index].drug_classification"></v-text-field>
+                                                    </v-col>
                                                     <v-col cols="12" md="2" sm="12">
                                                         <v-menu
                                                             v-model="routines[index].date_popup"
@@ -129,16 +135,16 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Dose" v-model="routines[index].dose"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Route" v-model="routines[index].route"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Frequency" v-model="routines[index].freq"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="N/C/O" v-model="routines[index].n_c_o"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" md="2" sm="12">
@@ -163,9 +169,9 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="4" sm="12">
+                                                    <!-- <v-col cols="12" md="4" sm="12">
                                                         <v-text-field label="Drug Classification" v-model="routines[index].drug_classification"></v-text-field>
-                                                    </v-col>
+                                                    </v-col> -->
                                                 </v-row>
                                             </v-col>
                                             <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->
@@ -185,6 +191,12 @@
                                             <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_prn_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
                                             <v-col cols="12" md="12" sm="12">
                                                 <v-row>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="Prescribed Routine Medication" v-model="prns[index].prescribed_prn_medication"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="prns[index].drug_classification"></v-text-field>
+                                                    </v-col>
                                                     <v-col cols="12" md="2" sm="12">
                                                         <v-menu
                                                             v-model="prns[index].date_popup"
@@ -207,16 +219,16 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Dose" v-model="prns[index].dose"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Route" v-model="prns[index].route"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Frequency" v-model="prns[index].freq"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="N/C/O" v-model="prns[index].n_c_o"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" md="2" sm="12">
@@ -241,9 +253,9 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="4" sm="12">
+                                                    <!-- <v-col cols="12" md="4" sm="12">
                                                         <v-text-field label="Drug Classification" v-model="prns[index].drug_classification"></v-text-field>
-                                                    </v-col>
+                                                    </v-col> -->
                                                 </v-row>
                                             </v-col>
                                             <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->
@@ -263,6 +275,12 @@
                                             <div class="text-right"><v-btn fab x-small class="ma-2" color="error" v-if="index > 0" @click="remove_otc_drug_from_array(index)"><v-icon dark>mdi-minus</v-icon></v-btn></div>
                                             <v-col cols="12" md="12" sm="12">
                                                 <v-row>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="OTC Drugs" v-model="otc_drugs[index].otc_drugs"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" md="6" sm="12">
+                                                        <v-text-field label="Drug Classification" v-model="otc_drugs[index].drug_classification"></v-text-field>
+                                                    </v-col>
                                                     <v-col cols="12" md="2" sm="12">
                                                         <v-menu
                                                             v-model="otc_drugs[index].date_popup"
@@ -285,16 +303,16 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Dose" v-model="otc_drugs[index].dose"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Route" v-model="otc_drugs[index].route"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="Frequency" v-model="otc_drugs[index].freq"></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" md="1" sm="12">
+                                                    <v-col cols="12" md="2" sm="12">
                                                         <v-text-field label="N/C/O" v-model="otc_drugs[index].n_c_o"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" md="2" sm="12">
@@ -319,9 +337,9 @@
                                                             ></v-date-picker>
                                                         </v-menu>
                                                     </v-col>
-                                                    <v-col cols="12" md="4" sm="12">
+                                                    <!-- <v-col cols="12" md="4" sm="12">
                                                         <v-text-field label="Drug Classification" v-model="otc_drugs[index].drug_classification"></v-text-field>
-                                                    </v-col>
+                                                    </v-col> -->
                                                 </v-row>
                                             </v-col>
                                             <!-- <PatientMedicationProfileRoutines v-bind:patient_medication_profile="patient_medication_profile" v-bind:index="index"></PatientMedicationProfileRoutines> -->

@@ -13,7 +13,9 @@
         <v-navigation-drawer absolute temporary v-model="drawer">
             <v-list-item>
                 <v-list-item-avatar>
-                    <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+                    <v-avatar color="teal">
+                        <span class="white--text headline">{{ currentUserEmail.charAt(0).toUpperCase() }}</span>
+                    </v-avatar>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
