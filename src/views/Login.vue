@@ -16,7 +16,7 @@
           >
             <v-card class="elevation-12">
               <!-- <v-toolbar dark prominent src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"> -->
-              <v-toolbar dark prominent src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg">
+              <v-toolbar dark prominent :src="require('@/assets/HomeHealthcare.jpg')">
                 <v-spacer></v-spacer>
                   <img class="mt-2" :src="require('@/assets/hhc-site-officialogo-180x090y.png')">
                   <v-spacer></v-spacer>
@@ -91,8 +91,6 @@
         fb.auth.signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).then(user => {
             this.$store.commit('Auth/setCurrentUser', user.user)
             this.$store.dispatch('Auth/fetchUserProfile')
-
-            console.log('trace',this.$store.getters["Auth/getCurrentUserProfile"])
 
             // fb.usersCollection.doc(this.currentUserId).set({
             //     name: this.name,
