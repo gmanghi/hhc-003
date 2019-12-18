@@ -25,6 +25,63 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+exports.reCreateUser = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const userId = req.query.userId;
+		
+		const db = admin.firestore();
+
+		const userRef = db.collection('users').doc(userId);
+		userRef.get().then(snapshot => {
+			const details = snapshot.data()
+			if(details.status == 'Created'){				
+				return admin.auth().createUser({
+					uid: userId,
+					email: details.email,
+					emailVerified: true,
+					password: 'pass123',
+					displayName: details.name,
+					photoURL: "https://firebasestorage.googleapis.com/v0/b/hhc-002.appspot.com/o/gku6f58eqo.bmp?alt=media&token=070c70e4-dcf0-47d0-b0d9-d8f5cf1071cb",
+					disabled: false
+				}).then(function(userRecord) {
+					console.log("Successfully created new user:", userRecord.uid);
+					admin.auth().generatePasswordResetLink(userRecord.email).then(function(link){
+						console.log('link',link)
+						const mailOptions = {
+							from: 'Home Health Care <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+							to: userRecord.email,
+							subject: 'Home Health Care - Password Reset', // email subject
+							html: 'Hello,<br /><br />Follow this link to reset your HHC-PH-CM password for your '+userRecord.email+'.com account.<br /><br /><a href="'+link+'">'+link+'</a><br /><br />If you didn’t ask to reset your password, you can ignore this email.<br /><br />Thanks,<br /><br />Your HHC team',
+						};
+						
+						return transporter.sendMail(mailOptions, function(error, info){
+							if (error) {
+								details.status = error
+								console.log('this is an error',error);
+								userRef.update({status: 'Error'})
+								console.log(error)
+							} 
+							else {
+								details.status = 'Verified'
+								console.log('Email sent: ' + info.response);
+								console.log(userRef.update({status: 'Verified'}))
+							}
+						});
+					}).catch(function(error){
+						console.log("Error generating link", error);
+					})
+				}).catch(function(error) {
+					console.log(error)
+					console.log("Error creating new user:", error);
+				});   
+			}
+			res.send('done');
+		}).catch(err => {
+			res.send(err);
+		});  
+    });    
+});
+
 exports.createUser = functions.firestore.document('users/{userId}').onCreate((snap, context) => {
 
     // return new Promise((resolve, reject) => {
@@ -62,7 +119,7 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 				uid: userId,
 				email: details.email,
                 emailVerified: true,
-                phoneNumber: details.contact_number,
+                // phoneNumber: details.contact_number,
 				password: 'pass123',
 				displayName: details.name,
 				photoURL: "https://firebasestorage.googleapis.com/v0/b/hhc-002.appspot.com/o/gku6f58eqo.bmp?alt=media&token=070c70e4-dcf0-47d0-b0d9-d8f5cf1071cb",
@@ -82,13 +139,13 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 						if (error) {
 							details.status = error
 							console.log('this is an error',error);
-							usersRef.update(details)
+							usersRef.update({status: 'Error'})
 							reject(error)
 						} 
 						else {
 							details.status = 'Verified'
 							console.log('Email sent: ' + info.response);
-							resolve(usersRef.update(details))
+							resolve(usersRef.update({status: 'Verified'}))
 						}
 					});
 				}).catch(function(error){
@@ -103,6 +160,7 @@ exports.createUser = functions.firestore.document('users/{userId}').onCreate((sn
 					// reject("Error verifying new user:", error);
 				// })
 			}).catch(function(error) {
+				console.log(error)
 				reject("Error creating new user:", error);
 			});
 			
@@ -140,7 +198,7 @@ exports.createContract = functions.firestore.document('client/{clientId}/contrac
                 from: 'Home Health Care <0nline.raffl3@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
                 to: details.recipient_email,
                 subject: 'Home Health Care - We would like to help you care for your loved one.', // email subject
-                html: moment(details.createdOn).format('LL')+'<br /><br /><b>Client Name:</b> '+details.recipient_name+'<br /><b>Address:</b> '+details.recipient_address+'<br /><b>Contact number:</b> '+details.recipient_contact_number+'<br /><b>Email:</b> '+details.recipient_email+'<br /><br /><br /><b>Dear Ms/Mr. '+details.recipient_name+',</b><p>Home Health Care Placements, Inc. can deploy healthcare professionals (HCPs) for homecare and hospice for your love one, through our CareNET Unit, (Caregiver/Nurse Sourcing).</p><p>A Nurse Case Manager will be your point of contact to coordinate the needs of your love one. We involve families in the Plan of Care in coordination with your Attending Physician.</p><p>Our staff are trained in long term care, are licensed HCPs with NBI and medical clearance.</p><p>Attached is the document of our deployment proposal.</p><p>Should you have any concerns, please feel free to get in touch with your Nurse Case Manager.</p><br /><br />Sincerely,<br /><br /><b>Nurse Case Manager:</b> '+details.nurse_case_manager+'<br /><b>Position:</b> '+details.position+'<br /><b>Contact Number:</b> '+details.contact_number+'',
+                html: moment(details.createdOn).format('LL')+'<br /><br /><b>Client Name:</b> '+details.recipient_name+'<br /><b>Address:</b> '+details.recipient_address+'<br /><b>Contact number:</b> '+details.recipient_contact_number+'<br /><b>Email:</b> '+details.recipient_email+'<br /><br /><br /><b>Dear Ms/Mr. '+details.recipient_name+',</b><p>Home Health Care Placements, Inc. can deploy healthcare professionals (HCPs) for homecare and hospice for your loved one, through our CareNET Unit, (Private Duty Caregiver/Nurse).</p><p>A Case Manager will be your point of contact to coordinate the needs of your loved one. We involve families in the Plan of Care in coordination with your Attending Physician.</p><p>Our staff are trained in long term care, are licensed health care professionals (HCPs) with NBI and medical clearance.</p><p>Attached is the document of our deployment proposal.</p><p>Should you have any concerns, please feel free to get in touch with your Case Manager.</p><br /><br />Sincerely,<br /><br /><b>Case Manager:</b> '+details.nurse_case_manager+'<br /><b>Position:</b> '+details.position+'<br /><b>Contact Number:</b> '+details.contact_number+'',
                 attachments: [ 
                     {   // use URL as an attachment
                         filename: 'contract.pdf',
