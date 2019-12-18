@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         update(){
-            fb.usersCollection.doc(this.currentUserId).set({
+            fb.usersCollection.doc(this.currentUserId).update({
                 name: this.name,
                 position: this.position,
                 contact_number: this.contact_number,
