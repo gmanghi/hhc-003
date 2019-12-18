@@ -137,7 +137,7 @@
                                         'Laboratory / Radiology',
                                         'Purchase and/or Rental of Medical Equipment (PRME)',
                                         'Medical Escorting',
-                                        'Long Term Care Placement (SeniorRES)',
+                                        'Long Term Care Placement (SenioRES)',
                                         'Home Vaccination Program (VacciFAM)',
                                         'MDeploy']"
                                     label="REQUIREMENTS (Kindly check which service request / requirement is)"

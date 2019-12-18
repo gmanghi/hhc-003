@@ -115,7 +115,7 @@
                                         'Laboratory / Radiology',
                                         'Purchase and/or Rental of Medical Equipment',
                                         'Medical Escorting',
-                                        'Long Term Care Placement',
+                                        'Long Term Care Placement (SenioRES)',
                                         'Home Vaccination Program',
                                         'MDeploy']"
                                 label="REQUIREMENTS (Kindly check which service request / requirement is)"
