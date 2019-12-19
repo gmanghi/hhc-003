@@ -59,10 +59,10 @@
                             <v-card-text>
                                 <v-row>
                                     <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Name" v-model="patient_medication_profile.patient_medication_profile_name"></v-text-field>
+                                        <v-text-field label="Name" v-model="patient_medication_profile.patient_medication_profile_name" :rules="requiredStringRules"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" md="6" sm="12">
-                                        <v-text-field label="Case #" v-model="patient_medication_profile.patient_medication_profile_case"></v-text-field>
+                                        <v-text-field label="Case #" v-model="patient_medication_profile.patient_medication_profile_case" :rules="requiredStringRules"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" md="6" sm="12">
                                         <v-text-field label="Diagnosis" v-model="patient_medication_profile.patient_medication_profile_diagnosis"></v-text-field>
@@ -421,9 +421,12 @@ export default {
             patient_medication_profile: { routines: [] },
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
+                { text: 'Name', align: 'center', sortable: true, value: 'patient_medication_profile_name' },
+                { text: 'Case #', align: 'center', sortable: true, value: 'patient_medication_profile_case' },
                 { text: 'Edit', align: 'center', sortable: false, value: 'actions' },
 
             ],
+            requiredStringRules: [v => !!v || 'Field is required'],
             // requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
     },
@@ -543,6 +546,7 @@ export default {
                 this.$store.commit('Client/setClientPatientMedicationProfile', data)
                 this.$store.dispatch("Client/createClientPatientMedicationProfile").then(function(doc){
                     console.log('saveClientPatientMedicationProfile',doc)
+                    parent.$refs.form.reset()
                     parent.popup = false
                     parent.prescription = {}
                     parent.overlay = false
@@ -561,6 +565,7 @@ export default {
                 this.$store.commit('Client/setClientPatientMedicationProfileDocumentId', this.patient_medication_profile.document_id)
                 this.$store.dispatch("Client/updateClientPatientMedicationProfile").then(function(doc){
                     console.log('Document Updated!',doc)
+                    parent.$refs.form.reset()
                     parent.popup = false
                     parent.overlay = false
                     parent.tab = 0

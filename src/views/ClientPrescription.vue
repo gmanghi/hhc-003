@@ -59,7 +59,7 @@
                             <v-card-text>
                                 <v-row>
                                     <v-col cols="12" sm="12" md="12">
-                                         <v-text-field label="Patient Name" v-model="prescription.prescription_patient_name"></v-text-field>
+                                         <v-text-field label="Patient Name" v-model="prescription.prescription_patient_name" :rules="requiredStringRules"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="12" md="12">
                                          <v-text-field label="Address" v-model="prescription.prescription_address"></v-text-field>
@@ -145,10 +145,12 @@ export default {
             prescription: {},
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
+                { text: 'Patient Name', align: 'center', sortable: true, value: 'prescription_patient_name' },
                 { text: 'Edit', align: 'center', sortable: false, value: 'actions' },
 
             ],
-            requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
+            requiredStringRules: [v => !!v || 'Field is required'],
+            // requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
     },
     components: {
