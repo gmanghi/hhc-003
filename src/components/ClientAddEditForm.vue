@@ -63,7 +63,7 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
-                                <v-text-field label="Email Address" v-model="client.client_email"></v-text-field>
+                                <v-text-field label="Email Address" v-model="client.client_email" :rules="requiredStringRules"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4" sm="4">
                                 <v-text-field label="Attending Physician" v-model="client.client_attending_physician"></v-text-field>
@@ -80,7 +80,7 @@
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" md="5" sm="3">
-                                <v-text-field label="Patient Name" v-model="client.patient_name"></v-text-field>
+                                <v-text-field label="Patient Name" v-model="client.patient_name" :rules="requiredStringRules"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="2" sm="3">
                                 <v-text-field label="Age" v-model="client.patient_age"></v-text-field>
@@ -295,45 +295,51 @@ export default {
             this.$parent.popupOpen()
         },
         saveClient(){
-            this.overlay = true
-            const parent = this
-            this.client.createdOn = new Date
-            this.$store.commit('Client/setClient', this.client)
-            this.$store.dispatch("Client/createClient").then(function(doc){
-                console.log('saveClient',doc)
-                parent.popupClose()
-                // parent.popup = false
-                // parent.overlay = false
-            }).catch(function(error){
-                parent.popupClose()
-                parent.notification = error
-                parent.snackbar = true
-                console.log(error)
-            })
-            
+            if(this.$refs.form.validate()){
+                this.overlay = true
+                const parent = this
+                this.client.createdOn = new Date
+                this.$store.commit('Client/setClient', this.client)
+                this.$store.dispatch("Client/createClient").then(function(doc){
+                    console.log('saveClient',doc)
+                    parent.popupClose()
+                    parent.$refs.form.reset()
+                    // parent.popup = false
+                    // parent.overlay = false
+                }).catch(function(error){
+                    parent.popupClose()
+                    parent.notification = error
+                    parent.snackbar = true
+                    console.log(error)
+                })
+            }
         },
         updateClient(){
-            this.overlay = true
-            const parent = this
-            const data = this.client
-            data.document_id = this.document_id
-            this.$store.commit('Client/setClient', data)
-            this.$store.dispatch("Client/updateClient").then(function(doc){
-                console.log('updateClient',doc)
-                parent.popupClose()
-                // parent.popup = false
-                // parent.method = 'create'
-                // parent.overlay = false
-            }).catch(function(error){
-                parent.popupClose()
-                parent.notification = error
-                parent.snackbar = true
-                console.log(error)
-            })
+            if(this.$refs.form.validate()){
+                this.overlay = true
+                const parent = this
+                const data = this.client
+                data.document_id = this.document_id
+                this.$store.commit('Client/setClient', data)
+                this.$store.dispatch("Client/updateClient").then(function(doc){
+                    console.log('updateClient',doc)
+                    parent.popupClose()
+                    parent.$refs.form.reset()
+                    // parent.popup = false
+                    // parent.method = 'create'
+                    // parent.overlay = false
+                }).catch(function(error){
+                    parent.popupClose()
+                    parent.notification = error
+                    parent.snackbar = true
+                    console.log(error)
+                })
+            }
         },
         popupClose(){
             // this.method = 'create'
             this.overlay = false
+            this.$refs.form.reset()
             this.$parent.popupClose()
         },
         // popupCreateClient(){

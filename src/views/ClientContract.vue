@@ -50,6 +50,7 @@
                             <v-card-title>
                                 <span class="headline">Upload Contract</span>
                             </v-card-title>
+                            <v-divider></v-divider>
                             <v-card-text>
                                 <v-container>
                                     <v-row>
@@ -66,6 +67,7 @@
                                     </v-row>
                                 </v-container>
                             </v-card-text>
+                            <v-divider></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup = false">Close</v-btn>
@@ -151,6 +153,7 @@ export default {
                 this.$store.getters['Client/facesheet'](this.$route.params.id).then(function (data){
                     const contract = {
                         createdOn: new Date(),
+                        recipient_title: data.client_title,
                         recipient_name: data.client_account_name,
                         recipient_address: data.client_complete_address,
                         recipient_contact_number: data.client_landline_mobile_fax,
