@@ -1,5 +1,5 @@
 <template>
-  <v-app id="login">
+  <v-app id="login"  style="background-color: #5BB4F5">
     <v-content>
       <v-container
         class="fill-height"
