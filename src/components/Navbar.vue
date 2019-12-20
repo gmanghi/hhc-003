@@ -2,11 +2,11 @@
     <nav>
         <v-app-bar app>
             <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer" v-if="!drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title class="text-uppercase grey--text" color="primary">
+            <v-toolbar-title class="grey--text font-weight-bold" color="primary">
                 <span>Home Health Care</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn text color="grey" @click="logout">
+            <v-btn text color="grey font-weight-bol" @click="logout">
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
         </v-app-bar>
