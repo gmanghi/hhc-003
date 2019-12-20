@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Customer Satisfaction Survey</h1>
+        <h1 class="subheading white--text">Customer Satisfaction Survey</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>

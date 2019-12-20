@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Home Visit Report/Progress Notes</h1>
+        <h1 class="subheading white--text">Home Visit Report/Progress Notes</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>

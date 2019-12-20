@@ -1,6 +1,6 @@
 <template>
     <div id="client-visits">
-        <h1 class="subheading grey--text">Schedule</h1>
+        <h1 class="subheading white--text">Schedule</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <ScheduleVisit v-bind:prop_client_id="client_id" v-bind:client="client"></ScheduleVisit>

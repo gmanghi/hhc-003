@@ -1,6 +1,6 @@
 <template>
     <div id="register">
-        <h1 class="subheading grey--text">Register New User</h1>
+        <h1 class="subheading white--text">Register New User</h1>
         <v-container>
             <v-card>    
                 <v-form

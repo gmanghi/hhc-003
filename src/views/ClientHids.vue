@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Health Infomation Data Sheet</h1>
+        <h1 class="subheading white--text">Health Infomation Data Sheet</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>

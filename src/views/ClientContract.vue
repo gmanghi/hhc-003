@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Contracts</h1>
+        <h1 class="subheading white--text">Contracts</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>
@@ -48,7 +48,7 @@
                         >
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Upload Contract</span>
+                                <span class="headline">Upload Files and Send</span>
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
@@ -56,11 +56,54 @@
                                     <v-row>
                                         <v-col cols="12">
                                             <v-file-input 
-                                                id="upload"
                                                 accept="application/pdf"
-                                                show-size label="Contract"
-                                                :rules="requiredFileRules"
-                                                v-model="contract"
+                                                show-size 
+                                                label="Contract"
+                                                v-model="contract[0]"
+                                            >
+                                            </v-file-input>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-file-input 
+                                                accept="application/pdf"
+                                                show-size 
+                                                label="Contract"
+                                                v-model="contract[1]"
+                                            >
+                                            </v-file-input>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-file-input 
+                                                accept="application/pdf"
+                                                show-size 
+                                                label="Contract"
+                                                v-model="contract[2]"
+                                            >
+                                            </v-file-input>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-file-input 
+                                                accept="application/pdf"
+                                                show-size 
+                                                label="Contract"
+                                                v-model="contract[3]"
+                                            >
+                                            </v-file-input>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-file-input 
+                                                accept="application/pdf"
+                                                show-size 
+                                                label="Contract"
+                                                v-model="contract[4]"
                                             >
                                             </v-file-input>
                                         </v-col>
@@ -104,7 +147,7 @@ export default {
                 { text: 'Recipient Email', align: 'center', sortable: true, value: 'recipient_email' },
                 { text: 'Status', align: 'center', sortable: true, value: 'status' },
             ],
-            requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
+            // requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
     },
     components: {
@@ -150,6 +193,7 @@ export default {
             if (this.$refs.form.validate()) {
                 this.overlay = true
                 const parent = this
+                console.log(parent.contract)
                 this.$store.getters['Client/facesheet'](this.$route.params.id).then(function (data){
                     const contract = {
                         createdOn: new Date(),
