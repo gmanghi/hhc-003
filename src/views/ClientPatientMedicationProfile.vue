@@ -1,6 +1,6 @@
 <template>
     <div id="client-hids">
-        <h1 class="subheading grey--text">Patient Medication Profile</h1>
+        <h1 class="subheading white--text">Patient Medication Profile</h1>
         <v-container>
             <ClientNavbar></ClientNavbar>
             <v-card>

@@ -1,6 +1,6 @@
 <template>
     <div id="Professionals">
-        <h1 class="subheading grey--text">{{profession}}</h1>
+        <h1 class="subheading white--text">{{profession}}</h1>
         
         <v-container>
             <v-layout row wrap>

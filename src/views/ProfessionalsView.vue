@@ -1,6 +1,6 @@
 <template>
     <div id="professional">
-        <h1 class="subheading grey--text">Details</h1>
+        <h1 class="subheading white--text">Details</h1>
         <v-container>
             <ProfessionalNavbar></ProfessionalNavbar>
             <v-card>

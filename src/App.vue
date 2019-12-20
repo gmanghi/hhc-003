@@ -1,5 +1,5 @@
 <template>
-  <v-app class="grey lighten-4">
+  <v-app class="grey lighten-4" style="background-color: #5BB4F5">
     <Navbar v-if="currentUserEmail" :currentUserEmail="currentUserEmail" :currentUserDisplayName="currentUserDisplayName" />
     <v-content class="mx-4 my-4">
       <router-view></router-view>

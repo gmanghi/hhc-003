@@ -1,6 +1,6 @@
 <template>
     <div id="clients-requests">
-        <h1 class="subheading grey--text">Clients Requests</h1>
+        <h1 class="subheading white--text">Clients Requests</h1>
         <v-container>
             <v-card>
                 <v-card-title>

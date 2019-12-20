@@ -1,6 +1,6 @@
 <template>
     <div id="applicants">
-        <h1 class="subheading grey--text">Applicants</h1>
+        <h1 class="subheading white--text">Applicants</h1>
         
         <v-container>
             <v-layout row wrap>

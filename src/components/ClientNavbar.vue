@@ -1,34 +1,34 @@
 <template>
     <v-row class="mb-3">
-        <v-btn text color="grey" :href="facesheet_url">
+        <v-btn text color="white" :href="facesheet_url">
             <v-icon left>mdi-account-outline</v-icon>
             <span class="caption text-uppercase">Facesheet</span>
         </v-btn>
-        <v-btn text color="grey" :href="contract_url">
+        <v-btn text color="white" :href="contract_url">
             <v-icon left>mdi-pen</v-icon>
             <span class="caption text-uppercase">Contract</span>
         </v-btn>
-        <v-btn text color="grey" :href="visits_url">
+        <v-btn text color="white" :href="visits_url">
             <v-icon left>mdi-calendar-outline</v-icon>
             <span class="caption text-uppercase">Scheduled Visits</span>
         </v-btn>
-        <v-btn text color="grey" :href="hids_url">
+        <v-btn text color="white" :href="hids_url">
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">HIDs</span>
         </v-btn>
-        <v-btn text color="grey" :href="hvrpn_url">
+        <v-btn text color="white" :href="hvrpn_url">
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">Home Health Care Visit</span>
         </v-btn>
-        <v-btn text color="grey" :href="prescription_url">
+        <v-btn text color="white" :href="prescription_url">
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">Prescription</span>
         </v-btn>
-        <v-btn text color="grey" :href="pmp_url">
+        <v-btn text color="white" :href="pmp_url">
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">Patient Medication Profile</span>
         </v-btn>
-        <v-btn text color="grey" :href="css_url">
+        <v-btn text color="white" :href="css_url">
             <v-icon left>mdi-note-text-outline</v-icon>
             <span class="caption text-uppercase">Customer Satisfaction Survey</span>
         </v-btn>
