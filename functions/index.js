@@ -221,7 +221,7 @@ exports.createContract = functions.firestore.document('client/{clientId}/contrac
                 else {
                     details.status = 'Sent'
 
-                    console.log('Email sent: ' + info.response);
+                    console.log('Email sentssssssss: ' + info.response);
 					console.log('update',contractRef.update(details))
                     resolve(true)
                 }
