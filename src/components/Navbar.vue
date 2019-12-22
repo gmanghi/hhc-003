@@ -20,55 +20,53 @@
             width="260"
             src="https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg"
             >
-            
-                <v-list-item>
-                    <v-list-item-avatar>
-                        <v-avatar color="teal" size="36">
-                            <span class="white--text headline">{{ currentUserDisplayName.charAt(0).toUpperCase() }}</span>
-                        </v-avatar>
-                    </v-list-item-avatar>
+            <v-list-item>
+                <v-list-item-avatar>
+                    <v-avatar color="teal" size="36">
+                        <span class="white--text headline">{{ currentUserDisplayName.charAt(0).toUpperCase() }}</span>
+                    </v-avatar>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                    <v-list-item-title>
+                        {{ currentUserDisplayName }}
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list dense>
+                <v-list-item
+                    v-for="item in configurations"
+                    :key="item.title"
+                    link
+                    route :to="item.route">
+                    <v-list-item-icon>
+                        <v-icon size="36">{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
 
                     <v-list-item-content>
-                        <v-list-item-title>
-                            {{ currentUserDisplayName }}
-                        </v-list-item-title>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-divider></v-divider>
-                <v-list dense>
-                    <v-list-item
-                        v-for="item in configurations"
-                        :key="item.title"
-                        link
-                        route :to="item.route">
-                        <v-list-item-icon>
-                            <v-icon size="36">{{ item.icon }}</v-icon>
-                        </v-list-item-icon>
+            </v-list>
+            <v-divider></v-divider>
+            <v-list dense>
+                <v-list-item
+                    v-for="item in items"
+                    :key="item.title"
+                    link
+                    route :to="item.route">
+                    <v-list-item-icon>
+                        <v-avatar color="orange" size="36">
+                        <span class="white--text">{{ item.acronym }}</span>
+                    </v-avatar>
+                    </v-list-item-icon>
 
-                        <v-list-item-content>
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-                <v-divider></v-divider>
-                <v-list dense>
-                    <v-list-item
-                        v-for="item in items"
-                        :key="item.title"
-                        link
-                        route :to="item.route">
-                        <v-list-item-icon>
-                            <v-avatar color="orange" size="36">
-                            <span class="white--text">{{ item.acronym }}</span>
-                        </v-avatar>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title class="orange--text subtitle-1">{{ item.title }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            
+                    <v-list-item-content>
+                        <v-list-item-title class="orange--text subtitle-1">{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
         </v-navigation-drawer>
     </nav>
 </template>

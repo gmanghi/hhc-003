@@ -19,6 +19,16 @@
                     :items="contracts"
                     :search="search"
                 >
+                    <template v-slot:item.attachments="{ item }">
+                        <v-chip dark>
+                            {{
+                                item.attachments.map(function(x) {
+                                        return x['original_filename']; 
+                                    }
+                                )
+                            }}
+                        </v-chip>
+                    </template>
                     <template v-slot:item.url="{ item }">
                         <v-btn color="red" text x-large dark :href="item.url" target="_blank">
                             <v-icon>mdi-file-pdf-outline</v-icon>
@@ -28,7 +38,7 @@
             </v-card>
             <!-- Popup Start -->
             <v-row justify="center">
-                <v-dialog v-model="popup" persistent max-width="600px">
+                <v-dialog v-model="popup" scrollable max-width="600px">
                     <template v-slot:activator="{ on }">
                         <v-btn
                             fixed
@@ -43,69 +53,48 @@
                     </template>
                     <v-form
                         ref="form"
-                        v-model="valid"
-                        lazy-validation
                         >
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Upload Files and Send</span>
+                                <span class="headline">Attach Files</span>
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12">
+                                        <v-col cols="12" >
                                             <v-file-input 
+                                                ref="fileInput"
                                                 accept="application/pdf"
                                                 show-size 
-                                                label="Contract"
-                                                v-model="contract[0]"
+                                                v-model="file_input"
+                                                label="File"
+                                                @change="onChange"
+                                                :loading="loading"
+                                                :error-messages="error_message"
+                                                :error="error"
+                                                :success="success"
                                             >
                                             </v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-file-input 
-                                                accept="application/pdf"
-                                                show-size 
-                                                label="Contract"
-                                                v-model="contract[1]"
-                                            >
-                                            </v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-file-input 
-                                                accept="application/pdf"
-                                                show-size 
-                                                label="Contract"
-                                                v-model="contract[2]"
-                                            >
-                                            </v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-file-input 
-                                                accept="application/pdf"
-                                                show-size 
-                                                label="Contract"
-                                                v-model="contract[3]"
-                                            >
-                                            </v-file-input>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-file-input 
-                                                accept="application/pdf"
-                                                show-size 
-                                                label="Contract"
-                                                v-model="contract[4]"
-                                            >
-                                            </v-file-input>
+                                            <v-list>
+                                                <v-subheader>Attachments</v-subheader>
+                                                <v-list-item-group color="primary">
+                                                    <v-list-item v-for="(attachment, i) in attachments" v-bind:key="attachment.id">
+                                                        <v-list-item-icon>
+                                                            <v-icon>mdi-attachment</v-icon>
+                                                        </v-list-item-icon>
+                                                        <v-list-item-content>
+                                                            <v-list-item-title>{{attachment.original_filename}}</v-list-item-title>
+                                                            <v-list-item-subtitle>{{attachment.status}}</v-list-item-subtitle>
+                                                        </v-list-item-content>
+                                                        <v-list-item-action>
+                                                            <v-btn icon>
+                                                                <v-icon color="grey lighten-1" @click="remove(i, attachment.filename)">mdi-delete</v-icon>
+                                                            </v-btn>
+                                                        </v-list-item-action>
+                                                    </v-list-item>
+                                                </v-list-item-group>
+                                            </v-list>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -114,7 +103,7 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" text @click="popup = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="process_save">Save</v-btn>
+                                <v-btn color="blue darken-1" text @click="process_save" :disabled="!attachments.length > 0">Save</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-form>
@@ -132,21 +121,30 @@
 <script>
 import { mapGetters } from 'vuex'
 import ClientNavbar from '@/components/ClientNavbar'
+const fb = require('../firebaseInit.js')
 export default {
     data(){
         return {
+            file_input: null,
+            loading: false,
+            success: false,
+            error: false,
+            error_message: '',
+            // item: 1,
+            items: [],
             overlay: false,
             valid: true,
             popup: false,
             search: '',
             // contracts: [],
-            contract: [],
+            attachments: [],
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
-                { text: 'Contract URL', align: 'center', sortable: true, value: 'url' },
+                { text: 'Attachments', align: 'center', sortable: false, value: 'attachments' },
                 { text: 'Recipient Email', align: 'center', sortable: true, value: 'recipient_email' },
                 { text: 'Status', align: 'center', sortable: true, value: 'status' },
             ],
+            // files: []
             // requiredFileRules: [v => !!v || 'Contract is required', v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'],
         }
     },
@@ -189,11 +187,50 @@ export default {
         }
     },
     methods: {
+        remove(index, file){
+            const storageRef = fb.storage.ref('contracts/'+file);
+            const parent = this
+            storageRef.delete().then(function() {
+                parent.attachments.splice(index, 1)
+            }).catch(function(error) {
+                console.log('Remove error')
+            });
+        },
+        onChange(event){
+            const fileData = this.file_input
+            if(fileData){
+                const fileName =  Date.now() +'_'+ fileData.name
+                const storageRef = fb.storage.ref('contracts/'+fileName).put(fileData);
+                this.loading = true
+                const parent = this
+                storageRef.on(`state_changed`, snapshot => {
+                    console.log((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                },error => {
+                    parent.attachments.push({
+                        filename: fileName,
+                        path: '',
+                        status: error
+                    })
+                    parent.loading = false
+                    parent.$refs.form.reset()
+                },() => {
+                    storageRef.snapshot.ref.getDownloadURL().then( (url) => {
+                        parent.attachments.push({
+                        filename: fileName,
+                        original_filename: fileData.name,
+                        path: url,
+                        status: 'Success'
+                        })
+                    })
+                    parent.loading = false
+                    parent.$refs.form.reset();
+                })
+            }
+        },
         process_save(){ 
             if (this.$refs.form.validate()) {
                 this.overlay = true
                 const parent = this
-                console.log(parent.contract)
                 this.$store.getters['Client/facesheet'](this.$route.params.id).then(function (data){
                     const contract = {
                         createdOn: new Date(),
@@ -203,7 +240,7 @@ export default {
                         recipient_contact_number: data.client_landline_mobile_fax,
                         recipient_email: data.client_email,
                         status: 'Pending',
-                        url: parent.contract,
+                        attachments: parent.attachments,
                         nurse_case_manager: parent.currentUserProfile.name,
                         position: parent.currentUserProfile.position,
                         contact_number: parent.currentUserProfile.contact_number,
@@ -212,7 +249,7 @@ export default {
                     parent.$store.dispatch("Client/createClientContract").then(function(doc){
                         parent.$refs.form.reset()
                         parent.popup = false
-                        parent.contract = []
+                        parent.attachments = []
                         parent.overlay = false
                     }).catch(function(error){
                         console.log(error)
