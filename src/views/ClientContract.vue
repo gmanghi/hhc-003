@@ -20,13 +20,11 @@
                     :search="search"
                 >
                     <template v-slot:item.attachments="{ item }">
-                        <v-chip dark>
-                            {{
-                                item.attachments.map(function(x) {
-                                        return x['filename']; 
-                                    }
-                                )
-                            }}
+                        <v-chip class="ma-1" color="primary" v-for="(item, index) in item.attachments.map(function(x) {
+                                    return x['filename']; 
+                                }
+                            )" v-bind:key="index">
+                            {{ item }}
                         </v-chip>
                     </template>
                     <template v-slot:item.url="{ item }">
@@ -137,6 +135,7 @@ export default {
             popup: false,
             search: '',
             // contracts: [],
+            attached: [],
             attachments: [],
             headers: [
                 { text: 'Date', align: 'center', sortable: true, value: 'createdOn' },
