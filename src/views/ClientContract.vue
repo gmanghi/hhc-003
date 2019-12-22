@@ -23,7 +23,7 @@
                         <v-chip dark>
                             {{
                                 item.attachments.map(function(x) {
-                                        return x['original_filename']; 
+                                        return x['filename']; 
                                     }
                                 )
                             }}
@@ -84,12 +84,12 @@
                                                             <v-icon>mdi-attachment</v-icon>
                                                         </v-list-item-icon>
                                                         <v-list-item-content>
-                                                            <v-list-item-title>{{attachment.original_filename}}</v-list-item-title>
+                                                            <v-list-item-title>{{attachment.filename}}</v-list-item-title>
                                                             <v-list-item-subtitle>{{attachment.status}}</v-list-item-subtitle>
                                                         </v-list-item-content>
                                                         <v-list-item-action>
                                                             <v-btn icon>
-                                                                <v-icon color="grey lighten-1" @click="remove(i, attachment.filename)">mdi-delete</v-icon>
+                                                                <v-icon color="grey lighten-1" @click="remove(i, attachment.storage_filename)">mdi-delete</v-icon>
                                                             </v-btn>
                                                         </v-list-item-action>
                                                     </v-list-item>
@@ -216,10 +216,10 @@ export default {
                 },() => {
                     storageRef.snapshot.ref.getDownloadURL().then( (url) => {
                         parent.attachments.push({
-                        filename: fileName,
-                        original_filename: fileData.name,
-                        path: url,
-                        status: 'Success'
+                            filename: fileData.name,
+                            storage_filename: fileName,
+                            path: url,
+                            status: 'Success'
                         })
                     })
                     parent.loading = false
