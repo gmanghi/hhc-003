@@ -27,7 +27,15 @@
                             :to="{ name: 'client_details', params: { id: item.document_id } }"
                             >
                             <v-icon dark>mdi-clipboard-list-outline</v-icon>
-                        </v-btn>    
+                        </v-btn>   
+                        <v-btn
+                            color="red"
+                            class="black--text"
+                            text
+                            @click="deleteClient(item.document_id)"
+                            >
+                            <v-icon dark>mdi-delete-outline</v-icon>
+                        </v-btn>   
                     </template>
                 </v-data-table>
             </v-card>
@@ -86,7 +94,7 @@ export default {
         },
         popupClose(){
             this.popup = false
-        }
+        },
     //     viewClient(document_id){
     //         this.$store.commit('Client/setDocumentId', document_id)
     //         this.$store.dispatch("Client/getClient")
@@ -100,10 +108,10 @@ export default {
     //         this.method = 'update'
     //         console.log(this.professional)
     //     },
-    //     deleteClient(document_id){
-    //         this.$store.commit('Client/setDocumentId', document_id)
-    //         this.$store.dispatch("Client/deleteClient")
-    //     },
+        deleteClient(document_id){
+            this.$store.commit('Client/setDocumentId', document_id)
+            this.$store.dispatch("Client/deleteClient")
+        },
     //     saveClient(){
     //         this.overlay = true
     //         const parent = this
