@@ -219,6 +219,16 @@ const Client = {
                 })
             })
         },
+        deleteClient({state}){
+            parent = this
+            fb.clientCollection.doc(state.client.document_id).delete().then(function() {
+                parent.dispatch("Client/clearClient")
+                console.log("Document successfully deleted!");
+            }).catch(function(error) {
+                parent.dispatch("Client/clearClient")
+                console.error("Error removing document: ", error);
+            });
+        },
         updateClient({commit, state}){
             return new Promise((resolve, reject) => {
                 fb.clientCollection.doc(state.client.document_id).update(state.client).then(doc => {
